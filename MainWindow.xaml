@@ -1,12 +1,19 @@
-﻿<Window x:Class="Angel_Macro.MainWindow"
+﻿<Window x:Class="AngelMacro.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Angel_Macro"
+        xmlns:local="clr-namespace:AngelMacro"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Angel Macro" Height="450" Width="800" FontFamily="Consolas" FontSize="16">
     <Grid>
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <!--Hi-->
     </Grid>
 </Window>
