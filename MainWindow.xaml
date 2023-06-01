@@ -5,15 +5,68 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AngelMacro"
         mc:Ignorable="d"
-        Title="Angel Macro" Height="450" Width="800" FontFamily="Consolas" FontSize="16">
+        Title="Angel Macro" Height="450" Width="800" FontFamily="Consolas" ResizeMode="CanMinimize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+            <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        
-        <!--Hi-->
+
+        <Menu x:Name="FileMenu">
+            <MenuItem Header="File">
+                <Button Content="Save" Click="SaveButton_Click"/>
+                <Button Content="Load" Click="LoadButton_Click"/>
+                <Button Content="Toggle Topmost" Click="TopmostButton_Click"/>
+            </MenuItem>
+            <MenuItem Header="Keys">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" MaxHeight="200">
+                    <StackPanel x:Name="Keys"/>
+                </ScrollViewer>
+            </MenuItem>
+        </Menu>
+
+        <ScrollViewer Grid.Row="2" Margin="16,2,16,2" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+            <TextBox x:Name="ScriptBox" AcceptsReturn="True" IsEnabled="False"/>
+        </ScrollViewer>
+
+        <Button x:Name="UnlockTextButton" Content="Unlock Script" Click="UnlockTextButton_Click" Grid.Row="1" Margin="16,16,16,0" FontSize="14"/>
+
+        <GroupBox Grid.Row="3" Header="Record" FontSize="20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Button x:Name="RecordButton" Content="Start Recording (F7)" Click="RecordButton_Click" Margin="2" FontSize="14"/>
+                <Button x:Name="PauseRecordButton" Content="Pause Recording (F8)" Click="PauseRecordButton_Click" Grid.Column="1" Margin="2" FontSize="14" IsEnabled="False"/>
+                <Button x:Name="StopRecordButton" Content="Stop Recording" Click="StopRecordButton_Click" Grid.Column="2" Margin="2" FontSize="14" IsEnabled="False"/>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Grid.Row="4" Header="Replay" FontSize="20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Button x:Name="RunButton" Content="Run Macro (Shift+F7)" Click="RunButton_Click" Margin="2" FontSize="14" IsEnabled="False"/>
+                <Button x:Name="StopButton" Content="Stop Macro (Shift+F8)" Click="StopButton_Click" Grid.Column="1" Margin="2" FontSize="14" IsEnabled="False"/>
+            </Grid>
+        </GroupBox>
     </Grid>
 </Window>

@@ -1,0 +1,152 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AngelMacro
+{
+    public partial class MainWindow
+    {
+        struct Key
+        {
+            public Key(ushort _hex, string _name, bool _check = false)
+            {
+                hex = _hex;
+                name = _name;
+                check = _check;
+            }
+
+            public ushort hex;
+            public string name;
+            public bool check;
+        }
+
+        Key[] keys =
+        {
+            new Key(0x01, "ESC", true),
+            new Key(0x02, "1", true),
+            new Key(0x03, "2", true),
+            new Key(0x04, "3", true),
+            new Key(0x05, "4", true),
+            new Key(0x06, "5", true),
+            new Key(0x07, "6", true),
+            new Key(0x08, "7", true),
+            new Key(0x09, "8", true),
+            new Key(0x0A, "9", true),
+            new Key(0x0B, "0", true),
+            new Key(0x0C, "-"),
+            new Key(0x0D, "="),
+            new Key(0x0E, "Back Space", true),
+            new Key(0x0F, "Tab"),
+            new Key(0x10, "Q", true),
+            new Key(0x11, "W", true),
+            new Key(0x12, "E", true),
+            new Key(0x13, "R", true),
+            new Key(0x14, "T", true),
+            new Key(0x15, "Y", true),
+            new Key(0x16, "U", true),
+            new Key(0x17, "I", true),
+            new Key(0x18, "O", true),
+            new Key(0x19, "P", true),
+            new Key(0x1A, "["),
+            new Key(0x1B, "]"),
+            new Key(0x1C, "Enter", true),
+            new Key(0x1D, "Left Ctrl"),
+            new Key(0x1E, "A", true),
+            new Key(0x1F, "S", true),
+            new Key(0x20, "D", true),
+            new Key(0x21, "F", true),
+            new Key(0x22, "G", true),
+            new Key(0x23, "H", true),
+            new Key(0x24, "J", true),
+            new Key(0x25, "K", true),
+            new Key(0x26, "L", true),
+            new Key(0x27, ";"),
+            new Key(0x28, "'"),
+            new Key(0x29, "`"),
+            new Key(0x2A, "Left Shift"),
+            new Key(0x2B, "\\"),
+            new Key(0x2C, "Z", true),
+            new Key(0x2D, "X", true),
+            new Key(0x2E, "C", true),
+            new Key(0x2F, "V", true),
+            new Key(0x30, "B", true),
+            new Key(0x31, "N", true),
+            new Key(0x32, "M", true),
+            new Key(0x33, ",", true),
+            new Key(0x34, ".", true),
+            new Key(0x35, "/"),
+            new Key(0x36, "Right Shift"),
+            new Key(0x37, "*"),
+            new Key(0x38, "Left Alt"),
+            new Key(0x39, "Space", true),
+            new Key(0x3A, "Caps Lock"),
+            new Key(0x3B, "F1", true),
+            new Key(0x3C, "F2", true),
+            new Key(0x3D, "F3", true),
+            new Key(0x3E, "F4", true),
+            new Key(0x3F, "F5", true),
+            new Key(0x40, "F6", true),
+            new Key(0x41, "F7"),
+            new Key(0x42, "F8"),
+            new Key(0x43, "F9", true),
+            new Key(0x44, "F10", true),
+            new Key(0x45, "Num Lock"),
+            new Key(0x46, "Scroll Lock"),
+            new Key(0x47, "7 (NumPad)"),
+            new Key(0x48, "8 (NumPad)"),
+            new Key(0x49, "9 (NumPad)"),
+            new Key(0x4A, "- (NumPad)"),
+            new Key(0x4B, "4 (NumPad)"),
+            new Key(0x4C, "5 (NumPad)"),
+            new Key(0x4D, "6 (NumPad)"),
+            new Key(0x4E, "+ (NumPad)"),
+            new Key(0x4F, "1 (NumPad)"),
+            new Key(0x50, "2 (NumPad)"),
+            new Key(0x51, "3 (NumPad)"),
+            new Key(0x52, "0 (NumPad)"),
+            new Key(0x53, ". (NumPad)"),
+            new Key(0x57, "F11", true),
+            new Key(0x58, "F12", true),
+            new Key(0x64, "F13"),
+            new Key(0x65, "F14"),
+            new Key(0x66, "F15"),
+            new Key(0x70, "Kana"),
+            new Key(0x79, "Covert"),
+            new Key(0x7B, "No Convert"),
+            new Key(0x7D, "¥"),
+            new Key(0x8D, "= (NumPad)"),
+            new Key(0x90, "^"),
+            new Key(0x91, "@"),
+            new Key(0x92, ":"),
+            new Key(0x93, "_"),
+            new Key(0x94, "Kanji"),
+            new Key(0x95, "Stop"),
+            new Key(0x96, "Japan AX"),
+            new Key(0x97, "J3100"),
+            new Key(0x9C, "Enter (NumPad)"),
+            new Key(0x9D, "Right Ctrl"),
+            new Key(0xB3, ", (NumPad)"),
+            new Key(0xB5, "/ (NumPad)"),
+            new Key(0xB7, "Sys Rq"),
+            new Key(0xB8, "Right Alt"),
+            new Key(0xC5, "Pause"),
+            new Key(0xC7, "Home"),
+            new Key(0xC8, "Up Arrow"),
+            new Key(0xC9, "Page Up"),
+            new Key(0xCB, "Left Arrow"),
+            new Key(0xCD, "Right Arrow"),
+            new Key(0xCF, "End"),
+            new Key(0xD0, "Down Arrow"),
+            new Key(0xD1, "Page Down"),
+            new Key(0xD2, "Insert"),
+            new Key(0xD3, "Delete", true),
+            new Key(0xDB, "Left Windows"),
+            new Key(0xDC, "Right Windows"),
+            new Key(0xDD, "Menu"),
+            new Key(0xDE, "Power"),
+            new Key(0xDF, "Sleep"),
+        };
+    }
+}
