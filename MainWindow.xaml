@@ -20,15 +20,26 @@
 
         <Menu x:Name="FileMenu">
             <MenuItem Header="File">
-                <Button Content="Save" Click="SaveButton_Click"/>
-                <Button Content="Load" Click="LoadButton_Click"/>
-                <Button Content="Toggle Topmost" Click="TopmostButton_Click"/>
+                <MenuItem Header="Save" Click="SaveButton_Click"/>
+                <MenuItem Header="Load" Click="LoadButton_Click"/>
+                <MenuItem Header="Toggle Topmost" Click="TopmostButton_Click"/>
             </MenuItem>
             <MenuItem Header="Keys">
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" MaxHeight="200">
                     <StackPanel x:Name="Keys"/>
                 </ScrollViewer>
             </MenuItem>
+            <MenuItem Header="Mouse">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" MaxHeight="200">
+                    <StackPanel x:Name="MouseKeys">
+                        <CheckBox x:Name="leftButtonToggle" Content="LMB" Click="ToggleLeft"/>
+                        <CheckBox x:Name="rightButtonToggle" Content="RMB" Click="ToggleRight"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </MenuItem>
+            <CheckBox x:Name="mouseLocationToggle" Content="Record Mouse Location" Click="ToggleMouseLocation"/>
+            <CheckBox x:Name="delayToggle" Content="Record Delays"/>
+            <MenuItem Header="ADD CONDITION" Click="AddConditionButton_Click"/>
         </Menu>
 
         <ScrollViewer Grid.Row="2" Margin="16,2,16,2" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
@@ -42,15 +53,14 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
-                    <ColumnDefinition/>
+
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <Button x:Name="RecordButton" Content="Start Recording (F7)" Click="RecordButton_Click" Margin="2" FontSize="14"/>
-                <Button x:Name="PauseRecordButton" Content="Pause Recording (F8)" Click="PauseRecordButton_Click" Grid.Column="1" Margin="2" FontSize="14" IsEnabled="False"/>
-                <Button x:Name="StopRecordButton" Content="Stop Recording" Click="StopRecordButton_Click" Grid.Column="2" Margin="2" FontSize="14" IsEnabled="False"/>
+                <Button x:Name="RecordButton" Content="Start Recording" Click="RecordButton_Click" Margin="2" FontSize="14"/>
+                <Button x:Name="PauseRecordButton" Content="Pause Recording (F6)" Click="PauseRecordButton_Click" Grid.Column="1" Margin="2" FontSize="14" IsEnabled="False"/>
             </Grid>
         </GroupBox>
 
@@ -64,8 +74,8 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <Button x:Name="RunButton" Content="Run Macro (Shift+F7)" Click="RunButton_Click" Margin="2" FontSize="14" IsEnabled="False"/>
-                <Button x:Name="StopButton" Content="Stop Macro (Shift+F8)" Click="StopButton_Click" Grid.Column="1" Margin="2" FontSize="14" IsEnabled="False"/>
+                <Button x:Name="RunButton" Content="Run Macro (F7)" Click="RunButton_Click" Margin="2" FontSize="14" IsEnabled="False"/>
+                <Button x:Name="StopButton" Content="Stop Macro (F8)" Click="StopButton_Click" Grid.Column="1" Margin="2" FontSize="14" IsEnabled="False"/>
             </Grid>
         </GroupBox>
     </Grid>
