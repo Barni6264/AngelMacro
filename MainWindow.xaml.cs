@@ -15,7 +15,6 @@ namespace AngelMacro
     {
         // all UI stuff and connections to core functions
 
-        enum MACROSTATUS { RECORDING, RUNNING, IDLE }
         MACROSTATUS currentStatus = MACROSTATUS.IDLE;
 
         public MainWindow()
@@ -97,7 +96,7 @@ namespace AngelMacro
             Countdown(5, () =>
             {
                 Tuple<System.Drawing.Point, Color> cursorInfo = Condition.GetCursorInfo();
-                Dispatcher.Invoke(() => { ScriptBox.AppendText($"COLOR:{cursorInfo.Item1.X}:{cursorInfo.Item1.Y}:{cursorInfo.Item2.R}:{cursorInfo.Item2.G}:{cursorInfo.Item2.B}:\n\tYOUR_MACRO_HERE (make sure to replace all ; with !):\n\tELSE_YOUR_MACRO_HERE (make sure to replace all ; with !)\n;\n"); });
+                Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_COLOR}{ARGS_SEPARATOR}{cursorInfo.Item1.X}{ARGS_SEPARATOR}{cursorInfo.Item1.Y}{ARGS_SEPARATOR}{cursorInfo.Item2.R}{ARGS_SEPARATOR}{cursorInfo.Item2.G}{ARGS_SEPARATOR}{cursorInfo.Item2.B}{ARGS_SEPARATOR}\n{CONDITIONAL_MACRO_GUIDE}{COMMAND_SEPARATOR}\n"); });
                 return true;
             });
         }
@@ -131,6 +130,8 @@ namespace AngelMacro
                 RunButton.IsEnabled = true;
                 FileMenu.IsEnabled = true;
                 currentStatus = MACROSTATUS.IDLE;
+                WindowState = WindowState.Normal;
+                Activate();
             }
         }
 
@@ -147,6 +148,7 @@ namespace AngelMacro
                 Countdown(3, () =>
                 {
                     currentStatus = MACROSTATUS.RUNNING;
+                    ExecuteMacro(Dispatcher.Invoke(() => { return ScriptBox.Text; }), COMMAND_SEPARATOR, ARGS_SEPARATOR);
                     return true;
                 });
             }
@@ -162,6 +164,8 @@ namespace AngelMacro
                 RecordButton.IsEnabled = true;
                 FileMenu.IsEnabled = true;
                 currentStatus = MACROSTATUS.IDLE;
+                WindowState = WindowState.Normal;
+                Activate();
             }
         }
 
@@ -169,7 +173,7 @@ namespace AngelMacro
         private void UnlockTextButton_Click(object sender, RoutedEventArgs e)
         {
             ((Button)sender).IsEnabled = false;
-            UnlockTextButton.Content = "Script unlocked! Be careful!";
+            UnlockTextButton.Content = UNLOCKED_SCRIPT_WARNING;
             ScriptBox.IsEnabled = true;
         }
 
@@ -177,10 +181,10 @@ namespace AngelMacro
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.FileName = "macro";
+            saveFileDialog.FileName = FILE_NAME;
             saveFileDialog.DefaultExt = FILE_EXTENSION;
             saveFileDialog.Filter = FILE_FILTER;
-            saveFileDialog.Title = "Save macro file";
+            saveFileDialog.Title = SAVE_FILE_TITLE;
             saveFileDialog.FileOk += delegate
             {
                 File.WriteAllText(saveFileDialog.FileName, ScriptBox.Text);
@@ -196,7 +200,7 @@ namespace AngelMacro
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.DefaultExt = FILE_EXTENSION;
             openFileDialog.Filter = FILE_FILTER;
-            openFileDialog.Title = "Open saved macro file";
+            openFileDialog.Title = OPEN_FILE_TITLE;
             openFileDialog.FileOk += delegate
             {
                 ScriptBox.Text = File.ReadAllText(openFileDialog.FileName);
@@ -210,17 +214,18 @@ namespace AngelMacro
             Topmost = !Topmost;
         }
 
+        //DONE
         void Countdown(int seconds, Func<bool> func)
         {
             new Thread(() =>
             {
                 for (int i = 0; i < seconds; i++)
                 {
-                    GDI.WriteTextDuration(0, 0, $"{seconds - i}s", 1000, Brushes.Black, Brushes.AliceBlue);
+                    GDI.WriteTextDuration(0, 0, $"{seconds - i}{GDI_SECOND}", 1000, Brushes.Black, Brushes.AliceBlue);
                     Console.Beep(1400, 200);
                     Thread.Sleep(800);
                 }
-                GDI.WriteTextDuration(0, 0, "GO", 1000, Brushes.Black, Brushes.AliceBlue);
+                GDI.WriteTextDuration(0, 0, GDI_START, 1000, Brushes.Black, Brushes.AliceBlue);
                 Console.Beep(2400, 200);
                 func();
             }).Start();

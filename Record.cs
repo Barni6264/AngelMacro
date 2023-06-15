@@ -39,13 +39,13 @@ namespace AngelMacro
             {
                 switch (e.RawEvent.Keyboard.RawCode)
                 {
-                    case 0x75: // F6
+                    case PAUSE_RECORD: // F6
                         Dispatcher.Invoke(() => { PauseRecordButton_Click(PauseRecordButton, null); });
                         break;
-                    case 0x76: // F7
+                    case RUN: // F7
                         Dispatcher.Invoke(() => { RunButton_Click(RunButton, null); });
                         break;
-                    case 0x77: // F8
+                    case STOP: // F8
                         Dispatcher.Invoke(()=> { StopButton_Click(StopButton, null); });
                         break;
                     default: // other key
@@ -54,7 +54,7 @@ namespace AngelMacro
                             if (!keysDown.Contains(e.Data.RawCode))
                             {
                                 RecordDelay();
-                                Dispatcher.Invoke(() => { ScriptBox.AppendText($"KEYDOWN:{e.Data.RawCode};\n"); });
+                                Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_KEY_DOWN}{ARGS_SEPARATOR}{e.Data.RawCode}{COMMAND_SEPARATOR}\n"); });
                                 keysDown.Add(e.Data.RawCode);
                             }
                         }
@@ -69,7 +69,7 @@ namespace AngelMacro
                     if (keysDown.Contains(e.Data.RawCode))
                     {
                         RecordDelay();
-                        Dispatcher.Invoke(() => { ScriptBox.AppendText($"KEYUP:{e.Data.RawCode};\n"); });
+                        Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_KEY_UP}{ARGS_SEPARATOR}{e.Data.RawCode}{COMMAND_SEPARATOR}\n"); });
                         keysDown.Remove(e.Data.RawCode);
                     }
                 }
@@ -82,7 +82,7 @@ namespace AngelMacro
                     if (!mouseKeysDown.Contains(e.Data.Button))
                     {
                         RecordDelay();
-                        Dispatcher.Invoke(() => { ScriptBox.AppendText($"MOUSEDOWN:{e.Data.Button};\n"); });
+                        Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_MOUSE_DOWN}{ARGS_SEPARATOR}{(int)e.Data.Button}{COMMAND_SEPARATOR}\n"); });
                         mouseKeysDown.Add(e.Data.Button);
                     }
                 }
@@ -95,7 +95,7 @@ namespace AngelMacro
                     if (mouseKeysDown.Contains(e.Data.Button))
                     {
                         RecordDelay();
-                        Dispatcher.Invoke(() => { ScriptBox.AppendText($"MOUSEUP:{e.Data.Button};\n"); });
+                        Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_MOUSE_UP}{ARGS_SEPARATOR}{(int)e.Data.Button}{COMMAND_SEPARATOR}\n"); });
                         mouseKeysDown.Remove(e.Data.Button);
                     }
                 }
@@ -106,7 +106,7 @@ namespace AngelMacro
                 if (recordMouseLocation && currentStatus == MACROSTATUS.RECORDING)
                 {
                     RecordDelay();
-                    Dispatcher.Invoke(() => { ScriptBox.AppendText($"LOCATION:{e.Data.X}:{e.Data.Y};\n"); });
+                    Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_LOCATION}{ARGS_SEPARATOR}{e.Data.X}{ARGS_SEPARATOR}{e.Data.Y}{COMMAND_SEPARATOR}\n"); });
                 }
             };
 
@@ -127,8 +127,8 @@ namespace AngelMacro
         {
             while (currentStatus == MACROSTATUS.RECORDING)
             {
-                Thread.Sleep(50);
-                recordDelayTimer += 50;
+                Thread.Sleep(DELAY_RECORD_MS);
+                recordDelayTimer += DELAY_RECORD_MS;
             }
         }
 
@@ -136,7 +136,7 @@ namespace AngelMacro
         {
             if (recordDelayTimer != 0)
             {
-                Dispatcher.Invoke(() => { ScriptBox.AppendText($"DELAY:{recordDelayTimer};\n"); });
+                Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_DELAY}{ARGS_SEPARATOR}{recordDelayTimer}{COMMAND_SEPARATOR}\n"); });
                 recordDelayTimer = 0;
             }
         }

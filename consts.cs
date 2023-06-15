@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,8 +11,41 @@ namespace AngelMacro
 {
     public partial class MainWindow
     {
+        enum MACROSTATUS { RECORDING, RUNNING, IDLE }
+
+        const string FILE_NAME = "macro";
         const string FILE_EXTENSION = "*.amacro";
         const string FILE_FILTER = $"AngelMacro file|{FILE_EXTENSION}";
+
+        const int COLOR_THRESHOLD = 5;
+        const int DELAY_RECORD_MS = 50;
+
+        const string TEXT_DELAY = "DELAY";
+        const string TEXT_LOCATION = "LOCATION";
+        const string TEXT_MOUSE_UP = "MOUSEUP";
+        const string TEXT_MOUSE_DOWN = "MOUSEDOWN";
+        const string TEXT_KEY_UP = "KEYUP";
+        const string TEXT_KEY_DOWN = "KEYDOWN";
+        const string TEXT_COLOR = "COLOR";
+
+        const string UNLOCKED_SCRIPT_WARNING = "Script unlocked! Be careful!";
+        const string OPEN_FILE_TITLE = "Open saved macro file";
+        const string SAVE_FILE_TITLE = "Save macro file";
+        const string GDI_START = "GO";
+        const string GDI_SECOND = "s";
+        const string COMMAND_ERROR_TEXT = "Invalid command! Please unlock the script only if you know what you are doing.";
+        const string COMMAND_ERROR_TITLE = "Command error";
+
+        const char COMMAND_SEPARATOR = ';';
+        const char COMMAND_SEPARATOR2 = '!';
+        const char ARGS_SEPARATOR = ':';
+        const char ARGS_SEPARATOR2 = '.';
+
+        readonly string CONDITIONAL_MACRO_GUIDE = $"\tYOUR_MACRO_HERE (make sure to replace all {COMMAND_SEPARATOR} with {COMMAND_SEPARATOR2} and {ARGS_SEPARATOR} with {ARGS_SEPARATOR2}){ARGS_SEPARATOR}\n\tELSE_YOUR_MACRO_HERE (make sure to replace all {COMMAND_SEPARATOR} with {COMMAND_SEPARATOR2} and {ARGS_SEPARATOR} with {ARGS_SEPARATOR2})\n";
+
+        const int PAUSE_RECORD = 0x75;
+        const int RUN = 0x76;
+        const int STOP = 0x77;
 
         readonly uint[] KEYCODE_VALUES = (uint[])Enum.GetValues(typeof(VKeys));
         readonly string[] KEYCODE_NAMES = Enum.GetNames(typeof(VKeys));
