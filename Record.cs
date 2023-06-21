@@ -21,7 +21,8 @@ namespace AngelMacro
         List<MouseButton> listeningMouseKeys = new List<MouseButton>();
         List<MouseButton> mouseKeysDown = new List<MouseButton>();
         bool recordMouseLocation;
-        int recordDelayTimer = 0;
+        //int recordDelayTimer = 0;
+        Stopwatch stopwatch = new Stopwatch();
 
         void AddKey(uint keyCode)
         {
@@ -54,7 +55,7 @@ namespace AngelMacro
                             if (!keysDown.Contains(e.Data.RawCode))
                             {
                                 RecordDelay();
-                                Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_KEY_DOWN}{ARGS_SEPARATOR}{e.Data.RawCode}{COMMAND_SEPARATOR}\n"); });
+                                Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_KEY_DOWN}{ARGS_SEPARATOR}{(int)e.Data.KeyCode}{COMMAND_SEPARATOR}\n"); });
                                 keysDown.Add(e.Data.RawCode);
                             }
                         }
@@ -69,7 +70,7 @@ namespace AngelMacro
                     if (keysDown.Contains(e.Data.RawCode))
                     {
                         RecordDelay();
-                        Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_KEY_UP}{ARGS_SEPARATOR}{e.Data.RawCode}{COMMAND_SEPARATOR}\n"); });
+                        Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_KEY_UP}{ARGS_SEPARATOR}{(int)e.Data.KeyCode}{COMMAND_SEPARATOR}\n"); });
                         keysDown.Remove(e.Data.RawCode);
                     }
                 }
@@ -125,20 +126,24 @@ namespace AngelMacro
 
         void RecordDelaysLoop()
         {
+            stopwatch.Start();
             while (currentStatus == MACROSTATUS.RECORDING)
             {
-                Thread.Sleep(DELAY_RECORD_MS);
-                recordDelayTimer += DELAY_RECORD_MS;
+                //Thread.Sleep(DELAY_RECORD_MS);
+                //recordDelayTimer += DELAY_RECORD_MS;
             }
+            stopwatch.Stop();
         }
 
         void RecordDelay()
         {
-            if (recordDelayTimer != 0)
-            {
-                Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_DELAY}{ARGS_SEPARATOR}{recordDelayTimer}{COMMAND_SEPARATOR}\n"); });
-                recordDelayTimer = 0;
-            }
+            //if (recordDelayTimer != 0)
+            //{
+            //    Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_DELAY}{ARGS_SEPARATOR}{recordDelayTimer}{COMMAND_SEPARATOR}\n"); });
+            //    recordDelayTimer = 0;
+            //}
+            Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_DELAY}{ARGS_SEPARATOR}{(int)stopwatch.Elapsed.TotalMilliseconds-CSHARP_LAG_COMPENSATION}{COMMAND_SEPARATOR}\n"); });
+            stopwatch.Restart();
         }
     }
 }

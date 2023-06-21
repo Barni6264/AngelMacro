@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:rs="clr-namespace:AngelMacro.Properties"
         xmlns:local="clr-namespace:AngelMacro"
         mc:Ignorable="d"
         Title="Angel Macro" Height="450" Width="800" FontFamily="Consolas" ResizeMode="CanMinimize">
@@ -19,17 +20,17 @@
         </Grid.RowDefinitions>
 
         <Menu x:Name="FileMenu">
-            <MenuItem Header="File">
-                <MenuItem Header="Save" Click="SaveButton_Click"/>
-                <MenuItem Header="Load" Click="LoadButton_Click"/>
-                <MenuItem Header="Toggle Topmost" Click="TopmostButton_Click"/>
+            <MenuItem Header="{x:Static rs:Resources.file}">
+                <MenuItem Header="{x:Static rs:Resources.save}" Click="SaveButton_Click"/>
+                <MenuItem Header="{x:Static rs:Resources.load}" Click="LoadButton_Click"/>
+                <MenuItem Header="{x:Static rs:Resources.toggle_topmost}" Click="TopmostButton_Click"/>
             </MenuItem>
-            <MenuItem Header="Keys">
+            <MenuItem Header="{x:Static rs:Resources.keys}">
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" MaxHeight="200">
                     <StackPanel x:Name="Keys"/>
                 </ScrollViewer>
             </MenuItem>
-            <MenuItem Header="Mouse">
+            <MenuItem Header="{x:Static rs:Resources.mouse}">
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" MaxHeight="200">
                     <StackPanel x:Name="MouseKeys">
                         <CheckBox x:Name="leftButtonToggle" Content="LMB" Click="ToggleLeft"/>
@@ -37,18 +38,18 @@
                     </StackPanel>
                 </ScrollViewer>
             </MenuItem>
-            <CheckBox x:Name="mouseLocationToggle" Content="Record Mouse Location" Click="ToggleMouseLocation"/>
-            <CheckBox x:Name="delayToggle" Content="Record Delays"/>
-            <MenuItem Header="ADD CONDITION" Click="AddConditionButton_Click"/>
+            <CheckBox x:Name="mouseLocationToggle" Content="{x:Static rs:Resources.record_mouse_location}" Click="ToggleMouseLocation"/>
+            <CheckBox x:Name="delayToggle" Content="{x:Static rs:Resources.record_delays}"/>
+            <MenuItem Header="{x:Static rs:Resources.add_condition}" Click="AddConditionButton_Click"/>
         </Menu>
 
         <ScrollViewer Grid.Row="2" Margin="16,2,16,2" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
             <TextBox x:Name="ScriptBox" AcceptsReturn="True" IsEnabled="False"/>
         </ScrollViewer>
 
-        <Button x:Name="UnlockTextButton" Content="Unlock Script" Click="UnlockTextButton_Click" Grid.Row="1" Margin="16,16,16,0" FontSize="14"/>
+        <Button x:Name="UnlockTextButton" Content="{x:Static rs:Resources.unlock_script}" Click="UnlockTextButton_Click" Grid.Row="1" Margin="16,16,16,0" FontSize="14"/>
 
-        <GroupBox Grid.Row="3" Header="Record" FontSize="20">
+        <GroupBox Grid.Row="3" Header="{x:Static rs:Resources.record}" FontSize="20">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -59,12 +60,12 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <Button x:Name="RecordButton" Content="Start Recording" Click="RecordButton_Click" Margin="2" FontSize="14"/>
-                <Button x:Name="PauseRecordButton" Content="Pause Recording (F6)" Click="PauseRecordButton_Click" Grid.Column="1" Margin="2" FontSize="14" IsEnabled="False"/>
+                <Button x:Name="RecordButton" Content="{x:Static rs:Resources.start_recording}" Click="RecordButton_Click" Margin="2" FontSize="14"/>
+                <Button x:Name="PauseRecordButton" Content="{x:Static rs:Resources.pause_recording}" Click="PauseRecordButton_Click" Grid.Column="1" Margin="2" FontSize="14" IsEnabled="False"/>
             </Grid>
         </GroupBox>
 
-        <GroupBox Grid.Row="4" Header="Replay" FontSize="20">
+        <GroupBox Grid.Row="4" Header="{x:Static rs:Resources.replay}" FontSize="20">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -74,8 +75,8 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <Button x:Name="RunButton" Content="Run Macro (F7)" Click="RunButton_Click" Margin="2" FontSize="14" IsEnabled="False"/>
-                <Button x:Name="StopButton" Content="Stop Macro (F8)" Click="StopButton_Click" Grid.Column="1" Margin="2" FontSize="14" IsEnabled="False"/>
+                <Button x:Name="RunButton" Content="{x:Static rs:Resources.run_macro}" Click="RunButton_Click" Margin="2" FontSize="14" IsEnabled="False"/>
+                <Button x:Name="StopButton" Content="{x:Static rs:Resources.stop_macro}" Click="StopButton_Click" Grid.Column="1" Margin="2" FontSize="14" IsEnabled="False"/>
             </Grid>
         </GroupBox>
     </Grid>

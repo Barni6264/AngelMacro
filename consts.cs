@@ -18,7 +18,8 @@ namespace AngelMacro
         const string FILE_FILTER = $"AngelMacro file|{FILE_EXTENSION}";
 
         const int COLOR_THRESHOLD = 5;
-        const int DELAY_RECORD_MS = 50;
+        const int CSHARP_LAG_COMPENSATION = 0;
+        //const int DELAY_RECORD_MS = 100;
 
         const string TEXT_DELAY = "DELAY";
         const string TEXT_LOCATION = "LOCATION";
