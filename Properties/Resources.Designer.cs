@@ -70,6 +70,24 @@ namespace AngelMacro.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The macro is invalid.
+        /// </summary>
+        public static string command_error_text {
+            get {
+                return ResourceManager.GetString("command_error_text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Command error.
+        /// </summary>
+        public static string command_error_title {
+            get {
+                return ResourceManager.GetString("command_error_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File.
         /// </summary>
         public static string file {
@@ -102,6 +120,15 @@ namespace AngelMacro.Properties {
         public static string mouse {
             get {
                 return ResourceManager.GetString("mouse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open saved macro file.
+        /// </summary>
+        public static string open_macro {
+            get {
+                return ResourceManager.GetString("open_macro", resourceCulture);
             }
         }
         
@@ -165,6 +192,15 @@ namespace AngelMacro.Properties {
         public static string save {
             get {
                 return ResourceManager.GetString("save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save macro file.
+        /// </summary>
+        public static string save_macro {
+            get {
+                return ResourceManager.GetString("save_macro", resourceCulture);
             }
         }
         

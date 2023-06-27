@@ -47,6 +47,7 @@ namespace AngelMacro
             // exits when X is pressed
             Closing += delegate
             {
+                //if (MessageBox.Show(""))
                 Environment.Exit(0);
             };
         }

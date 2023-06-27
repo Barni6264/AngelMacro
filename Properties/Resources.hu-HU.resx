@@ -120,6 +120,12 @@
   <data name="add_condition" xml:space="preserve">
     <value>FELTÉTEL HOZZÁADÁSA</value>
   </data>
+  <data name="command_error_text" xml:space="preserve">
+    <value>Érvénytelen kód</value>
+  </data>
+  <data name="command_error_title" xml:space="preserve">
+    <value>Parancshiba</value>
+  </data>
   <data name="file" xml:space="preserve">
     <value>Fájl</value>
   </data>
@@ -131,6 +137,9 @@
   </data>
   <data name="mouse" xml:space="preserve">
     <value>Egér</value>
+  </data>
+  <data name="open_macro" xml:space="preserve">
+    <value>Kód megnyitása</value>
   </data>
   <data name="pause_recording" xml:space="preserve">
     <value>Felvétel szüneteltetése (F6)</value>
@@ -152,6 +161,9 @@
   </data>
   <data name="save" xml:space="preserve">
     <value>Mentés másként</value>
+  </data>
+  <data name="save_macro" xml:space="preserve">
+    <value>Kód mentése</value>
   </data>
   <data name="script_unlocked" xml:space="preserve">
     <value>Kód szerkesztés engedélyezve! Csak óvatosan!</value>

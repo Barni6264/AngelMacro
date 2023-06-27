@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AngelMacro.Properties;
 using SharpHook;
 using SharpHook.Native;
 
@@ -29,13 +30,13 @@ namespace AngelMacro
         const string TEXT_KEY_DOWN = "KEYDOWN";
         const string TEXT_COLOR = "COLOR";
 
-        const string UNLOCKED_SCRIPT_WARNING = "Script unlocked! Be careful!";
-        const string OPEN_FILE_TITLE = "Open saved macro file";
-        const string SAVE_FILE_TITLE = "Save macro file";
+        readonly string UNLOCKED_SCRIPT_WARNING = Properties.Resources.script_unlocked;
+        readonly string OPEN_FILE_TITLE = Properties.Resources.open_macro;
+        readonly string SAVE_FILE_TITLE = Properties.Resources.save_macro;
         const string GDI_START = "GO";
         const string GDI_SECOND = "s";
-        const string COMMAND_ERROR_TEXT = "Invalid command! Please unlock the script only if you know what you are doing.";
-        const string COMMAND_ERROR_TITLE = "Command error";
+        readonly string COMMAND_ERROR_TEXT = Properties.Resources.command_error_text;
+        readonly string COMMAND_ERROR_TITLE = Properties.Resources.command_error_title;
 
         const char COMMAND_SEPARATOR = ';';
         const char COMMAND_SEPARATOR2 = '!';

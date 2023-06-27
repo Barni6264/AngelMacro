@@ -6,7 +6,7 @@
         xmlns:rs="clr-namespace:AngelMacro.Properties"
         xmlns:local="clr-namespace:AngelMacro"
         mc:Ignorable="d"
-        Title="Angel Macro" Height="450" Width="800" FontFamily="Consolas" ResizeMode="CanMinimize">
+        Title="Angel Macro" Height="450" Width="800" FontFamily="Consolas" ResizeMode="CanMinimize"  Icon="{x:Null}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>

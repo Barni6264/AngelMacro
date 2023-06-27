@@ -13,7 +13,12 @@
     <Description>A conditional macro recorder and editor written in C#</Description>
     <RunAnalyzersDuringBuild>True</RunAnalyzersDuringBuild>
     <RepositoryUrl>https://github.com/Barni6264/AngelMacro</RepositoryUrl>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="icon.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="SharpHook" Version="4.2.0" />

@@ -120,6 +120,12 @@
   <data name="add_condition" xml:space="preserve">
     <value>ADD CONDITION</value>
   </data>
+  <data name="command_error_text" xml:space="preserve">
+    <value>The macro is invalid</value>
+  </data>
+  <data name="command_error_title" xml:space="preserve">
+    <value>Command error</value>
+  </data>
   <data name="file" xml:space="preserve">
     <value>File</value>
   </data>
@@ -131,6 +137,9 @@
   </data>
   <data name="mouse" xml:space="preserve">
     <value>Mouse</value>
+  </data>
+  <data name="open_macro" xml:space="preserve">
+    <value>Open saved macro file</value>
   </data>
   <data name="pause_recording" xml:space="preserve">
     <value>Pause recording (F6)</value>
@@ -152,6 +161,9 @@
   </data>
   <data name="save" xml:space="preserve">
     <value>Save as</value>
+  </data>
+  <data name="save_macro" xml:space="preserve">
+    <value>Save macro file</value>
   </data>
   <data name="script_unlocked" xml:space="preserve">
     <value>Script unlocked! Be careful when editing it.</value>
