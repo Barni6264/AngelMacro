@@ -142,8 +142,11 @@ namespace AngelMacro
             //    Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_DELAY}{ARGS_SEPARATOR}{recordDelayTimer}{COMMAND_SEPARATOR}\n"); });
             //    recordDelayTimer = 0;
             //}
-            Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_DELAY}{ARGS_SEPARATOR}{(int)stopwatch.Elapsed.TotalMilliseconds-CSHARP_LAG_COMPENSATION}{COMMAND_SEPARATOR}\n"); });
-            stopwatch.Restart();
+            if (recordDelay)
+            {
+                Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_DELAY}{ARGS_SEPARATOR}{(int)stopwatch.Elapsed.TotalMilliseconds - CSHARP_LAG_COMPENSATION}{COMMAND_SEPARATOR}\n"); });
+                stopwatch.Restart();
+            }
         }
     }
 }

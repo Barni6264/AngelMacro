@@ -16,6 +16,7 @@ namespace AngelMacro
         // all UI stuff and connections to core functions
 
         MACROSTATUS currentStatus = MACROSTATUS.IDLE;
+        bool recordDelay;
 
         public MainWindow()
         {
@@ -115,10 +116,11 @@ namespace AngelMacro
             RunButton.IsEnabled = false;
             FileMenu.IsEnabled = false;
             WindowState = WindowState.Minimized;
+            recordDelay = (bool)delayToggle.IsChecked;
             Countdown(3, () =>
             {
                 currentStatus = MACROSTATUS.RECORDING;
-                if (Dispatcher.Invoke(() => { return (bool)delayToggle.IsChecked; }))
+                if (recordDelay)
                 {
                     RecordDelaysLoop();
                 }

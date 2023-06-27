@@ -160,7 +160,7 @@ namespace AngelMacro.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Record mouse Location.
+        ///   Looks up a localized string similar to Record cursor Location.
         /// </summary>
         public static string record_mouse_location {
             get {

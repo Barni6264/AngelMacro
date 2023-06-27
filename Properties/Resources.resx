@@ -151,7 +151,7 @@
     <value>Record delays</value>
   </data>
   <data name="record_mouse_location" xml:space="preserve">
-    <value>Record mouse Location</value>
+    <value>Record cursor Location</value>
   </data>
   <data name="replay" xml:space="preserve">
     <value>Replay</value>
