@@ -132,6 +132,7 @@ namespace AngelMacro
                 //Thread.Sleep(DELAY_RECORD_MS);
                 //recordDelayTimer += DELAY_RECORD_MS;
             }
+            stopwatch.Reset();
             stopwatch.Stop();
         }
 
