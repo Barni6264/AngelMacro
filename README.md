@@ -1,2 +1,3 @@
-# AngelMacro
-A conditional macro recorder and editor written in C#
+# Angel Macro
+- A lazy conditional macro recorder written in C#
+- created to test GitHub features
