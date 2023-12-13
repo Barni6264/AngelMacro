@@ -100,7 +100,18 @@ namespace AngelMacro
                 Tuple<System.Drawing.Point, Color> cursorInfo = Condition.GetCursorInfo();
                 Dispatcher.Invoke(() =>
                 {
-                    ScriptBox.AppendText($"{TEXT_COLOR}{ARGS_SEPARATOR}{cursorInfo.Item1.X}{ARGS_SEPARATOR}{cursorInfo.Item1.Y}{ARGS_SEPARATOR}{cursorInfo.Item2.R}{ARGS_SEPARATOR}{cursorInfo.Item2.G}{ARGS_SEPARATOR}{cursorInfo.Item2.B}{ARGS_SEPARATOR}\n{CONDITIONAL_MACRO_GUIDE}{COMMAND_SEPARATOR}\n");
+                    switch (((MenuItem)sender).Name)
+                    {
+                        case "AddConditionButton":
+                            ScriptBox.AppendText($"{TEXT_COLOR}{ARGS_SEPARATOR}{cursorInfo.Item1.X}{ARGS_SEPARATOR}{cursorInfo.Item1.Y}{ARGS_SEPARATOR}{cursorInfo.Item2.R}{ARGS_SEPARATOR}{cursorInfo.Item2.G}{ARGS_SEPARATOR}{cursorInfo.Item2.B}{ARGS_SEPARATOR}\n{CONDITIONAL_MACRO_GUIDE}{COMMAND_SEPARATOR}\n");
+                            break;
+                        case "AddWhileButton":
+                            ScriptBox.AppendText($"{TEXT_WHILE}{ARGS_SEPARATOR}{cursorInfo.Item1.X}{ARGS_SEPARATOR}{cursorInfo.Item1.Y}{ARGS_SEPARATOR}{cursorInfo.Item2.R}{ARGS_SEPARATOR}{cursorInfo.Item2.G}{ARGS_SEPARATOR}{cursorInfo.Item2.B}{ARGS_SEPARATOR}\n{WHILE_MACRO_GUIDE}{COMMAND_SEPARATOR}\n");
+                            break;
+                        case "AddUntilButton":
+                            ScriptBox.AppendText($"{TEXT_UNTIL}{ARGS_SEPARATOR}{cursorInfo.Item1.X}{ARGS_SEPARATOR}{cursorInfo.Item1.Y}{ARGS_SEPARATOR}{cursorInfo.Item2.R}{ARGS_SEPARATOR}{cursorInfo.Item2.G}{ARGS_SEPARATOR}{cursorInfo.Item2.B}{ARGS_SEPARATOR}\n{WHILE_MACRO_GUIDE}{COMMAND_SEPARATOR}\n");
+                            break;
+                    }
                     WindowState = WindowState.Normal;
                     Activate();
                 });
@@ -117,7 +128,7 @@ namespace AngelMacro
             FileMenu.IsEnabled = false;
             WindowState = WindowState.Minimized;
             recordDelay = (bool)delayToggle.IsChecked;
-            Countdown(3, () =>
+            Countdown((bool)fastStart.IsChecked ? 0 : 3, () =>
             {
                 currentStatus = MACROSTATUS.RECORDING;
                 if (recordDelay)
@@ -153,7 +164,7 @@ namespace AngelMacro
                 RecordButton.IsEnabled = false;
                 FileMenu.IsEnabled = false;
                 WindowState = WindowState.Minimized;
-                Countdown(3, () =>
+                Countdown((bool)fastStart.IsChecked ? 0 : 3, () =>
                 {
                     currentStatus = MACROSTATUS.RUNNING;
                     ExecuteMacro(Dispatcher.Invoke(() => { return ScriptBox.Text; }), COMMAND_SEPARATOR, ARGS_SEPARATOR);
@@ -172,8 +183,11 @@ namespace AngelMacro
                 RecordButton.IsEnabled = true;
                 FileMenu.IsEnabled = true;
                 currentStatus = MACROSTATUS.IDLE;
-                WindowState = WindowState.Normal;
-                Activate();
+                if (e != null)
+                {
+                    WindowState = WindowState.Normal;
+                    Activate();
+                }
             }
         }
 
@@ -237,6 +251,11 @@ namespace AngelMacro
                 Console.Beep(2400, 200);
                 func();
             }).Start();
+        }
+
+        private void AddEndMacroButton_Click(object sender, RoutedEventArgs e)
+        {
+            ScriptBox.AppendText($"{TEXT_END}{COMMAND_SEPARATOR}\n");
         }
     }
 }

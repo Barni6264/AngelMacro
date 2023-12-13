@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using SharpHook;
 using SharpHook.Native;
 
@@ -19,16 +20,24 @@ namespace AngelMacro
             {
                 for (int i = 0; (i < commands.Length) && (currentStatus == MACROSTATUS.RUNNING); i++)
                 {
-                    command = commands[i].Split(argsSeparator);
-
-                    if (command.Length < 2)
+                    if (commands[i].Length < 2)
                     {
                         continue;
                     }
 
+                    command = commands[i].Split(argsSeparator);
+
                     switch (command[0].Trim())
                     {
                         case TEXT_COLOR: RunColorCheck(command);
+                            break;
+                        case TEXT_WHILE: RunWhileCheck(command);
+                            break;
+                        case TEXT_UNTIL: RunWhileNot(command);
+                            break;
+                        case TEXT_END:
+                            Dispatcher.Invoke(() => { StopButton_Click(StopButton, null); });
+                            Console.Beep(600, 200);
                             break;
                         case TEXT_DELAY: Thread.Sleep(int.Parse(command[1]));
                             break;
@@ -67,6 +76,26 @@ namespace AngelMacro
             else
             {
                 ExecuteMacro(command[7], COMMAND_SEPARATOR2, ARGS_SEPARATOR2);
+            }
+        }
+
+        void RunWhileCheck(string[] command)
+        {
+            Color color = Condition.GetPixel(int.Parse(command[1]), int.Parse(command[2]));
+            while((Math.Abs(color.R - int.Parse(command[3])) + Math.Abs(color.G - int.Parse(command[4])) + Math.Abs(color.B - int.Parse(command[5]))) < COLOR_THRESHOLD)
+            {
+                ExecuteMacro(command[6], COMMAND_SEPARATOR2, ARGS_SEPARATOR2);
+                color = Condition.GetPixel(int.Parse(command[1]), int.Parse(command[2]));
+            }
+        }
+
+        void RunWhileNot(string[] command)
+        {
+            Color color = Condition.GetPixel(int.Parse(command[1]), int.Parse(command[2]));
+            while ((Math.Abs(color.R - int.Parse(command[3])) + Math.Abs(color.G - int.Parse(command[4])) + Math.Abs(color.B - int.Parse(command[5]))) > COLOR_THRESHOLD)
+            {
+                ExecuteMacro(command[6], COMMAND_SEPARATOR2, ARGS_SEPARATOR2);
+                color = Condition.GetPixel(int.Parse(command[1]), int.Parse(command[2]));
             }
         }
     }

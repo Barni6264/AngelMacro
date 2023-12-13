@@ -118,13 +118,28 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="add_condition" xml:space="preserve">
-    <value>ADD CONDITION</value>
+    <value>CONDITION</value>
+  </data>
+  <data name="add_end" xml:space="preserve">
+    <value>STOP SCRIPT</value>
+  </data>
+  <data name="add_until" xml:space="preserve">
+    <value>REPEAT UNTIL</value>
+  </data>
+  <data name="add_while" xml:space="preserve">
+    <value>CONDITIONAL LOOP</value>
+  </data>
+  <data name="advanced" xml:space="preserve">
+    <value>Advanced</value>
   </data>
   <data name="command_error_text" xml:space="preserve">
     <value>The macro is invalid</value>
   </data>
   <data name="command_error_title" xml:space="preserve">
     <value>Command error</value>
+  </data>
+  <data name="fast_start" xml:space="preserve">
+    <value>No start delay</value>
   </data>
   <data name="file" xml:space="preserve">
     <value>File</value>

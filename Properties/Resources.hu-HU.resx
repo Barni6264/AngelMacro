@@ -118,13 +118,28 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="add_condition" xml:space="preserve">
-    <value>FELTÉTEL HOZZÁADÁSA</value>
+    <value>FELTÉTEL</value>
+  </data>
+  <data name="add_end" xml:space="preserve">
+    <value>KÓD VÉGE</value>
+  </data>
+  <data name="add_until" xml:space="preserve">
+    <value>ISMÉTLÉS AMÍG</value>
+  </data>
+  <data name="add_while" xml:space="preserve">
+    <value>FELTÉTELES ISMÉTLÉS</value>
+  </data>
+  <data name="advanced" xml:space="preserve">
+    <value>Haladó</value>
   </data>
   <data name="command_error_text" xml:space="preserve">
     <value>Érvénytelen kód</value>
   </data>
   <data name="command_error_title" xml:space="preserve">
     <value>Parancshiba</value>
+  </data>
+  <data name="fast_start" xml:space="preserve">
+    <value>Azonnali indítás</value>
   </data>
   <data name="file" xml:space="preserve">
     <value>Fájl</value>

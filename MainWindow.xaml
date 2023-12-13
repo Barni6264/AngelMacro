@@ -40,7 +40,13 @@
             </MenuItem>
             <CheckBox x:Name="mouseLocationToggle" Content="{x:Static rs:Resources.record_mouse_location}" Click="ToggleMouseLocation"/>
             <CheckBox x:Name="delayToggle" Content="{x:Static rs:Resources.record_delays}"/>
-            <MenuItem Header="{x:Static rs:Resources.add_condition}" Click="AddConditionButton_Click"/>
+            <CheckBox x:Name="fastStart" Content="{x:Static rs:Resources.fast_start}"/>
+            <MenuItem Header="{x:Static rs:Resources.advanced}">
+                <MenuItem x:Name="AddConditionButton" Header="{x:Static rs:Resources.add_condition}" Click="AddConditionButton_Click"/>
+                <MenuItem x:Name="AddWhileButton" Header="{x:Static rs:Resources.add_while}" Click="AddConditionButton_Click"/>
+                <MenuItem x:Name="AddUntilButton" Header="{x:Static rs:Resources.add_until}" Click="AddConditionButton_Click"/>
+                <MenuItem x:Name="AddEndMacroButton" Header="{x:Static rs:Resources.add_end}" Click="AddEndMacroButton_Click"/>
+            </MenuItem>
         </Menu>
 
         <ScrollViewer Grid.Row="2" Margin="16,2,16,2" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">

@@ -61,11 +61,47 @@ namespace AngelMacro.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ADD CONDITION.
+        ///   Looks up a localized string similar to CONDITION.
         /// </summary>
         public static string add_condition {
             get {
                 return ResourceManager.GetString("add_condition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to STOP SCRIPT.
+        /// </summary>
+        public static string add_end {
+            get {
+                return ResourceManager.GetString("add_end", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to REPEAT UNTIL.
+        /// </summary>
+        public static string add_until {
+            get {
+                return ResourceManager.GetString("add_until", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CONDITIONAL LOOP.
+        /// </summary>
+        public static string add_while {
+            get {
+                return ResourceManager.GetString("add_while", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Advanced.
+        /// </summary>
+        public static string advanced {
+            get {
+                return ResourceManager.GetString("advanced", resourceCulture);
             }
         }
         
@@ -84,6 +120,15 @@ namespace AngelMacro.Properties {
         public static string command_error_title {
             get {
                 return ResourceManager.GetString("command_error_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No start delay.
+        /// </summary>
+        public static string fast_start {
+            get {
+                return ResourceManager.GetString("fast_start", resourceCulture);
             }
         }
         

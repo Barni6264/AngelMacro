@@ -29,6 +29,9 @@ namespace AngelMacro
         const string TEXT_KEY_UP = "KEYUP";
         const string TEXT_KEY_DOWN = "KEYDOWN";
         const string TEXT_COLOR = "COLOR";
+        const string TEXT_WHILE = "WHILE";
+        const string TEXT_UNTIL = "UNTIL";
+        const string TEXT_END = "END";
 
         readonly string UNLOCKED_SCRIPT_WARNING = Properties.Resources.script_unlocked;
         readonly string OPEN_FILE_TITLE = Properties.Resources.open_macro;
@@ -44,6 +47,8 @@ namespace AngelMacro
         const char ARGS_SEPARATOR2 = '.';
 
         readonly string CONDITIONAL_MACRO_GUIDE = $"\tYOUR_MACRO_HERE (make sure to replace all {COMMAND_SEPARATOR} with {COMMAND_SEPARATOR2} and {ARGS_SEPARATOR} with {ARGS_SEPARATOR2}){ARGS_SEPARATOR}\n\tELSE_YOUR_MACRO_HERE (make sure to replace all {COMMAND_SEPARATOR} with {COMMAND_SEPARATOR2} and {ARGS_SEPARATOR} with {ARGS_SEPARATOR2})\n";
+        readonly string WHILE_MACRO_GUIDE = $"\tYOUR_MACRO_HERE (make sure to replace all {COMMAND_SEPARATOR} with {COMMAND_SEPARATOR2} and {ARGS_SEPARATOR} with {ARGS_SEPARATOR2})\n";
+        readonly string UNTIL_MACRO_GUIDE = $"\tYOUR_MACRO_HERE (make sure to replace all {COMMAND_SEPARATOR} with {COMMAND_SEPARATOR2} and {ARGS_SEPARATOR} with {ARGS_SEPARATOR2})\n";
 
         const int PAUSE_RECORD = 0x75;
         const int RUN = 0x76;
