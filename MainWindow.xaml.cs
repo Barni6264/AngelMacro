@@ -164,6 +164,9 @@ namespace AngelMacro
                 RecordButton.IsEnabled = false;
                 FileMenu.IsEnabled = false;
                 WindowState = WindowState.Minimized;
+
+                int.TryParse(ColorThresholdBox.Text, out colorThreshold);
+
                 Countdown((bool)fastStart.IsChecked ? 0 : 3, () =>
                 {
                     currentStatus = MACROSTATUS.RUNNING;
@@ -256,6 +259,11 @@ namespace AngelMacro
         private void AddEndMacroButton_Click(object sender, RoutedEventArgs e)
         {
             ScriptBox.AppendText($"{TEXT_END}{COMMAND_SEPARATOR}\n");
+        }
+
+        private void AddColorThresholdChangeButton_Click(object sender, RoutedEventArgs e)
+        {
+            ScriptBox.AppendText($"{TEXT_COLOR_THRESHOLD_CHANGE}{ARGS_SEPARATOR}5{COMMAND_SEPARATOR}\n");
         }
     }
 }

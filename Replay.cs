@@ -11,9 +11,11 @@ namespace AngelMacro
     public partial class MainWindow
     {
         EventSimulator simulator = new EventSimulator();
+        int colorThreshold = 5;
+
         void ExecuteMacro(string macroText, char commandSeparator, char argsSeparator)
         {
-            string[] commands = macroText.Split(commandSeparator);
+            string[] commands = macroText.Replace("\n","").Replace("\r","").Replace("\t","").Split(commandSeparator);
             string[] command;
 
             while (currentStatus == MACROSTATUS.RUNNING)
@@ -29,6 +31,8 @@ namespace AngelMacro
 
                     switch (command[0].Trim())
                     {
+                        case TEXT_COLOR_THRESHOLD_CHANGE: colorThreshold = int.Parse(command[1]);
+                            break;
                         case TEXT_COLOR: RunColorCheck(command);
                             break;
                         case TEXT_WHILE: RunWhileCheck(command);
@@ -69,7 +73,7 @@ namespace AngelMacro
         void RunColorCheck(string[] command)
         {
             Color color = Condition.GetPixel(int.Parse(command[1]), int.Parse(command[2]));
-            if ((Math.Abs(color.R - int.Parse(command[3])) + Math.Abs(color.G - int.Parse(command[4])) + Math.Abs(color.B - int.Parse(command[5]))) < COLOR_THRESHOLD)
+            if ((Math.Abs(color.R - int.Parse(command[3])) + Math.Abs(color.G - int.Parse(command[4])) + Math.Abs(color.B - int.Parse(command[5]))) < colorThreshold)
             {
                 ExecuteMacro(command[6], COMMAND_SEPARATOR2, ARGS_SEPARATOR2);
             }
@@ -82,7 +86,7 @@ namespace AngelMacro
         void RunWhileCheck(string[] command)
         {
             Color color = Condition.GetPixel(int.Parse(command[1]), int.Parse(command[2]));
-            while((Math.Abs(color.R - int.Parse(command[3])) + Math.Abs(color.G - int.Parse(command[4])) + Math.Abs(color.B - int.Parse(command[5]))) < COLOR_THRESHOLD)
+            while((Math.Abs(color.R - int.Parse(command[3])) + Math.Abs(color.G - int.Parse(command[4])) + Math.Abs(color.B - int.Parse(command[5]))) < colorThreshold)
             {
                 ExecuteMacro(command[6], COMMAND_SEPARATOR2, ARGS_SEPARATOR2);
                 color = Condition.GetPixel(int.Parse(command[1]), int.Parse(command[2]));
@@ -92,7 +96,7 @@ namespace AngelMacro
         void RunWhileNot(string[] command)
         {
             Color color = Condition.GetPixel(int.Parse(command[1]), int.Parse(command[2]));
-            while ((Math.Abs(color.R - int.Parse(command[3])) + Math.Abs(color.G - int.Parse(command[4])) + Math.Abs(color.B - int.Parse(command[5]))) > COLOR_THRESHOLD)
+            while ((Math.Abs(color.R - int.Parse(command[3])) + Math.Abs(color.G - int.Parse(command[4])) + Math.Abs(color.B - int.Parse(command[5]))) > colorThreshold)
             {
                 ExecuteMacro(command[6], COMMAND_SEPARATOR2, ARGS_SEPARATOR2);
                 color = Condition.GetPixel(int.Parse(command[1]), int.Parse(command[2]));

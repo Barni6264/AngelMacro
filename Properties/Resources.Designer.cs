@@ -61,6 +61,15 @@ namespace AngelMacro.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to CHANGE COLOR THRESHOLD.
+        /// </summary>
+        public static string add_color_threshold_change {
+            get {
+                return ResourceManager.GetString("add_color_threshold_change", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CONDITION.
         /// </summary>
         public static string add_condition {
@@ -156,6 +165,15 @@ namespace AngelMacro.Properties {
         public static string load {
             get {
                 return ResourceManager.GetString("load", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Main color threshold.
+        /// </summary>
+        public static string main_color_threshold {
+            get {
+                return ResourceManager.GetString("main_color_threshold", resourceCulture);
             }
         }
         

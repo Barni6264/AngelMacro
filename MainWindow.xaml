@@ -24,6 +24,15 @@
                 <MenuItem Header="{x:Static rs:Resources.save}" Click="SaveButton_Click"/>
                 <MenuItem Header="{x:Static rs:Resources.load}" Click="LoadButton_Click"/>
                 <MenuItem Header="{x:Static rs:Resources.toggle_topmost}" Click="TopmostButton_Click"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Content="{x:Static rs:Resources.main_color_threshold}"/>
+                    <TextBox x:Name="ColorThresholdBox" AcceptsReturn="False" MaxLength="3" Text="5" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
             </MenuItem>
             <MenuItem Header="{x:Static rs:Resources.keys}">
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" MaxHeight="200">
@@ -46,6 +55,7 @@
                 <MenuItem x:Name="AddWhileButton" Header="{x:Static rs:Resources.add_while}" Click="AddConditionButton_Click"/>
                 <MenuItem x:Name="AddUntilButton" Header="{x:Static rs:Resources.add_until}" Click="AddConditionButton_Click"/>
                 <MenuItem x:Name="AddEndMacroButton" Header="{x:Static rs:Resources.add_end}" Click="AddEndMacroButton_Click"/>
+                <MenuItem x:Name="AddColorThresholdChangeButton" Header="{x:Static rs:Resources.add_color_threshold_change}" Click="AddColorThresholdChangeButton_Click"/>
             </MenuItem>
         </Menu>
 

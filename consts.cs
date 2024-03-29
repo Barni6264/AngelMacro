@@ -18,7 +18,7 @@ namespace AngelMacro
         const string FILE_EXTENSION = "*.amacro";
         const string FILE_FILTER = $"AngelMacro file|{FILE_EXTENSION}";
 
-        const int COLOR_THRESHOLD = 5;
+        //const int COLOR_THRESHOLD = 5;
         const int CSHARP_LAG_COMPENSATION = 0;
         //const int DELAY_RECORD_MS = 100;
 
@@ -32,6 +32,7 @@ namespace AngelMacro
         const string TEXT_WHILE = "WHILE";
         const string TEXT_UNTIL = "UNTIL";
         const string TEXT_END = "END";
+        const string TEXT_COLOR_THRESHOLD_CHANGE = "THRESHOLD";
 
         readonly string UNLOCKED_SCRIPT_WARNING = Properties.Resources.script_unlocked;
         readonly string OPEN_FILE_TITLE = Properties.Resources.open_macro;
