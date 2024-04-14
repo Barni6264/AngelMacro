@@ -1,15 +1,8 @@
 ﻿using SharpHook;
 using SharpHook.Native;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Runtime.CompilerServices;
 using System.Windows.Threading;
-using System.Threading;
 
 namespace AngelMacro
 {
@@ -47,7 +40,7 @@ namespace AngelMacro
                         Dispatcher.Invoke(() => { RunButton_Click(RunButton, null); });
                         break;
                     case STOP: // F8
-                        Dispatcher.Invoke(()=> { StopButton_Click(StopButton, null); });
+                        Dispatcher.Invoke(() => { StopButton_Click(StopButton, null); });
                         break;
                     default: // other key
                         if (listeningKeys.Contains(e.Data.RawCode) && currentStatus == MACROSTATUS.RECORDING) // if the recorder is running

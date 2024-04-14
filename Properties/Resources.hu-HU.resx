@@ -135,6 +135,9 @@
   <data name="advanced" xml:space="preserve">
     <value>Haladó</value>
   </data>
+  <data name="auto_minimize" xml:space="preserve">
+    <value>Összecsukás indításkor</value>
+  </data>
   <data name="command_error_text" xml:space="preserve">
     <value>Érvénytelen kód</value>
   </data>

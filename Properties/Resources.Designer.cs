@@ -115,6 +115,15 @@ namespace AngelMacro.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Minimize on start.
+        /// </summary>
+        public static string auto_minimize {
+            get {
+                return ResourceManager.GetString("auto_minimize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The macro is invalid.
         /// </summary>
         public static string command_error_text {

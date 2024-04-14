@@ -44,12 +44,13 @@
                     <StackPanel x:Name="MouseKeys">
                         <CheckBox x:Name="leftButtonToggle" Content="LMB" Click="ToggleLeft"/>
                         <CheckBox x:Name="rightButtonToggle" Content="RMB" Click="ToggleRight"/>
+                        <CheckBox x:Name="mouseLocationToggle" Content="{x:Static rs:Resources.record_mouse_location}" Click="ToggleMouseLocation"/>
                     </StackPanel>
                 </ScrollViewer>
             </MenuItem>
-            <CheckBox x:Name="mouseLocationToggle" Content="{x:Static rs:Resources.record_mouse_location}" Click="ToggleMouseLocation"/>
             <CheckBox x:Name="delayToggle" Content="{x:Static rs:Resources.record_delays}"/>
             <CheckBox x:Name="fastStart" Content="{x:Static rs:Resources.fast_start}"/>
+            <CheckBox x:Name="autoMinimize" Content="{x:Static rs:Resources.auto_minimize}" IsChecked="True"/>
             <MenuItem Header="{x:Static rs:Resources.advanced}">
                 <MenuItem x:Name="AddConditionButton" Header="{x:Static rs:Resources.add_condition}" Click="AddConditionButton_Click"/>
                 <MenuItem x:Name="AddWhileButton" Header="{x:Static rs:Resources.add_while}" Click="AddConditionButton_Click"/>

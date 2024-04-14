@@ -1,8 +1,6 @@
 ﻿using Microsoft.Win32;
-using SharpHook;
 using SharpHook.Native;
 using System;
-using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Threading;
@@ -17,6 +15,7 @@ namespace AngelMacro
 
         MACROSTATUS currentStatus = MACROSTATUS.IDLE;
         bool recordDelay;
+        Thread countdownThread;
 
         public MainWindow()
         {
@@ -94,7 +93,10 @@ namespace AngelMacro
 
         private void AddConditionButton_Click(object sender, RoutedEventArgs e)
         {
-            WindowState = WindowState.Minimized;
+            if ((bool)autoMinimize.IsChecked)
+            {
+                WindowState = WindowState.Minimized;
+            }
             Countdown(5, () =>
             {
                 Tuple<System.Drawing.Point, Color> cursorInfo = Condition.GetCursorInfo();
@@ -112,8 +114,11 @@ namespace AngelMacro
                             ScriptBox.AppendText($"{TEXT_UNTIL}{ARGS_SEPARATOR}{cursorInfo.Item1.X}{ARGS_SEPARATOR}{cursorInfo.Item1.Y}{ARGS_SEPARATOR}{cursorInfo.Item2.R}{ARGS_SEPARATOR}{cursorInfo.Item2.G}{ARGS_SEPARATOR}{cursorInfo.Item2.B}{ARGS_SEPARATOR}\n{WHILE_MACRO_GUIDE}{COMMAND_SEPARATOR}\n");
                             break;
                     }
-                    WindowState = WindowState.Normal;
-                    Activate();
+                    if ((bool)autoMinimize.IsChecked)
+                    {
+                        WindowState = WindowState.Normal;
+                        Activate();
+                    }
                 });
                 return true;
             });
@@ -126,7 +131,10 @@ namespace AngelMacro
             PauseRecordButton.IsEnabled = true;
             RunButton.IsEnabled = false;
             FileMenu.IsEnabled = false;
-            WindowState = WindowState.Minimized;
+            if ((bool)autoMinimize.IsChecked)
+            {
+                WindowState = WindowState.Minimized;
+            }
             recordDelay = (bool)delayToggle.IsChecked;
             Countdown((bool)fastStart.IsChecked ? 0 : 3, () =>
             {
@@ -142,28 +150,34 @@ namespace AngelMacro
         //DONE
         private void PauseRecordButton_Click(object sender, RoutedEventArgs e)
         {
-            if (((Button)sender).IsEnabled == true)
+            if (((Button)sender).IsEnabled == true && this.IsEnabled)
             {
                 ((Button)sender).IsEnabled = false;
                 RecordButton.IsEnabled = true;
                 RunButton.IsEnabled = true;
                 FileMenu.IsEnabled = true;
                 currentStatus = MACROSTATUS.IDLE;
-                WindowState = WindowState.Normal;
-                Activate();
+                if ((bool)autoMinimize.IsChecked)
+                {
+                    WindowState = WindowState.Normal;
+                    Activate();
+                }
             }
         }
 
-        
+
         private void RunButton_Click(object sender, RoutedEventArgs e)
         {
-            if (((Button)sender).IsEnabled == true)
+            if (((Button)sender).IsEnabled == true && this.IsEnabled)
             {
                 ((Button)sender).IsEnabled = false;
                 StopButton.IsEnabled = true;
                 RecordButton.IsEnabled = false;
                 FileMenu.IsEnabled = false;
-                WindowState = WindowState.Minimized;
+                if ((bool)autoMinimize.IsChecked)
+                {
+                    WindowState = WindowState.Minimized;
+                }
 
                 int.TryParse(ColorThresholdBox.Text, out colorThreshold);
 
@@ -179,14 +193,15 @@ namespace AngelMacro
         //DONE
         private void StopButton_Click(object sender, RoutedEventArgs e)
         {
-            if (((Button)sender).IsEnabled == true)
+            if (((Button)sender).IsEnabled == true && this.IsEnabled)
             {
                 ((Button)sender).IsEnabled = false;
                 RunButton.IsEnabled = true;
                 RecordButton.IsEnabled = true;
                 FileMenu.IsEnabled = true;
                 currentStatus = MACROSTATUS.IDLE;
-                if (e != null)
+                countdownThread.Interrupt();
+                if ((bool)autoMinimize.IsChecked)
                 {
                     WindowState = WindowState.Normal;
                     Activate();
@@ -242,18 +257,33 @@ namespace AngelMacro
         //DONE
         void Countdown(int seconds, Func<bool> func)
         {
-            new Thread(() =>
+            this.IsEnabled = false;
+
+            countdownThread = new Thread(() =>
             {
-                for (int i = 0; i < seconds; i++)
+                try
                 {
-                    GDI.WriteTextDuration(0, 0, $"{seconds - i}{GDI_SECOND}", 1000, Brushes.Black, Brushes.AliceBlue);
-                    Console.Beep(1400, 200);
-                    Thread.Sleep(800);
+                    for (int i = 0; i < seconds; i++)
+                    {
+                        GDI.WriteTextDuration(0, 0, $"{seconds - i}{GDI_SECOND}", 1000, Brushes.Black, Brushes.AliceBlue);
+                        Console.Beep(1400, 200);
+                        Thread.Sleep(800);
+                    }
+                    GDI.WriteTextDuration(0, 0, GDI_START, 1000, Brushes.Black, Brushes.AliceBlue);
+                    Console.Beep(2400, 200);
+
+                    Dispatcher.Invoke(() => { this.IsEnabled = true; });
+                    func();
                 }
-                GDI.WriteTextDuration(0, 0, GDI_START, 1000, Brushes.Black, Brushes.AliceBlue);
-                Console.Beep(2400, 200);
-                func();
-            }).Start();
+                catch (Exception ex)
+                {
+                    if (ex is not ThreadInterruptedException)
+                    {
+                        MessageBox.Show(ex.Message, COMMAND_ERROR_TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            });
+            countdownThread.Start();
         }
 
         private void AddEndMacroButton_Click(object sender, RoutedEventArgs e)

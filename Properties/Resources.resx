@@ -135,6 +135,9 @@
   <data name="advanced" xml:space="preserve">
     <value>Advanced</value>
   </data>
+  <data name="auto_minimize" xml:space="preserve">
+    <value>Minimize on start</value>
+  </data>
   <data name="command_error_text" xml:space="preserve">
     <value>The macro is invalid</value>
   </data>
