@@ -47,12 +47,11 @@ namespace AngelMacro
             // exits when X is pressed
             Closing += delegate
             {
-                //if (MessageBox.Show(""))
+                // TODO exit
                 Environment.Exit(0);
             };
         }
 
-        //DONE
         private void ToggleLeft(object o, RoutedEventArgs e)
         {
             if ((bool)leftButtonToggle.IsChecked)
@@ -65,7 +64,6 @@ namespace AngelMacro
             }
         }
 
-        //DONE
         private void ToggleRight(object o, RoutedEventArgs e)
         {
             if ((bool)rightButtonToggle.IsChecked)
@@ -78,7 +76,6 @@ namespace AngelMacro
             }
         }
 
-        //DONE
         private void ToggleMouseLocation(object o, RoutedEventArgs e)
         {
             if ((bool)mouseLocationToggle.IsChecked)
@@ -124,7 +121,6 @@ namespace AngelMacro
             });
         }
 
-        //DONE
         private void RecordButton_Click(object sender, RoutedEventArgs e)
         {
             ((Button)sender).IsEnabled = false;
@@ -147,7 +143,6 @@ namespace AngelMacro
             });
         }
 
-        //DONE
         private void PauseRecordButton_Click(object sender, RoutedEventArgs e)
         {
             if (((Button)sender).IsEnabled == true && this.IsEnabled)
@@ -190,7 +185,6 @@ namespace AngelMacro
             }
         }
 
-        //DONE
         private void StopButton_Click(object sender, RoutedEventArgs e)
         {
             if (((Button)sender).IsEnabled == true && this.IsEnabled)
@@ -209,7 +203,6 @@ namespace AngelMacro
             }
         }
 
-        //DONE
         private void UnlockTextButton_Click(object sender, RoutedEventArgs e)
         {
             ((Button)sender).IsEnabled = false;
@@ -217,7 +210,6 @@ namespace AngelMacro
             ScriptBox.IsEnabled = true;
         }
 
-        //DONE
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
@@ -232,7 +224,6 @@ namespace AngelMacro
             saveFileDialog.ShowDialog();
         }
 
-        //DONE
         private void LoadButton_Click(object sender, RoutedEventArgs e)
         {
             RunButton.IsEnabled = true;
@@ -248,13 +239,11 @@ namespace AngelMacro
             openFileDialog.ShowDialog();
         }
 
-        //DONE
         private void TopmostButton_Click(object sender, RoutedEventArgs e)
         {
             Topmost = !Topmost;
         }
 
-        //DONE
         void Countdown(int seconds, Func<bool> func)
         {
             this.IsEnabled = false;

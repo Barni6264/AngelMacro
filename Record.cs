@@ -14,7 +14,6 @@ namespace AngelMacro
         List<MouseButton> listeningMouseKeys = new List<MouseButton>();
         List<MouseButton> mouseKeysDown = new List<MouseButton>();
         bool recordMouseLocation;
-        //int recordDelayTimer = 0;
         Stopwatch stopwatch = new Stopwatch();
 
         void AddKey(uint keyCode)
@@ -120,22 +119,13 @@ namespace AngelMacro
         void RecordDelaysLoop()
         {
             stopwatch.Start();
-            while (currentStatus == MACROSTATUS.RECORDING)
-            {
-                //Thread.Sleep(DELAY_RECORD_MS);
-                //recordDelayTimer += DELAY_RECORD_MS;
-            }
+            while (currentStatus == MACROSTATUS.RECORDING) ;
             stopwatch.Reset();
             stopwatch.Stop();
         }
 
         void RecordDelay()
         {
-            //if (recordDelayTimer != 0)
-            //{
-            //    Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_DELAY}{ARGS_SEPARATOR}{recordDelayTimer}{COMMAND_SEPARATOR}\n"); });
-            //    recordDelayTimer = 0;
-            //}
             if (recordDelay)
             {
                 Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_DELAY}{ARGS_SEPARATOR}{(int)stopwatch.Elapsed.TotalMilliseconds - CSHARP_LAG_COMPENSATION}{COMMAND_SEPARATOR}\n"); });

@@ -86,6 +86,10 @@ namespace AngelMacro
                 {
                     MessageBox.Show(ex.Message, COMMAND_ERROR_TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
+                else if (commandSeparator == COMMAND_SEPARATOR2) // if this is a conditional part, throw a new Exception to stop the main part too 1 layer above
+                {
+                    throw;
+                }
             }
         }
 
