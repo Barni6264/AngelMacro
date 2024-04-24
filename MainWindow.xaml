@@ -52,7 +52,7 @@
             <CheckBox x:Name="delayToggle" Content="{x:Static rs:Resources.record_delays}"/>
             <CheckBox x:Name="fastStart" Content="{x:Static rs:Resources.fast_start}"/>
             <CheckBox x:Name="autoMinimize" Content="{x:Static rs:Resources.auto_minimize}" IsChecked="True"/>
-            <MenuItem Header="{x:Static rs:Resources.advanced}">
+            <MenuItem Header="{x:Static rs:Resources.insert_code}">
                 <MenuItem x:Name="AddConditionButton" Header="{x:Static rs:Resources.add_condition}" Click="AddConditionButton_Click"/>
                 <MenuItem x:Name="AddWhileButton" Header="{x:Static rs:Resources.add_while}" Click="AddConditionButton_Click"/>
                 <MenuItem x:Name="AddUntilButton" Header="{x:Static rs:Resources.add_until}" Click="AddConditionButton_Click"/>

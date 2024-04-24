@@ -132,9 +132,6 @@
   <data name="add_while" xml:space="preserve">
     <value>CONDITIONAL LOOP</value>
   </data>
-  <data name="advanced" xml:space="preserve">
-    <value>Advanced</value>
-  </data>
   <data name="auto_minimize" xml:space="preserve">
     <value>Minimize on start</value>
   </data>
@@ -149,6 +146,9 @@
   </data>
   <data name="file" xml:space="preserve">
     <value>File</value>
+  </data>
+  <data name="insert_code" xml:space="preserve">
+    <value>Insert code</value>
   </data>
   <data name="keys" xml:space="preserve">
     <value>Keys</value>

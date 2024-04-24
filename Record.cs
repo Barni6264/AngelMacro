@@ -2,6 +2,7 @@
 using SharpHook.Native;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Windows;
 using System.Windows.Threading;
 
 namespace AngelMacro
@@ -9,8 +10,8 @@ namespace AngelMacro
     public partial class MainWindow
     {
         SimpleGlobalHook globalHook = new SimpleGlobalHook();
-        List<uint> listeningKeys = new List<uint>();
-        List<uint> keysDown = new List<uint>();
+        List<KeyCode> listeningKeys = new List<KeyCode>();
+        List<KeyCode> keysDown = new List<KeyCode>();
         List<MouseButton> listeningMouseKeys = new List<MouseButton>();
         List<MouseButton> mouseKeysDown = new List<MouseButton>();
         bool recordMouseLocation, recordScrollWheel;
@@ -18,12 +19,12 @@ namespace AngelMacro
         // TODO string toAddToMacroText; // TODO precise recording
 
         #region Add/remove keys
-        void AddKey(uint keyCode)
+        void AddKey(KeyCode keyCode)
         {
             listeningKeys.Add(keyCode);
         }
 
-        void RemoveKey(uint keyCode)
+        void RemoveKey(KeyCode keyCode)
         {
             listeningKeys.Remove(keyCode);
         }
@@ -42,6 +43,8 @@ namespace AngelMacro
         {
             globalHook.KeyPressed += (s, e) =>
             {
+                MessageBox.Show($"Raw: {e.Data.RawCode}; KeyCode: {e.Data.KeyCode}");
+
                 switch (e.RawEvent.Keyboard.RawCode)
                 {
                     case PAUSE_RECORD: // F6
@@ -54,13 +57,13 @@ namespace AngelMacro
                         Dispatcher.Invoke(() => { StopButton_Click(StopButton, null); });
                         break;
                     default: // other key
-                        if (listeningKeys.Contains(e.Data.RawCode) && currentStatus == MACROSTATUS.RECORDING) // if the recorder is running
+                        if (listeningKeys.Contains(e.Data.KeyCode) && currentStatus == MACROSTATUS.RECORDING) // if the recorder is running
                         {
-                            if (!keysDown.Contains(e.Data.RawCode))
+                            if (!keysDown.Contains(e.Data.KeyCode))
                             {
                                 RecordDelay();
                                 Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_KEY_DOWN}{ARGS_SEPARATOR}{(int)e.Data.KeyCode}{COMMAND_SEPARATOR}\n"); });
-                                keysDown.Add(e.Data.RawCode);
+                                keysDown.Add(e.Data.KeyCode);
                             }
                         }
                         break;
@@ -69,13 +72,13 @@ namespace AngelMacro
 
             globalHook.KeyReleased += (s, e) =>
             {
-                if (listeningKeys.Contains(e.Data.RawCode) && currentStatus == MACROSTATUS.RECORDING) // if the recorder is running
+                if (listeningKeys.Contains(e.Data.KeyCode) && currentStatus == MACROSTATUS.RECORDING) // if the recorder is running
                 {
-                    if (keysDown.Contains(e.Data.RawCode))
+                    if (keysDown.Contains(e.Data.KeyCode))
                     {
                         RecordDelay();
                         Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_KEY_UP}{ARGS_SEPARATOR}{(int)e.Data.KeyCode}{COMMAND_SEPARATOR}\n"); });
-                        keysDown.Remove(e.Data.RawCode);
+                        keysDown.Remove(e.Data.KeyCode);
                     }
                 }
             };
@@ -120,7 +123,7 @@ namespace AngelMacro
                 if (recordScrollWheel && currentStatus == MACROSTATUS.RECORDING)
                 {
                     RecordDelay();
-                    Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_SCROLL_WHEEL}{ARGS_SEPARATOR}{(e.Data.Rotation<0?-e.Data.Amount:e.Data.Amount)}{COMMAND_SEPARATOR}\n"); });
+                    Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_SCROLL_WHEEL}{ARGS_SEPARATOR}{e.Data.Rotation}{COMMAND_SEPARATOR}\n"); });
                 }
             };
 

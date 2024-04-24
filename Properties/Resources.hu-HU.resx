@@ -132,9 +132,6 @@
   <data name="add_while" xml:space="preserve">
     <value>FELTÉTELES ISMÉTLÉS</value>
   </data>
-  <data name="advanced" xml:space="preserve">
-    <value>Haladó</value>
-  </data>
   <data name="auto_minimize" xml:space="preserve">
     <value>Összecsukás indításkor</value>
   </data>
@@ -149,6 +146,9 @@
   </data>
   <data name="file" xml:space="preserve">
     <value>Fájl</value>
+  </data>
+  <data name="insert_code" xml:space="preserve">
+    <value>Kód hozzáadása</value>
   </data>
   <data name="keys" xml:space="preserve">
     <value>Billentyűzet</value>

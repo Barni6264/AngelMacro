@@ -67,15 +67,7 @@ namespace AngelMacro
                                 simulator.SimulateMouseRelease((MouseButton)int.Parse(command[1]));
                                 break;
                             case TEXT_SCROLL_WHEEL:
-                                int amount = int.Parse(command[1]);
-                                if (amount<0)
-                                {
-                                    simulator.SimulateMouseWheel((ushort)(amount * -1), -120);
-                                }
-                                else
-                                {
-                                    simulator.SimulateMouseWheel((ushort)amount, 120);
-                                }
+                                simulator.SimulateMouseWheel(short.Parse(command[1]));
                                 break;
                             default:
                                 Dispatcher.Invoke(() => { StopButton_Click(StopButton, null); });

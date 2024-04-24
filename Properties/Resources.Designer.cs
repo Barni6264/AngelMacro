@@ -106,15 +106,6 @@ namespace AngelMacro.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Advanced.
-        /// </summary>
-        public static string advanced {
-            get {
-                return ResourceManager.GetString("advanced", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Minimize on start.
         /// </summary>
         public static string auto_minimize {
@@ -156,6 +147,15 @@ namespace AngelMacro.Properties {
         public static string file {
             get {
                 return ResourceManager.GetString("file", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insert code.
+        /// </summary>
+        public static string insert_code {
+            get {
+                return ResourceManager.GetString("insert_code", resourceCulture);
             }
         }
         

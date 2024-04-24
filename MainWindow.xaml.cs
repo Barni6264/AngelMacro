@@ -21,21 +21,22 @@ namespace AngelMacro
         {
             InitializeComponent();
 
-            // generates checkboxes under keys
-            for (int i = 0; i < KEYCODE_VALUES.Length; i++)
+            // generates checkboxes under keys - OLD
+            string[] names = Enum.GetNames(typeof(KeyCode));
+            for (int i = 0; i < names.Length; i++)
             {
                 CheckBox boxToAdd = new CheckBox();
-                boxToAdd.Content = KEYCODE_NAMES[i];
-                boxToAdd.Name = KEYCODE_NAMES[i];
+                boxToAdd.Content = names[i];
+                boxToAdd.Name = names[i];
                 boxToAdd.Click += delegate // keyboard
                 {
                     if ((bool)boxToAdd.IsChecked)
                     {
-                        AddKey(KEYCODE_VALUES[Array.IndexOf(KEYCODE_NAMES, boxToAdd.Name)]);
+                        AddKey((KeyCode)Enum.Parse(typeof(KeyCode), names[i]));
                     }
                     else
                     {
-                        RemoveKey(KEYCODE_VALUES[Array.IndexOf(KEYCODE_NAMES, boxToAdd.Name)]);
+                        RemoveKey((KeyCode)Enum.Parse(typeof(KeyCode), names[i]));
                     }
                 };
                 Keys.Children.Add(boxToAdd);
