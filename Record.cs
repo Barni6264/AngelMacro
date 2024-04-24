@@ -43,8 +43,6 @@ namespace AngelMacro
         {
             globalHook.KeyPressed += (s, e) =>
             {
-                MessageBox.Show($"Raw: {e.Data.RawCode}; KeyCode: {e.Data.KeyCode}");
-
                 switch (e.RawEvent.Keyboard.RawCode)
                 {
                     case PAUSE_RECORD: // F6
@@ -62,7 +60,7 @@ namespace AngelMacro
                             if (!keysDown.Contains(e.Data.KeyCode))
                             {
                                 RecordDelay();
-                                Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_KEY_DOWN}{ARGS_SEPARATOR}{(int)e.Data.KeyCode}{COMMAND_SEPARATOR}\n"); });
+                                Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_KEY_DOWN}{ARGS_SEPARATOR}{e.Data.KeyCode}{COMMAND_SEPARATOR}\n"); });
                                 keysDown.Add(e.Data.KeyCode);
                             }
                         }
@@ -77,7 +75,7 @@ namespace AngelMacro
                     if (keysDown.Contains(e.Data.KeyCode))
                     {
                         RecordDelay();
-                        Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_KEY_UP}{ARGS_SEPARATOR}{(int)e.Data.KeyCode}{COMMAND_SEPARATOR}\n"); });
+                        Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_KEY_UP}{ARGS_SEPARATOR}{e.Data.KeyCode}{COMMAND_SEPARATOR}\n"); });
                         keysDown.Remove(e.Data.KeyCode);
                     }
                 }
@@ -90,7 +88,7 @@ namespace AngelMacro
                     if (!mouseKeysDown.Contains(e.Data.Button))
                     {
                         RecordDelay();
-                        Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_MOUSE_DOWN}{ARGS_SEPARATOR}{(int)e.Data.Button}{COMMAND_SEPARATOR}\n"); });
+                        Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_MOUSE_DOWN}{ARGS_SEPARATOR}{e.Data.Button}{COMMAND_SEPARATOR}\n"); });
                         mouseKeysDown.Add(e.Data.Button);
                     }
                 }
@@ -103,7 +101,7 @@ namespace AngelMacro
                     if (mouseKeysDown.Contains(e.Data.Button))
                     {
                         RecordDelay();
-                        Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_MOUSE_UP}{ARGS_SEPARATOR}{(int)e.Data.Button}{COMMAND_SEPARATOR}\n"); });
+                        Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_MOUSE_UP}{ARGS_SEPARATOR}{e.Data.Button}{COMMAND_SEPARATOR}\n"); });
                         mouseKeysDown.Remove(e.Data.Button);
                     }
                 }

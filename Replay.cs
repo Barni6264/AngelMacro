@@ -52,19 +52,19 @@ namespace AngelMacro
                                 Thread.Sleep(int.Parse(command[1]));
                                 break;
                             case TEXT_KEY_DOWN:
-                                simulator.SimulateKeyPress((KeyCode)(int.Parse(command[1])));
+                                simulator.SimulateKeyPress((KeyCode)Enum.Parse(typeof(KeyCode), command[1]));
                                 break;
                             case TEXT_KEY_UP:
-                                simulator.SimulateKeyRelease((KeyCode)(int.Parse(command[1])));
+                                simulator.SimulateKeyRelease((KeyCode)Enum.Parse(typeof(KeyCode), command[1]));
                                 break;
                             case TEXT_LOCATION:
                                 simulator.SimulateMouseMovement(short.Parse(command[1]), short.Parse(command[2]));
                                 break;
                             case TEXT_MOUSE_DOWN:
-                                simulator.SimulateMousePress((MouseButton)int.Parse(command[1]));
+                                simulator.SimulateMousePress((MouseButton)Enum.Parse(typeof(MouseButton), command[1]));
                                 break;
                             case TEXT_MOUSE_UP:
-                                simulator.SimulateMouseRelease((MouseButton)int.Parse(command[1]));
+                                simulator.SimulateMouseRelease((MouseButton)Enum.Parse(typeof(MouseButton), command[1]));
                                 break;
                             case TEXT_SCROLL_WHEEL:
                                 simulator.SimulateMouseWheel(short.Parse(command[1]));

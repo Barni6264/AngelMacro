@@ -32,11 +32,11 @@ namespace AngelMacro
                 {
                     if ((bool)boxToAdd.IsChecked)
                     {
-                        AddKey((KeyCode)Enum.Parse(typeof(KeyCode), names[i]));
+                        AddKey((KeyCode)Enum.Parse(typeof(KeyCode), boxToAdd.Name));
                     }
                     else
                     {
-                        RemoveKey((KeyCode)Enum.Parse(typeof(KeyCode), names[i]));
+                        RemoveKey((KeyCode)Enum.Parse(typeof(KeyCode), boxToAdd.Name));
                     }
                 };
                 Keys.Children.Add(boxToAdd);
