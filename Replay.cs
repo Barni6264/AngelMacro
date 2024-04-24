@@ -66,6 +66,17 @@ namespace AngelMacro
                             case TEXT_MOUSE_UP:
                                 simulator.SimulateMouseRelease((MouseButton)int.Parse(command[1]));
                                 break;
+                            case TEXT_SCROLL_WHEEL:
+                                int amount = int.Parse(command[1]);
+                                if (amount<0)
+                                {
+                                    simulator.SimulateMouseWheel((ushort)(amount * -1), -120);
+                                }
+                                else
+                                {
+                                    simulator.SimulateMouseWheel((ushort)amount, 120);
+                                }
+                                break;
                             default:
                                 Dispatcher.Invoke(() => { StopButton_Click(StopButton, null); });
                                 MessageBox.Show(COMMAND_ERROR_TEXT, COMMAND_ERROR_TITLE, MessageBoxButton.OK, MessageBoxImage.Error);

@@ -241,6 +241,15 @@ namespace AngelMacro.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Record scroll wheel.
+        /// </summary>
+        public static string record_scroll_wheel {
+            get {
+                return ResourceManager.GetString("record_scroll_wheel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Replay.
         /// </summary>
         public static string replay {

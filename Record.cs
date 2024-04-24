@@ -13,10 +13,11 @@ namespace AngelMacro
         List<uint> keysDown = new List<uint>();
         List<MouseButton> listeningMouseKeys = new List<MouseButton>();
         List<MouseButton> mouseKeysDown = new List<MouseButton>();
-        bool recordMouseLocation;
+        bool recordMouseLocation, recordScrollWheel;
         Stopwatch stopwatch = new Stopwatch();
         // TODO string toAddToMacroText; // TODO precise recording
 
+        #region Add/remove keys
         void AddKey(uint keyCode)
         {
             listeningKeys.Add(keyCode);
@@ -26,6 +27,16 @@ namespace AngelMacro
         {
             listeningKeys.Remove(keyCode);
         }
+        void AddMouseKey(MouseButton mouseKey)
+        {
+            listeningMouseKeys.Add(mouseKey);
+        }
+
+        void RemoveMouseKey(MouseButton mouseKey)
+        {
+            listeningMouseKeys.Remove(mouseKey);
+        }
+        #endregion
 
         void InitKeys()
         {
@@ -104,17 +115,16 @@ namespace AngelMacro
                 }
             };
 
+            globalHook.MouseWheel += (s, e) =>
+            {
+                if (recordScrollWheel && currentStatus == MACROSTATUS.RECORDING)
+                {
+                    RecordDelay();
+                    Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_SCROLL_WHEEL}{ARGS_SEPARATOR}{(e.Data.Rotation<0?-e.Data.Amount:e.Data.Amount)}{COMMAND_SEPARATOR}\n"); });
+                }
+            };
+
             globalHook.RunAsync();
-        }
-
-        void AddMouseKey(MouseButton mouseKey)
-        {
-            listeningMouseKeys.Add(mouseKey);
-        }
-
-        void RemoveMouseKey(MouseButton mouseKey)
-        {
-            listeningMouseKeys.Remove(mouseKey);
         }
 
         void RecordDelaysLoop()

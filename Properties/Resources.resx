@@ -177,6 +177,9 @@
   <data name="record_mouse_location" xml:space="preserve">
     <value>Record cursor Location</value>
   </data>
+  <data name="record_scroll_wheel" xml:space="preserve">
+    <value>Record scroll wheel</value>
+  </data>
   <data name="replay" xml:space="preserve">
     <value>Replay</value>
   </data>

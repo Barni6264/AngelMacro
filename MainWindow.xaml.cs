@@ -78,14 +78,12 @@ namespace AngelMacro
 
         private void ToggleMouseLocation(object o, RoutedEventArgs e)
         {
-            if ((bool)mouseLocationToggle.IsChecked)
-            {
-                recordMouseLocation = true;
-            }
-            else
-            {
-                recordMouseLocation = false;
-            }
+            recordMouseLocation = (bool)mouseLocationToggle.IsChecked;
+        }
+
+        private void ToggleScrollWheel(object o, RoutedEventArgs e)
+        {
+            recordScrollWheel = (bool)scrollWheelToggle.IsChecked;
         }
 
         private void AddConditionButton_Click(object sender, RoutedEventArgs e)

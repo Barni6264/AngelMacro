@@ -177,6 +177,9 @@
   <data name="record_mouse_location" xml:space="preserve">
     <value>Kurzor helyének felvétele</value>
   </data>
+  <data name="record_scroll_wheel" xml:space="preserve">
+    <value>Egérgörgő felvétele</value>
+  </data>
   <data name="replay" xml:space="preserve">
     <value>Visszajátszás</value>
   </data>

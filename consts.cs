@@ -16,6 +16,7 @@ namespace AngelMacro
 
         const string TEXT_DELAY = "DELAY";
         const string TEXT_LOCATION = "LOCATION";
+        const string TEXT_SCROLL_WHEEL = "SCROLL";
         const string TEXT_MOUSE_UP = "MOUSEUP";
         const string TEXT_MOUSE_DOWN = "MOUSEDOWN";
         const string TEXT_KEY_UP = "KEYUP";

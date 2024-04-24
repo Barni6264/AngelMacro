@@ -45,6 +45,7 @@
                         <CheckBox x:Name="leftButtonToggle" Content="LMB" Click="ToggleLeft"/>
                         <CheckBox x:Name="rightButtonToggle" Content="RMB" Click="ToggleRight"/>
                         <CheckBox x:Name="mouseLocationToggle" Content="{x:Static rs:Resources.record_mouse_location}" Click="ToggleMouseLocation"/>
+                        <CheckBox x:Name="scrollWheelToggle" Content="{x:Static rs:Resources.record_scroll_wheel}" Click="ToggleScrollWheel"/>
                     </StackPanel>
                 </ScrollViewer>
             </MenuItem>
