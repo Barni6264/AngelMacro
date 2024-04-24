@@ -258,8 +258,11 @@ namespace AngelMacro
                         Console.Beep(1400, 200);
                         Thread.Sleep(800);
                     }
-                    GDI.WriteTextDuration(0, 0, GDI_START, 1000, Brushes.Black, Brushes.AliceBlue);
-                    Console.Beep(2400, 200);
+                    if (seconds > 0)
+                    {
+                        GDI.WriteTextDuration(0, 0, GDI_START, 1000, Brushes.Black, Brushes.AliceBlue);
+                        Console.Beep(2400, 200);
+                    }
 
                     Dispatcher.Invoke(() => { this.IsEnabled = true; });
                     func();

@@ -15,6 +15,7 @@ namespace AngelMacro
         List<MouseButton> mouseKeysDown = new List<MouseButton>();
         bool recordMouseLocation;
         Stopwatch stopwatch = new Stopwatch();
+        // TODO string toAddToMacroText; // TODO precise recording
 
         void AddKey(uint keyCode)
         {

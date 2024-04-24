@@ -6,7 +6,7 @@
         xmlns:rs="clr-namespace:AngelMacro.Properties"
         xmlns:local="clr-namespace:AngelMacro"
         mc:Ignorable="d"
-        Title="Angel Macro" Height="450" Width="800" FontFamily="Consolas" ResizeMode="CanMinimize"  Icon="{x:Null}">
+        Title="Angel Macro" Height="450" Width="600" FontFamily="Consolas" ResizeMode="CanResize" Icon="{x:Null}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -15,8 +15,8 @@
             <RowDefinition Height="20"/>
             <RowDefinition Height="auto"/>
             <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition  Height="86"/>
+            <RowDefinition  Height="86"/>
         </Grid.RowDefinitions>
 
         <Menu x:Name="FileMenu">
