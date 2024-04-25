@@ -62,7 +62,7 @@
         </Menu>
 
         <ScrollViewer Grid.Row="2" Margin="16,2,16,2" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <TextBox x:Name="ScriptBox" AcceptsReturn="True" IsEnabled="False"/>
+            <TextBox x:Name="ScriptBox" AcceptsReturn="True" IsEnabled="False" TextChanged="ScriptBox_TextChanged"/>
         </ScrollViewer>
 
         <Button x:Name="UnlockTextButton" Content="{x:Static rs:Resources.unlock_script}" Click="UnlockTextButton_Click" Grid.Row="1" Margin="16,16,16,0" FontSize="14"/>

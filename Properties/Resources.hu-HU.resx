@@ -141,6 +141,12 @@
   <data name="command_error_title" xml:space="preserve">
     <value>Parancshiba</value>
   </data>
+  <data name="compile_code" xml:space="preserve">
+    <value>Kód fordítása (F7)</value>
+  </data>
+  <data name="compiling_code" xml:space="preserve">
+    <value>Kód lefordítása...</value>
+  </data>
   <data name="fast_start" xml:space="preserve">
     <value>Azonnali indítás</value>
   </data>

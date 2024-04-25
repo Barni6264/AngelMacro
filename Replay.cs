@@ -12,15 +12,9 @@ namespace AngelMacro
         EventSimulator simulator = new EventSimulator();
         int colorThreshold = 5;
 
-        void ExecuteMacro(string macroText, char commandSeparator, char argsSeparator)
+        void ExecuteMacro(int[] code) //TODO COMPLIER rewrite from scratch
         {
-            string[] commands = macroText.Replace("\n", "").Replace("\r", "").Replace("\t", "").Split(commandSeparator);
-            string[] command;
-
-            try
-            {
-                while (currentStatus == MACROSTATUS.RUNNING)
-                {
+            /*
                     for (int i = 0; (i < commands.Length) && (currentStatus == MACROSTATUS.RUNNING); i++)
                     {
                         if (commands[i].Length < 2)
@@ -76,24 +70,7 @@ namespace AngelMacro
 
                         }
                     }
-
-                    if (commandSeparator == COMMAND_SEPARATOR2) // if this is a conditional part, only run once
-                    {
-                        break;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                if (ex is not ThreadInterruptedException)
-                {
-                    MessageBox.Show(ex.Message, COMMAND_ERROR_TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-                else if (commandSeparator == COMMAND_SEPARATOR2) // if this is a conditional part, throw a new Exception to stop the main part too 1 layer above
-                {
-                    throw;
-                }
-            }
+            */
         }
 
         void RunColorCheck(string[] command)
@@ -101,11 +78,11 @@ namespace AngelMacro
             Color color = Condition.GetPixel(int.Parse(command[1]), int.Parse(command[2]));
             if ((Math.Abs(color.R - int.Parse(command[3])) + Math.Abs(color.G - int.Parse(command[4])) + Math.Abs(color.B - int.Parse(command[5]))) < colorThreshold)
             {
-                ExecuteMacro(command[6], COMMAND_SEPARATOR2, ARGS_SEPARATOR2);
+                //ExecuteMacro(command[6], COMMAND_SEPARATOR2, ARGS_SEPARATOR2); //TODO COMPLIER rewrite
             }
             else
             {
-                ExecuteMacro(command[7], COMMAND_SEPARATOR2, ARGS_SEPARATOR2);
+                //ExecuteMacro(command[7], COMMAND_SEPARATOR2, ARGS_SEPARATOR2); //TODO COMPLIER rewrite
             }
         }
 
@@ -114,7 +91,7 @@ namespace AngelMacro
             Color color = Condition.GetPixel(int.Parse(command[1]), int.Parse(command[2]));
             while ((Math.Abs(color.R - int.Parse(command[3])) + Math.Abs(color.G - int.Parse(command[4])) + Math.Abs(color.B - int.Parse(command[5]))) < colorThreshold)
             {
-                ExecuteMacro(command[6], COMMAND_SEPARATOR2, ARGS_SEPARATOR2);
+                //ExecuteMacro(command[6], COMMAND_SEPARATOR2, ARGS_SEPARATOR2); //TODO COMPLIER rewrite
                 color = Condition.GetPixel(int.Parse(command[1]), int.Parse(command[2]));
             }
         }
@@ -124,7 +101,7 @@ namespace AngelMacro
             Color color = Condition.GetPixel(int.Parse(command[1]), int.Parse(command[2]));
             while ((Math.Abs(color.R - int.Parse(command[3])) + Math.Abs(color.G - int.Parse(command[4])) + Math.Abs(color.B - int.Parse(command[5]))) > colorThreshold)
             {
-                ExecuteMacro(command[6], COMMAND_SEPARATOR2, ARGS_SEPARATOR2);
+                //ExecuteMacro(command[6], COMMAND_SEPARATOR2, ARGS_SEPARATOR2); //TODO COMPLIER rewrite
                 color = Condition.GetPixel(int.Parse(command[1]), int.Parse(command[2]));
             }
         }

@@ -133,6 +133,24 @@ namespace AngelMacro.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compile code (F7).
+        /// </summary>
+        public static string compile_code {
+            get {
+                return ResourceManager.GetString("compile_code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compiling code....
+        /// </summary>
+        public static string compiling_code {
+            get {
+                return ResourceManager.GetString("compiling_code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No start delay.
         /// </summary>
         public static string fast_start {

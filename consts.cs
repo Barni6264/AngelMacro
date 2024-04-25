@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Dynamic;
 
 namespace AngelMacro
 {
@@ -11,7 +12,6 @@ namespace AngelMacro
         const string FILE_FILTER = $"AngelMacro file|{FILE_EXTENSION}";
 
         const int CSHARP_LAG_COMPENSATION = 0;
-        //const int DELAY_RECORD_MS = 100;
 
         const string TEXT_DELAY = "DELAY";
         const string TEXT_LOCATION = "LOCATION";
@@ -34,16 +34,21 @@ namespace AngelMacro
         readonly string COMMAND_ERROR_TEXT = Properties.Resources.command_error_text;
         readonly string COMMAND_ERROR_TITLE = Properties.Resources.command_error_title;
 
-        const char COMMAND_SEPARATOR = ';';
-        const char COMMAND_SEPARATOR2 = '!';
-        const char ARGS_SEPARATOR = ':';
-        const char ARGS_SEPARATOR2 = '.';
+        readonly string COMPILE_CODE_BUTTON_TEXT = Properties.Resources.compile_code;
+        readonly string RUN_MACRO_BUTTON_TEXT = Properties.Resources.run_macro;
 
-        readonly string CONDITIONAL_MACRO_GUIDE = $"\tYOUR_MACRO_HERE (make sure to replace all {COMMAND_SEPARATOR} with {COMMAND_SEPARATOR2} and {ARGS_SEPARATOR} with {ARGS_SEPARATOR2}){ARGS_SEPARATOR}\n\tELSE_YOUR_MACRO_HERE (make sure to replace all {COMMAND_SEPARATOR} with {COMMAND_SEPARATOR2} and {ARGS_SEPARATOR} with {ARGS_SEPARATOR2})\n";
-        readonly string WHILE_MACRO_GUIDE = $"\tYOUR_MACRO_HERE (make sure to replace all {COMMAND_SEPARATOR} with {COMMAND_SEPARATOR2} and {ARGS_SEPARATOR} with {ARGS_SEPARATOR2})\n";
+        const char COMMAND_SEPARATOR = ';';
+        const char ARGS_SEPARATOR = ':';
+        const char COMMAND_BLOCK_STARTER = '{';
+        const char COMMAND_BLOCK_CLOSER = '}';
+
+        readonly string CONDITIONAL_MACRO_GUIDE = $"{COMMAND_BLOCK_STARTER}\n   Put your macro here\n{COMMAND_BLOCK_CLOSER}{COMMAND_BLOCK_STARTER}\n   Put your macro here if the condition fails\n{COMMAND_BLOCK_CLOSER}";
+        readonly string WHILE_MACRO_GUIDE = $"{COMMAND_BLOCK_STARTER}   \nPut your macro here\n{COMMAND_BLOCK_CLOSER}";
 
         const int PAUSE_RECORD = 0x75;
         const int RUN = 0x76;
         const int STOP = 0x77;
+
+        readonly string ANMLANG_CHARSET = $"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-{COMMAND_SEPARATOR}{COMMAND_BLOCK_STARTER}{COMMAND_BLOCK_CLOSER}{ARGS_SEPARATOR}";
     }
 }

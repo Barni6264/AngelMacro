@@ -14,7 +14,7 @@ namespace AngelMacro
         List<KeyCode> keysDown = new List<KeyCode>();
         List<MouseButton> listeningMouseKeys = new List<MouseButton>();
         List<MouseButton> mouseKeysDown = new List<MouseButton>();
-        bool recordMouseLocation, recordScrollWheel;
+        bool recordMouseLocation, recordScrollWheel, recordDelay;
         Stopwatch stopwatch = new Stopwatch();
         // TODO string toAddToMacroText; // TODO precise recording
 

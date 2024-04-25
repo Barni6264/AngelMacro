@@ -141,6 +141,12 @@
   <data name="command_error_title" xml:space="preserve">
     <value>Command error</value>
   </data>
+  <data name="compile_code" xml:space="preserve">
+    <value>Compile code (F7)</value>
+  </data>
+  <data name="compiling_code" xml:space="preserve">
+    <value>Compiling code...</value>
+  </data>
   <data name="fast_start" xml:space="preserve">
     <value>No start delay</value>
   </data>

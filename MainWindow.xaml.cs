@@ -3,6 +3,7 @@ using SharpHook.Native;
 using System;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,8 +15,9 @@ namespace AngelMacro
         // all UI stuff and connections to core functions
 
         MACROSTATUS currentStatus = MACROSTATUS.IDLE;
-        bool recordDelay;
         Thread countdownThread;
+        bool codeChanged = true;
+        int[] compiledCode;
 
         public MainWindow()
         {
@@ -162,8 +164,32 @@ namespace AngelMacro
 
         private void RunButton_Click(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show(ANMLangCompiler.CleanCode(ScriptBox.Text, ANMLANG_CHARSET));
+
             if (((Button)sender).IsEnabled == true && this.IsEnabled)
             {
+                if (codeChanged)
+                {
+                    codeChanged = false;
+                    this.IsEnabled = false;
+
+                    ((Button)sender).Content = RUN_MACRO_BUTTON_TEXT;
+
+                    CompilingCodeMessageBox messageBox = new CompilingCodeMessageBox();
+                    messageBox.Show();
+
+                    string rawMacro = ScriptBox.Text;
+                    new Thread(() =>
+                    {
+                        rawMacro = ANMLangCompiler.CleanCode(rawMacro, ANMLANG_CHARSET);
+                        compiledCode = ANMLangCompiler.CompileCode(rawMacro, Dispatcher, messageBox.CompilingProgress);
+
+                        Dispatcher.Invoke(() => { this.IsEnabled = true; messageBox.Close(); });
+                    }).Start();
+
+                    return;
+                }
+
                 ((Button)sender).IsEnabled = false;
                 StopButton.IsEnabled = true;
                 RecordButton.IsEnabled = false;
@@ -178,7 +204,18 @@ namespace AngelMacro
                 Countdown((bool)fastStart.IsChecked ? 0 : 3, () =>
                 {
                     currentStatus = MACROSTATUS.RUNNING;
-                    ExecuteMacro(Dispatcher.Invoke(() => { return ScriptBox.Text; }), COMMAND_SEPARATOR, ARGS_SEPARATOR);
+                    while (currentStatus == MACROSTATUS.RUNNING)
+                    {
+                        try
+                        {
+                            ExecuteMacro(compiledCode);
+                        }
+                        catch (Exception ex)
+                        {
+                            if (ex is not ThreadInterruptedException)
+                                MessageBox.Show(ex.Message, COMMAND_ERROR_TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
                     return true;
                 });
             }
@@ -285,6 +322,12 @@ namespace AngelMacro
         private void AddColorThresholdChangeButton_Click(object sender, RoutedEventArgs e)
         {
             ScriptBox.AppendText($"{TEXT_COLOR_THRESHOLD_CHANGE}{ARGS_SEPARATOR}5{COMMAND_SEPARATOR}\n");
+        }
+
+        private void ScriptBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            codeChanged = true;
+            RunButton.Content = COMPILE_CODE_BUTTON_TEXT;
         }
     }
 }
