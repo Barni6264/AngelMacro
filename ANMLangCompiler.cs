@@ -1,9 +1,11 @@
-﻿using System;
+﻿using SharpHook.Native;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
@@ -32,8 +34,10 @@ namespace AngelMacro
          * then we have the args
          *          eg. coordinates or delay time
          *          
-         * if we have a conditional OP, then first we have the OP ID, the args, then the number of tokens and then the tokens and OPs in the condition
-         *          eg. COLOR x y r g b tokenCountTrue tokenCountElse tokensTrue[] tokensElse[]
+         * to support conditional OPs, first we'll have the "stack layer", then the OP ID, the args, then the tokens and OPs in the condition
+         *          eg. layer0 COLOR x y r g b tokensTrue[] tokensElse[]
+         * but to indicate where a block of code ends and where the tokensElse[] starts, we will use the conditional universal marking system (CUMS)
+         *          eg. layer3 DELAY time layer3 DELAY newTime layer-3 DELAY elseTime
          *          
          * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
          * ANMLANG SYNTAX  *
@@ -67,22 +71,212 @@ namespace AngelMacro
          *      
          * To be honest, it doesn't look that bad
          */
-        public static int[] CompileCode(string code, Dispatcher dispatcher, ProgressBar progressBar)
+        static Dispatcher dispatcher;
+        static ProgressBar progressBar;
+        public static int[] CompileCode(string code, Dispatcher _dispatcher, ProgressBar _progressBar)
         {
-            dispatcher.Invoke(() => { progressBar.Maximum = 0; }); //TODO COMPLIER change 0 to value
+            dispatcher = _dispatcher;
+            progressBar = _progressBar;
+
+            dispatcher.Invoke(() => { progressBar.Maximum = code.Split(Consts.COMMAND_SEPARATOR).Length; });
 
             List<int> result = new List<int>();
-            for (; ; ) //TODO COMPLIER finish for loop or replace with recursive function
-            {
-                dispatcher.Invoke(() => { progressBar.Value++; });
-            }
-
+            Compile(code, result, 0, false);
             return result.ToArray();
         }
 
-        public static string CleanCode(string code, string charset)
+        public static string CleanCode(string code)
         {
-            return new string(code.Where(c => charset.Contains(c)).ToArray());
+            return new string(code.Where(c => Consts.ANMLANG_CHARSET.Contains(c)).ToArray());
+        }
+
+        static void Compile(string code, List<int> list, int layer, bool marked) // marked could mean lots of things, but in this case it means the it belongs to the else part of a "COLOR" conditional
+        {
+            while (code.Length > 0)
+            {
+                string token = code.Split(Consts.COMMAND_SEPARATOR)[0];
+                /*
+                 * Token can look like this:
+                 *      DELAY:10
+                 * or
+                 *      COLOR:1:2:3:4:5000:{DELAY:40
+                 * or
+                 *      COLOR:1:2:3:4:5000:{COLOR:1:2:3:4:5000:{DELAY:40
+                 */
+                string[] args = token.Split(Consts.ARGS_SEPARATOR);
+                if (args[0] == "")
+                {
+                    return;
+                }
+
+                list.Add(marked?-layer:layer);
+                switch (args[0]) //OP
+                {
+                    case Consts.TEXT_COLOR_THRESHOLD_CHANGE:
+                        list.Add(1);
+                        list.Add(int.Parse(args[1]));
+                        break;
+                    case Consts.TEXT_END:
+                        list.Add(0);
+                        return; // because anything in the scope under an END OP is just useless and unreachable
+                    case Consts.TEXT_DELAY:
+                        list.Add(2);
+                        list.Add(int.Parse(args[1]));
+                        break;
+                    case Consts.TEXT_KEY_DOWN:
+                        list.Add(3);
+                        list.Add((int)Enum.Parse(typeof(KeyCode), args[1]));
+                        break;
+                    case Consts.TEXT_KEY_UP:
+                        list.Add(4);
+                        list.Add((int)Enum.Parse(typeof(KeyCode), args[1]));
+                        break;
+                    case Consts.TEXT_LOCATION:
+                        list.Add(5);
+                        list.Add(int.Parse(args[1]));
+                        list.Add(int.Parse(args[2]));
+                        break;
+                    case Consts.TEXT_MOUSE_DOWN:
+                        list.Add(6);
+                        list.Add((int)Enum.Parse(typeof(MouseButton), args[1]));
+                        break;
+                    case Consts.TEXT_MOUSE_UP:
+                        list.Add(7);
+                        list.Add((int)Enum.Parse(typeof(MouseButton), args[1]));
+                        break;
+                    case Consts.TEXT_SCROLL_WHEEL:
+                        list.Add(8);
+                        list.Add(int.Parse(args[1]));
+                        break;
+
+                    // Hard part (I'll suffer...)
+
+                    case Consts.TEXT_COLOR:
+                        {
+                            list.Add(10);
+                            list.Add(int.Parse(args[1])); // X
+                            list.Add(int.Parse(args[2])); // Y
+                            list.Add(int.Parse(args[3])); // R
+                            list.Add(int.Parse(args[4])); // G
+                            list.Add(int.Parse(args[5])); // B
+                            /*
+                             * now, the program will step through the "code" character by character and count the fancy brackets -->{}. First it has 1 opening bracket,
+                             * and it loops until it finds a pair (has the same amount of opening and closing brackets)
+                             * then it will Substring the block between the opening and last closing bracket and call this function recursively
+                             * it also passes the current layer number+1 as parameter
+                            */
+                            code = code.Substring(code.IndexOf(Consts.COMMAND_BLOCK_STARTER) + 1); // this will return a string like this (cutoff part indicated by | ): ...g:b:{|DELAY:3...
+                            int blockStarterCount = 1;
+                            int blockEndCount = 0; // the reason above is why blockStarterCount has a default value of 1. This way we don't start with 0=0
+                            int index = 0; // that's just the "i" if it was a for loop
+
+                            // if part
+                            while (blockEndCount != blockStarterCount)
+                            {
+                                if (code[index] == Consts.COMMAND_BLOCK_STARTER)
+                                {
+                                    blockStarterCount++;
+                                }
+                                else if (code[index] == Consts.COMMAND_BLOCK_CLOSER)
+                                {
+                                    blockEndCount++;
+                                }
+                                index++;
+                            }
+                            Compile(code.Substring(0, index - 1), list, layer + 1, false); // I think this will NOT include the last block closer
+                            code = code.Substring(index+1);
+
+                            // else part
+                            blockStarterCount = 1;
+                            blockEndCount = 0;
+                            index = 0;
+                            while (blockEndCount != blockStarterCount)
+                            {
+                                if (code[index] == Consts.COMMAND_BLOCK_STARTER)
+                                {
+                                    blockStarterCount++;
+                                }
+                                else if (code[index] == Consts.COMMAND_BLOCK_CLOSER)
+                                {
+                                    blockEndCount++;
+                                }
+                                index++;
+                            }
+                            Compile(code.Substring(0, index - 1), list, layer + 1, true);
+                            code = code.Substring(index);
+                        }
+                        break;
+                    case Consts.TEXT_WHILE:
+                        { // this is here so we can have variables with different names (pretty clever)
+                            list.Add(11);
+                            list.Add(int.Parse(args[1]));
+                            list.Add(int.Parse(args[2]));
+                            list.Add(int.Parse(args[3]));
+                            list.Add(int.Parse(args[4]));
+                            list.Add(int.Parse(args[5]));
+
+                            code = code.Substring(code.IndexOf(Consts.COMMAND_BLOCK_STARTER) + 1);
+                            int blockStarterCount = 1;
+                            int blockEndCount = 0;
+                            int index = 0;
+
+                            while (blockEndCount != blockStarterCount)
+                            {
+                                if (code[index] == Consts.COMMAND_BLOCK_STARTER)
+                                {
+                                    blockStarterCount++;
+                                }
+                                else if (code[index] == Consts.COMMAND_BLOCK_CLOSER)
+                                {
+                                    blockEndCount++;
+                                }
+                                index++;
+                            }
+                            Compile(code.Substring(0, index - 1), list, layer + 1, false);
+                            code = code.Substring(index);
+                        }
+                        break;
+                    case Consts.TEXT_UNTIL:
+                        {
+                            list.Add(12);
+                            list.Add(int.Parse(args[1]));
+                            list.Add(int.Parse(args[2]));
+                            list.Add(int.Parse(args[3]));
+                            list.Add(int.Parse(args[4]));
+                            list.Add(int.Parse(args[5]));
+
+                            code = code.Substring(code.IndexOf(Consts.COMMAND_BLOCK_STARTER) + 1);
+                            int blockStarterCount = 1;
+                            int blockEndCount = 0;
+                            int index = 0;
+
+                            while (blockEndCount != blockStarterCount)
+                            {
+                                if (code[index] == Consts.COMMAND_BLOCK_STARTER)
+                                {
+                                    blockStarterCount++;
+                                }
+                                else if (code[index] == Consts.COMMAND_BLOCK_CLOSER)
+                                {
+                                    blockEndCount++;
+                                }
+                                index++;
+                            }
+                            Compile(code.Substring(0, index - 1), list, layer + 1, false);
+                            code = code.Substring(index);
+                        }
+                        break;
+                    default:
+                        MessageBox.Show(Consts.COMMAND_ERROR_TEXT, Consts.COMMAND_ERROR_TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
+                        break;
+                }
+
+                if (!(Consts.TEXT_COLOR+Consts.TEXT_UNTIL+Consts.TEXT_WHILE).Contains(args[0]))
+                {
+                    dispatcher.Invoke(() => { progressBar.Value++; });
+                    code = code.Substring(token.Length + 1); // always removes the first command from the code (if it's not a conditional)
+                }
+            }
         }
     }
 }

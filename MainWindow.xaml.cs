@@ -14,7 +14,7 @@ namespace AngelMacro
     {
         // all UI stuff and connections to core functions
 
-        MACROSTATUS currentStatus = MACROSTATUS.IDLE;
+        Consts.MACROSTATUS currentStatus = Consts.MACROSTATUS.IDLE;
         Thread countdownThread;
         bool codeChanged = true;
         int[] compiledCode;
@@ -103,13 +103,13 @@ namespace AngelMacro
                     switch (((MenuItem)sender).Name)
                     {
                         case "AddConditionButton":
-                            ScriptBox.AppendText($"{TEXT_COLOR}{ARGS_SEPARATOR}{cursorInfo.Item1.X}{ARGS_SEPARATOR}{cursorInfo.Item1.Y}{ARGS_SEPARATOR}{cursorInfo.Item2.R}{ARGS_SEPARATOR}{cursorInfo.Item2.G}{ARGS_SEPARATOR}{cursorInfo.Item2.B}{ARGS_SEPARATOR}\n{CONDITIONAL_MACRO_GUIDE}{COMMAND_SEPARATOR}\n");
+                            ScriptBox.AppendText($"{Consts.TEXT_COLOR}{Consts.ARGS_SEPARATOR}{cursorInfo.Item1.X}{Consts.ARGS_SEPARATOR}{cursorInfo.Item1.Y}{Consts.ARGS_SEPARATOR}{cursorInfo.Item2.R}{Consts.ARGS_SEPARATOR}{cursorInfo.Item2.G}{Consts.ARGS_SEPARATOR}{cursorInfo.Item2.B}{Consts.ARGS_SEPARATOR}\n{Consts.CONDITIONAL_MACRO_GUIDE}\n");
                             break;
                         case "AddWhileButton":
-                            ScriptBox.AppendText($"{TEXT_WHILE}{ARGS_SEPARATOR}{cursorInfo.Item1.X}{ARGS_SEPARATOR}{cursorInfo.Item1.Y}{ARGS_SEPARATOR}{cursorInfo.Item2.R}{ARGS_SEPARATOR}{cursorInfo.Item2.G}{ARGS_SEPARATOR}{cursorInfo.Item2.B}{ARGS_SEPARATOR}\n{WHILE_MACRO_GUIDE}{COMMAND_SEPARATOR}\n");
+                            ScriptBox.AppendText($"{Consts.TEXT_WHILE}{Consts.ARGS_SEPARATOR}{cursorInfo.Item1.X}{Consts.ARGS_SEPARATOR}{cursorInfo.Item1.Y}{Consts.ARGS_SEPARATOR}{cursorInfo.Item2.R}{Consts.ARGS_SEPARATOR}{cursorInfo.Item2.G}{Consts.ARGS_SEPARATOR}{cursorInfo.Item2.B}{Consts.ARGS_SEPARATOR}\n{Consts.WHILE_MACRO_GUIDE}\n");
                             break;
                         case "AddUntilButton":
-                            ScriptBox.AppendText($"{TEXT_UNTIL}{ARGS_SEPARATOR}{cursorInfo.Item1.X}{ARGS_SEPARATOR}{cursorInfo.Item1.Y}{ARGS_SEPARATOR}{cursorInfo.Item2.R}{ARGS_SEPARATOR}{cursorInfo.Item2.G}{ARGS_SEPARATOR}{cursorInfo.Item2.B}{ARGS_SEPARATOR}\n{WHILE_MACRO_GUIDE}{COMMAND_SEPARATOR}\n");
+                            ScriptBox.AppendText($"{Consts.TEXT_UNTIL}{Consts.ARGS_SEPARATOR}{cursorInfo.Item1.X}{Consts.ARGS_SEPARATOR}{cursorInfo.Item1.Y}{Consts.ARGS_SEPARATOR}{cursorInfo.Item2.R}{Consts.ARGS_SEPARATOR}{cursorInfo.Item2.G}{Consts.ARGS_SEPARATOR}{cursorInfo.Item2.B}{Consts.ARGS_SEPARATOR}\n{Consts.WHILE_MACRO_GUIDE}\n");
                             break;
                     }
                     if ((bool)autoMinimize.IsChecked)
@@ -135,7 +135,7 @@ namespace AngelMacro
             recordDelay = (bool)delayToggle.IsChecked;
             Countdown((bool)fastStart.IsChecked ? 0 : 3, () =>
             {
-                currentStatus = MACROSTATUS.RECORDING;
+                currentStatus = Consts.MACROSTATUS.RECORDING;
                 if (recordDelay)
                 {
                     RecordDelaysLoop();
@@ -152,7 +152,7 @@ namespace AngelMacro
                 RecordButton.IsEnabled = true;
                 RunButton.IsEnabled = true;
                 FileMenu.IsEnabled = true;
-                currentStatus = MACROSTATUS.IDLE;
+                currentStatus = Consts.MACROSTATUS.IDLE;
                 if ((bool)autoMinimize.IsChecked)
                 {
                     WindowState = WindowState.Normal;
@@ -164,8 +164,6 @@ namespace AngelMacro
 
         private void RunButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(ANMLangCompiler.CleanCode(ScriptBox.Text, ANMLANG_CHARSET));
-
             if (((Button)sender).IsEnabled == true && this.IsEnabled)
             {
                 if (codeChanged)
@@ -173,7 +171,7 @@ namespace AngelMacro
                     codeChanged = false;
                     this.IsEnabled = false;
 
-                    ((Button)sender).Content = RUN_MACRO_BUTTON_TEXT;
+                    ((Button)sender).Content = Consts.RUN_MACRO_BUTTON_TEXT;
 
                     CompilingCodeMessageBox messageBox = new CompilingCodeMessageBox();
                     messageBox.Show();
@@ -181,7 +179,7 @@ namespace AngelMacro
                     string rawMacro = ScriptBox.Text;
                     new Thread(() =>
                     {
-                        rawMacro = ANMLangCompiler.CleanCode(rawMacro, ANMLANG_CHARSET);
+                        rawMacro = ANMLangCompiler.CleanCode(rawMacro);
                         compiledCode = ANMLangCompiler.CompileCode(rawMacro, Dispatcher, messageBox.CompilingProgress);
 
                         Dispatcher.Invoke(() => { this.IsEnabled = true; messageBox.Close(); });
@@ -203,8 +201,8 @@ namespace AngelMacro
 
                 Countdown((bool)fastStart.IsChecked ? 0 : 3, () =>
                 {
-                    currentStatus = MACROSTATUS.RUNNING;
-                    while (currentStatus == MACROSTATUS.RUNNING)
+                    currentStatus = Consts.MACROSTATUS.RUNNING;
+                    while (currentStatus == Consts.MACROSTATUS.RUNNING)
                     {
                         try
                         {
@@ -213,7 +211,7 @@ namespace AngelMacro
                         catch (Exception ex)
                         {
                             if (ex is not ThreadInterruptedException)
-                                MessageBox.Show(ex.Message, COMMAND_ERROR_TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
+                                MessageBox.Show(ex.Message, Consts.COMMAND_ERROR_TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     }
                     return true;
@@ -229,7 +227,7 @@ namespace AngelMacro
                 RunButton.IsEnabled = true;
                 RecordButton.IsEnabled = true;
                 FileMenu.IsEnabled = true;
-                currentStatus = MACROSTATUS.IDLE;
+                currentStatus = Consts.MACROSTATUS.IDLE;
                 countdownThread.Interrupt();
                 if ((bool)autoMinimize.IsChecked)
                 {
@@ -242,17 +240,17 @@ namespace AngelMacro
         private void UnlockTextButton_Click(object sender, RoutedEventArgs e)
         {
             ((Button)sender).IsEnabled = false;
-            UnlockTextButton.Content = UNLOCKED_SCRIPT_WARNING;
+            UnlockTextButton.Content = Consts.UNLOCKED_SCRIPT_WARNING;
             ScriptBox.IsEnabled = true;
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.FileName = FILE_NAME;
-            saveFileDialog.DefaultExt = FILE_EXTENSION;
-            saveFileDialog.Filter = FILE_FILTER;
-            saveFileDialog.Title = SAVE_FILE_TITLE;
+            saveFileDialog.FileName = Consts.FILE_NAME;
+            saveFileDialog.DefaultExt = Consts.FILE_EXTENSION;
+            saveFileDialog.Filter = Consts.FILE_FILTER;
+            saveFileDialog.Title = Consts.SAVE_FILE_TITLE;
             saveFileDialog.FileOk += delegate
             {
                 File.WriteAllText(saveFileDialog.FileName, ScriptBox.Text);
@@ -265,9 +263,9 @@ namespace AngelMacro
             RunButton.IsEnabled = true;
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.DefaultExt = FILE_EXTENSION;
-            openFileDialog.Filter = FILE_FILTER;
-            openFileDialog.Title = OPEN_FILE_TITLE;
+            openFileDialog.DefaultExt = Consts.FILE_EXTENSION;
+            openFileDialog.Filter = Consts.FILE_FILTER;
+            openFileDialog.Title = Consts.OPEN_FILE_TITLE;
             openFileDialog.FileOk += delegate
             {
                 ScriptBox.Text = File.ReadAllText(openFileDialog.FileName);
@@ -290,13 +288,13 @@ namespace AngelMacro
                 {
                     for (int i = 0; i < seconds; i++)
                     {
-                        GDI.WriteTextDuration(0, 0, $"{seconds - i}{GDI_SECOND}", 1000, Brushes.Black, Brushes.AliceBlue);
+                        GDI.WriteTextDuration(0, 0, $"{seconds - i}{Consts.GDI_SECOND}", 1000, Brushes.Black, Brushes.AliceBlue);
                         Console.Beep(1400, 200);
                         Thread.Sleep(800);
                     }
                     if (seconds > 0)
                     {
-                        GDI.WriteTextDuration(0, 0, GDI_START, 1000, Brushes.Black, Brushes.AliceBlue);
+                        GDI.WriteTextDuration(0, 0, Consts.GDI_START, 1000, Brushes.Black, Brushes.AliceBlue);
                         Console.Beep(2400, 200);
                     }
 
@@ -307,7 +305,7 @@ namespace AngelMacro
                 {
                     if (ex is not ThreadInterruptedException)
                     {
-                        MessageBox.Show(ex.Message, COMMAND_ERROR_TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show(ex.Message, Consts.COMMAND_ERROR_TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             });
@@ -316,18 +314,18 @@ namespace AngelMacro
 
         private void AddEndMacroButton_Click(object sender, RoutedEventArgs e)
         {
-            ScriptBox.AppendText($"{TEXT_END}{COMMAND_SEPARATOR}\n");
+            ScriptBox.AppendText($"{Consts.TEXT_END}{Consts.COMMAND_SEPARATOR}\n");
         }
 
         private void AddColorThresholdChangeButton_Click(object sender, RoutedEventArgs e)
         {
-            ScriptBox.AppendText($"{TEXT_COLOR_THRESHOLD_CHANGE}{ARGS_SEPARATOR}5{COMMAND_SEPARATOR}\n");
+            ScriptBox.AppendText($"{Consts.TEXT_COLOR_THRESHOLD_CHANGE}{Consts.ARGS_SEPARATOR}5{Consts.COMMAND_SEPARATOR}\n");
         }
 
         private void ScriptBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             codeChanged = true;
-            RunButton.Content = COMPILE_CODE_BUTTON_TEXT;
+            RunButton.Content = Consts.COMPILE_CODE_BUTTON_TEXT;
         }
     }
 }

@@ -6,7 +6,7 @@
         xmlns:rs="clr-namespace:AngelMacro.Properties"
         xmlns:local="clr-namespace:AngelMacro"
         mc:Ignorable="d"
-        Title="{x:Static rs:Resources.compiling_code}" Height="64" Width="256" FontFamily="Consolas" ResizeMode="NoResize">
+        Title="{x:Static rs:Resources.compiling_code}" Height="64" Width="256" FontFamily="Consolas" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     <Grid>
         <ProgressBar x:Name="CompilingProgress" Margin="5"/>
     </Grid>

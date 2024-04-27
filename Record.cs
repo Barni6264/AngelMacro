@@ -45,22 +45,22 @@ namespace AngelMacro
             {
                 switch (e.RawEvent.Keyboard.RawCode)
                 {
-                    case PAUSE_RECORD: // F6
+                    case Consts.PAUSE_RECORD: // F6
                         Dispatcher.Invoke(() => { PauseRecordButton_Click(PauseRecordButton, null); });
                         break;
-                    case RUN: // F7
+                    case Consts.RUN: // F7
                         Dispatcher.Invoke(() => { RunButton_Click(RunButton, null); });
                         break;
-                    case STOP: // F8
+                    case Consts.STOP: // F8
                         Dispatcher.Invoke(() => { StopButton_Click(StopButton, null); });
                         break;
                     default: // other key
-                        if (listeningKeys.Contains(e.Data.KeyCode) && currentStatus == MACROSTATUS.RECORDING) // if the recorder is running
+                        if (listeningKeys.Contains(e.Data.KeyCode) && currentStatus == Consts.MACROSTATUS.RECORDING) // if the recorder is running
                         {
                             if (!keysDown.Contains(e.Data.KeyCode))
                             {
                                 RecordDelay();
-                                Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_KEY_DOWN}{ARGS_SEPARATOR}{e.Data.KeyCode}{COMMAND_SEPARATOR}\n"); });
+                                Dispatcher.Invoke(() => { ScriptBox.AppendText($"{Consts.TEXT_KEY_DOWN}{Consts.ARGS_SEPARATOR}{e.Data.KeyCode}{Consts.COMMAND_SEPARATOR}\n"); });
                                 keysDown.Add(e.Data.KeyCode);
                             }
                         }
@@ -70,12 +70,12 @@ namespace AngelMacro
 
             globalHook.KeyReleased += (s, e) =>
             {
-                if (listeningKeys.Contains(e.Data.KeyCode) && currentStatus == MACROSTATUS.RECORDING) // if the recorder is running
+                if (listeningKeys.Contains(e.Data.KeyCode) && currentStatus == Consts.MACROSTATUS.RECORDING) // if the recorder is running
                 {
                     if (keysDown.Contains(e.Data.KeyCode))
                     {
                         RecordDelay();
-                        Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_KEY_UP}{ARGS_SEPARATOR}{e.Data.KeyCode}{COMMAND_SEPARATOR}\n"); });
+                        Dispatcher.Invoke(() => { ScriptBox.AppendText($"{Consts.TEXT_KEY_UP}{Consts.ARGS_SEPARATOR}{e.Data.KeyCode}{Consts.COMMAND_SEPARATOR}\n"); });
                         keysDown.Remove(e.Data.KeyCode);
                     }
                 }
@@ -83,12 +83,12 @@ namespace AngelMacro
 
             globalHook.MousePressed += (s, e) =>
             {
-                if (listeningMouseKeys.Contains(e.Data.Button) && currentStatus == MACROSTATUS.RECORDING)
+                if (listeningMouseKeys.Contains(e.Data.Button) && currentStatus == Consts.MACROSTATUS.RECORDING)
                 {
                     if (!mouseKeysDown.Contains(e.Data.Button))
                     {
                         RecordDelay();
-                        Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_MOUSE_DOWN}{ARGS_SEPARATOR}{e.Data.Button}{COMMAND_SEPARATOR}\n"); });
+                        Dispatcher.Invoke(() => { ScriptBox.AppendText($"{Consts.TEXT_MOUSE_DOWN}{Consts.ARGS_SEPARATOR}{e.Data.Button}{Consts.COMMAND_SEPARATOR}\n"); });
                         mouseKeysDown.Add(e.Data.Button);
                     }
                 }
@@ -96,12 +96,12 @@ namespace AngelMacro
 
             globalHook.MouseReleased += (s, e) =>
             {
-                if (listeningMouseKeys.Contains(e.Data.Button) && currentStatus == MACROSTATUS.RECORDING)
+                if (listeningMouseKeys.Contains(e.Data.Button) && currentStatus == Consts.MACROSTATUS.RECORDING)
                 {
                     if (mouseKeysDown.Contains(e.Data.Button))
                     {
                         RecordDelay();
-                        Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_MOUSE_UP}{ARGS_SEPARATOR}{e.Data.Button}{COMMAND_SEPARATOR}\n"); });
+                        Dispatcher.Invoke(() => { ScriptBox.AppendText($"{Consts.TEXT_MOUSE_UP}{Consts.ARGS_SEPARATOR}{e.Data.Button}{Consts.COMMAND_SEPARATOR}\n"); });
                         mouseKeysDown.Remove(e.Data.Button);
                     }
                 }
@@ -109,19 +109,19 @@ namespace AngelMacro
 
             globalHook.MouseMoved += (s, e) =>
             {
-                if (recordMouseLocation && currentStatus == MACROSTATUS.RECORDING)
+                if (recordMouseLocation && currentStatus == Consts.MACROSTATUS.RECORDING)
                 {
                     RecordDelay();
-                    Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_LOCATION}{ARGS_SEPARATOR}{e.Data.X}{ARGS_SEPARATOR}{e.Data.Y}{COMMAND_SEPARATOR}\n"); });
+                    Dispatcher.Invoke(() => { ScriptBox.AppendText($"{Consts.TEXT_LOCATION}{Consts.ARGS_SEPARATOR}{e.Data.X}{Consts.ARGS_SEPARATOR}{e.Data.Y}{Consts.COMMAND_SEPARATOR}\n"); });
                 }
             };
 
             globalHook.MouseWheel += (s, e) =>
             {
-                if (recordScrollWheel && currentStatus == MACROSTATUS.RECORDING)
+                if (recordScrollWheel && currentStatus == Consts.MACROSTATUS.RECORDING)
                 {
                     RecordDelay();
-                    Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_SCROLL_WHEEL}{ARGS_SEPARATOR}{e.Data.Rotation}{COMMAND_SEPARATOR}\n"); });
+                    Dispatcher.Invoke(() => { ScriptBox.AppendText($"{Consts.TEXT_SCROLL_WHEEL}{Consts.ARGS_SEPARATOR}{e.Data.Rotation}{Consts.COMMAND_SEPARATOR}\n"); });
                 }
             };
 
@@ -131,7 +131,7 @@ namespace AngelMacro
         void RecordDelaysLoop()
         {
             stopwatch.Start();
-            while (currentStatus == MACROSTATUS.RECORDING) ;
+            while (currentStatus == Consts.MACROSTATUS.RECORDING) ;
             stopwatch.Reset();
             stopwatch.Stop();
         }
@@ -140,7 +140,7 @@ namespace AngelMacro
         {
             if (recordDelay)
             {
-                Dispatcher.Invoke(() => { ScriptBox.AppendText($"{TEXT_DELAY}{ARGS_SEPARATOR}{(int)stopwatch.Elapsed.TotalMilliseconds - CSHARP_LAG_COMPENSATION}{COMMAND_SEPARATOR}\n"); });
+                Dispatcher.Invoke(() => { ScriptBox.AppendText($"{Consts.TEXT_DELAY}{Consts.ARGS_SEPARATOR}{(int)stopwatch.Elapsed.TotalMilliseconds - Consts.CSHARP_LAG_COMPENSATION}{Consts.COMMAND_SEPARATOR}\n"); });
                 stopwatch.Restart();
             }
         }
