@@ -82,6 +82,7 @@ namespace AngelMacro
 
             List<int> result = new List<int>();
             Compile(code, result, 0, false);
+
             return result.ToArray();
         }
 
@@ -267,8 +268,7 @@ namespace AngelMacro
                         }
                         break;
                     default:
-                        MessageBox.Show(Consts.COMMAND_ERROR_TEXT, Consts.COMMAND_ERROR_TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
-                        break;
+                        throw new InvalidCommandException (Consts.COMMAND_ERROR_TEXT);
                 }
 
                 if (!(Consts.TEXT_COLOR+Consts.TEXT_UNTIL+Consts.TEXT_WHILE).Contains(args[0]))

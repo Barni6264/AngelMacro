@@ -1,9 +1,6 @@
 ﻿using SharpHook;
-using SharpHook.Native;
 using System;
 using System.Drawing;
-using System.Threading;
-using System.Windows;
 
 namespace AngelMacro
 {
@@ -14,6 +11,11 @@ namespace AngelMacro
 
         void ExecuteMacro(int[] code) //TODO COMPLIER rewrite from scratch
         {
+            while (currentStatus == Consts.MACROSTATUS.RUNNING)
+            {
+
+            }
+
             /*
                     for (int i = 0; (i < commands.Length) && (currentStatus == MACROSTATUS.RUNNING); i++)
                     {

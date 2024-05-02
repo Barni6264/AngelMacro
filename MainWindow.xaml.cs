@@ -168,10 +168,7 @@ namespace AngelMacro
             {
                 if (codeChanged)
                 {
-                    codeChanged = false;
                     this.IsEnabled = false;
-
-                    ((Button)sender).Content = Consts.RUN_MACRO_BUTTON_TEXT;
 
                     CompilingCodeMessageBox messageBox = new CompilingCodeMessageBox();
                     messageBox.Show();
@@ -179,8 +176,29 @@ namespace AngelMacro
                     string rawMacro = ScriptBox.Text;
                     new Thread(() =>
                     {
-                        rawMacro = ANMLangCompiler.CleanCode(rawMacro);
-                        compiledCode = ANMLangCompiler.CompileCode(rawMacro, Dispatcher, messageBox.CompilingProgress);
+                        try
+                        {
+                            rawMacro = ANMLangCompiler.CleanCode(rawMacro);
+                            compiledCode = ANMLangCompiler.CompileCode(rawMacro, Dispatcher, messageBox.CompilingProgress);
+
+                            // if the code above ran successfully
+                            Dispatcher.Invoke(() =>
+                            {
+                                ((Button)sender).Content = Consts.RUN_MACRO_BUTTON_TEXT;
+                            });
+                            codeChanged = false;
+                        }
+                        catch (Exception ex)
+                        {
+                            if (ex is InvalidCommandException)
+                            {
+                                MessageBox.Show($"{Consts.COMMAND_ERROR_TEXT}\n{Consts.ERROR_INVALID_OPERATION}", Consts.COMMAND_ERROR_TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+                            else if (ex is ArgumentOutOfRangeException)
+                            {
+                                MessageBox.Show($"{Consts.COMMAND_ERROR_TEXT}\n{Consts.ERROR_SYNTAX_ERROR}\n{ex.Message}", Consts.COMMAND_ERROR_TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+                        }
 
                         Dispatcher.Invoke(() => { this.IsEnabled = true; messageBox.Close(); });
                     }).Start();

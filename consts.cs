@@ -37,18 +37,28 @@ namespace AngelMacro
         public static readonly string COMPILE_CODE_BUTTON_TEXT = Properties.Resources.compile_code;
         public static readonly string RUN_MACRO_BUTTON_TEXT = Properties.Resources.run_macro;
 
+        public const string ERROR_SYNTAX_ERROR = "Invalid syntax"; // TODO resource file
+        public const string ERROR_INVALID_OPERATION = "Invalid operation"; // TODO resource file
+
         public const char COMMAND_SEPARATOR = ';';
         public const char ARGS_SEPARATOR = ':';
         public const char COMMAND_BLOCK_STARTER = '{';
         public const char COMMAND_BLOCK_CLOSER = '}';
 
-        public static readonly string CONDITIONAL_MACRO_GUIDE = $"{COMMAND_BLOCK_STARTER}\n   Put your macro here\n{COMMAND_BLOCK_CLOSER}{COMMAND_BLOCK_STARTER}\n   Put your macro here if the condition fails\n{COMMAND_BLOCK_CLOSER}";
-        public static readonly string WHILE_MACRO_GUIDE = $"{COMMAND_BLOCK_STARTER}   \nPut your macro here\n{COMMAND_BLOCK_CLOSER}";
+        public static readonly string CONDITIONAL_MACRO_GUIDE = $"{COMMAND_BLOCK_STARTER}\n   Put your macro here\n{COMMAND_BLOCK_CLOSER}{COMMAND_BLOCK_STARTER}\n   Put your macro here if the condition fails\n{COMMAND_BLOCK_CLOSER}"; // TODO resource file
+        public static readonly string WHILE_MACRO_GUIDE = $"{COMMAND_BLOCK_STARTER}   \nPut your macro here\n{COMMAND_BLOCK_CLOSER}"; // TODO resource file
 
         public const int PAUSE_RECORD = 0x75;
         public const int RUN = 0x76;
         public const int STOP = 0x77;
 
         public static readonly string ANMLANG_CHARSET = $"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-{COMMAND_SEPARATOR}{COMMAND_BLOCK_STARTER}{COMMAND_BLOCK_CLOSER}{ARGS_SEPARATOR}";
+    }
+
+    public class InvalidCommandException : Exception
+    {
+        public InvalidCommandException() { }
+        public InvalidCommandException(string message) : base(message) { }
+        public InvalidCommandException (string message, Exception innerException) : base(message, innerException) { }
     }
 }
