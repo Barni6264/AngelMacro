@@ -224,7 +224,7 @@ namespace AngelMacro
                     {
                         try
                         {
-                            ExecuteMacro(compiledCode);
+                            ExecuteCode(compiledCode);
                         }
                         catch (Exception ex)
                         {

@@ -19,7 +19,7 @@ namespace AngelMacro
          * - easy to generate
          * - easy to interpret
          * We need this to:
-         * - optimize the program, as string operations are much slower
+         * - optimize the program, as string operations and repeated int.Parse-ings are much slower
          * - add support for nested conditions
          * 
          * OP = Operation; token = element in the array
@@ -151,7 +151,7 @@ namespace AngelMacro
                         break;
 
                     // Hard part (I'll suffer...)
-
+                    // TODO create function for conditionals
                     case Consts.TEXT_COLOR:
                         {
                             list.Add(10);
