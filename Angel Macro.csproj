@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="SharpHook" Version="5.3.3" />
+    <PackageReference Include="SharpHook" Version="5.3.4" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.4" />
   </ItemGroup>
 
