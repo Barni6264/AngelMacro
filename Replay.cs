@@ -3,6 +3,7 @@ using System;
 using System.Drawing;
 using System.Threading;
 using SharpHook.Native;
+using System.Linq;
 
 namespace AngelMacro
 {
@@ -10,204 +11,112 @@ namespace AngelMacro
     {
         EventSimulator simulator = new EventSimulator();
         int colorThreshold = 5;
-        int[] code;
-        int index = 0;
+        int[] emptyIntArray = { };
 
-        void ExecuteCode(int[] _code) //TODO COMPLIER rewrite from scratch
+        void ExecuteCode(int[][] code) //TODO COMPLIER rewrite from scratch
         {
-            code = _code;
             while (currentStatus == Consts.MACROSTATUS.RUNNING)
             {
-                index = 0;
-                Execute();
+                Execute(code);
             }
-
-            /*
-                    for (int i = 0; (i < commands.Length) && (currentStatus == MACROSTATUS.RUNNING); i++)
-                    {
-                        if (commands[i].Length < 2)
-                        {
-                            continue;
-                        }
-
-                        command = commands[i].Split(argsSeparator);
-
-                        switch (command[0].Trim())
-                        {
-                            case TEXT_COLOR_THRESHOLD_CHANGE:
-                                colorThreshold = int.Parse(command[1]);
-                                break;
-                            case TEXT_COLOR:
-                                RunColorCheck(command);
-                                break;
-                            case TEXT_WHILE:
-                                RunWhileCheck(command);
-                                break;
-                            case TEXT_UNTIL:
-                                RunWhileNot(command);
-                                break;
-                            case TEXT_END:
-                                Dispatcher.Invoke(() => { StopButton_Click(StopButton, null); });
-                                Console.Beep(600, 200);
-                                break;
-                            case TEXT_DELAY:
-                                Thread.Sleep(int.Parse(command[1]));
-                                break;
-                            case TEXT_KEY_DOWN:
-                                simulator.SimulateKeyPress((KeyCode)Enum.Parse(typeof(KeyCode), command[1]));
-                                break;
-                            case TEXT_KEY_UP:
-                                simulator.SimulateKeyRelease((KeyCode)Enum.Parse(typeof(KeyCode), command[1]));
-                                break;
-                            case TEXT_LOCATION:
-                                simulator.SimulateMouseMovement(short.Parse(command[1]), short.Parse(command[2]));
-                                break;
-                            case TEXT_MOUSE_DOWN:
-                                simulator.SimulateMousePress((MouseButton)Enum.Parse(typeof(MouseButton), command[1]));
-                                break;
-                            case TEXT_MOUSE_UP:
-                                simulator.SimulateMouseRelease((MouseButton)Enum.Parse(typeof(MouseButton), command[1]));
-                                break;
-                            case TEXT_SCROLL_WHEEL:
-                                simulator.SimulateMouseWheel(short.Parse(command[1]));
-                                break;
-                            default:
-                                Dispatcher.Invoke(() => { StopButton_Click(StopButton, null); });
-                                MessageBox.Show(COMMAND_ERROR_TEXT, COMMAND_ERROR_TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
-                                break;
-
-                        }
-                    }
-            */
         }
 
-        void Execute(bool marked = false) // returns the new index
+        void Execute(int[][] code, bool marked = false)
         {
-            int firstOPlayer = code[index];
-            int currentLayer = firstOPlayer;
+            int index = 0;
+            int layer = Math.Abs(code[0][0]); // unmarked layer
 
-            if (marked) // if marked, skip to the marked (-) part
-            {
-                index = Array.IndexOf(code, -firstOPlayer, index);
-                /* TODO
-                 * this is not okay, as args can have values that match the layer
-                 * another problem is if the Array.IndexOf can't find the element we're looking for (eg. we reach the end of the array) then we're screwed
-                 * maybe we can split the array into a 2D jagged array of OPs and args
-                 * and we also have another problem. we might not be able to find (anywhere where we use IndexOf) the next OP in the same layer, because it is possible that we have
-                 * an OP that is already a layer above, so we should use something like IndexOf(array, thisValueOrSmallerThanThis, startIndex)
-                 */
-                firstOPlayer *= -1;
-                currentLayer = firstOPlayer;
-                /*
-                 * I think this while loop is slower than the Array.IndexOf, but I'll leave it here as a comment as a backup
-                 * 
-                while (code[index] != -firstOPlayer)
-                {
-                    index++;
-                }
-                 */
-            }
+            /* TODO
+             * another problem is if the Array.IndexOf can't find the element we're looking for (eg. we reach the end of the array) then we're screwed
+             * and we also have another problem. we might not be able to find (anywhere where we use IndexOf) the next OP in the same layer, because it is possible that we have
+             * an OP that is already a layer above, so we should use something like IndexOf(array, thisValueOrSmallerThanThis, startIndex)
+            */
 
-            while (currentStatus == Consts.MACROSTATUS.RUNNING && firstOPlayer == currentLayer)
+            while (currentStatus == Consts.MACROSTATUS.RUNNING && index < code.Length)
             {
-                switch (code[index+1])
+                // 0:layer, 1:OP, 2...args
+                switch (code[index][1])
                 {
                     case 0:
                         Dispatcher.Invoke(() => { StopButton_Click(StopButton, null); });
                         Console.Beep(600, 200);
                         break;
                     case 1:
-                        colorThreshold = code[index+2];
-                        index += (2 + 1); // 2+1, because the first number is always 2 (1 to skip the layer indicator, 1 to skip the OP) + (number of args)
+                        colorThreshold = code[index][2];
                         break;
                     case 2:
-                        Thread.Sleep(code[index+2]);
-                        index += (2 + 1);
+                        Thread.Sleep(code[index][2]);
                         break;
                     case 3:
-                        simulator.SimulateKeyPress((KeyCode)code[index+2]);
-                        index += (2 + 1);
+                        simulator.SimulateKeyPress((KeyCode)code[index][2]);
                         break;
                     case 4:
-                        simulator.SimulateKeyRelease((KeyCode)code[index + 2]);
-                        index += (2 + 1);
+                        simulator.SimulateKeyRelease((KeyCode)code[index][2]);
                         break;
                     case 5:
-                        simulator.SimulateMouseMovement((short)code[index + 2], (short)code[index + 3]);
-                        index += (2 + 2);
+                        simulator.SimulateMouseMovement((short)code[index][2], (short)code[index][3]);
                         break;
                     case 6:
-                        simulator.SimulateMousePress((MouseButton)code[index + 2]);
-                        index += (2 + 1);
+                        simulator.SimulateMousePress((MouseButton)code[index][2]);
                         break;
                     case 7:
-                        simulator.SimulateMouseRelease((MouseButton)code[index + 2]);
+                        simulator.SimulateMouseRelease((MouseButton)code[index][2]);
                         index += (2 + 1);
                         break;
                     case 8:
-                        simulator.SimulateMouseWheel((short)code[index + 2]);
+                        simulator.SimulateMouseWheel((short)code[index][2]);
                         break;
                     case 10: // OP if
                         /*
-                         * This is what a normal person would do (I think)
-                         * 
-                        if (IsColor(code[index + 2], code[index + 3], code[index + 4], code[index + 5], code[index + 6]))
-                        {
-                            index += (2 + 5);
-                            Execute();
-                        }
-                        else
-                        {
-                            index += (2 + 5);
-                            Execute(true);
-                        }
-                        break;
-                        */
-                        // first I increment, to avoid repetition
-                        // I changed my mind mid way, but I will leave everything here as a backup just in case
-                        /*
-                        index += (2 + 5);
-                        if (IsColor(code[index - 5], code[index - 4], code[index - 3], code[index - 2], code[index - 1]))
-                        {
-                            Execute();
-                        }
-                        else
-                        {
-                            Execute(true);
-                        }
-                        break;
-                        */
-                        index += (2 + 5);
-                        Execute(!IsColor(code[index - 5], code[index - 4], code[index - 3], code[index - 2], code[index - 1])); // one-liner
+                         * if true:
+                         * - go to the end of the "if true" part
+                         * - execute it
+                         * - go to the end of the "else" part
+                         * - skip by incrementing the index
+                         * else:
+                         * - go to the end of the "if true" part
+                         * - skip it by incrementing the index
+                         * - go to the end of the "else" part
+                         * - execute it
+                         * - skip by incrementing the index
+                         */
 
-                        // everywhere where we have conditionals, we have to skip the nested part before the break (the "else" part of the if OP is an exception from this) // TODO
-                        index = Array.IndexOf(code, firstOPlayer, index); // we can use the index here without adding anything to it, as we already added 7
+                        /*
+                         * This abomination finds the first element of the code array whose first element is smaller or equal to the current layer, then it get's the index of the element
+                         * * it finds the index of the next OP with the same or lower layer number. If it can't find it, it returns -1
+                         * It should be noted that because this is an if-else pair, we can also have the "else" part after the "if true" OPs
+                         * * so we have to search for the -layer pair too, not just the layer above
+                         */
+                        int toTake = Array.IndexOf(code,
+                            code.Skip(index + 1)
+                            .FirstOrDefault(num => (Math.Abs(num[0]) <= layer || num[0] == -1 * (layer + 1)), emptyIntArray)
+                        );
+                        // returns 0 if it finds the end immediately, -1 if it reaches the end of the full code, 1 if there's only 1 OP inside, 2 if 2 OPs, 3, etc...
+
+                        if (IsColor(code[index][2], code[index][3], code[index][4], code[index][5], code[index][6]))
+                        {
+                            // if toTake is -1 (couldn't find other instructions with smaller or equal layer number), then skip the ".Take" part
+                            if (toTake == -1)
+                            {
+                                Execute(code.Skip(index+1).ToArray());
+                            }
+                            else
+                            {
+                                Execute(code.Skip(index+1).Take(toTake).ToArray());
+                            }
+                        }
+                        else
+                        {
+                            
+                        }
                         break;
                     case 11: // OP while
-                        {
-                            int savedIndex = index;
-                            while (IsColor(code[index - 5], code[index - 4], code[index - 3], code[index - 2], code[index - 1]))
-                            {
-                                Execute();
-                                index = savedIndex; // reverts back to the original index
-                            }
-                            index = Array.IndexOf(code, firstOPlayer, savedIndex + 1); // +1 so it doesn't include the original
-                        }
                         break;
                     case 12: // OP while !condition
-                        {
-                            int savedIndex = index;
-                            while (!IsColor(code[index - 5], code[index - 4], code[index - 3], code[index - 2], code[index - 1]))
-                            {
-                                Execute();
-                                index = savedIndex; // reverts back to the original index
-                            }
-                            index = Array.IndexOf(code, firstOPlayer, savedIndex + 1); // +1 so it doesn't include the original
-                        }
                         break;
                 }
 
-                currentLayer = code[index];
+                index++;
             }
         }
 

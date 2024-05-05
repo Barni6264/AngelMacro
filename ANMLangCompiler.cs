@@ -70,17 +70,18 @@ namespace AngelMacro
          *      DELAY:30;
          *      
          * To be honest, it doesn't look that bad
+         * TODO rewrite the whole "bytecode" and create a new one that is faster and easier to interpret
          */
         static Dispatcher dispatcher;
         static ProgressBar progressBar;
-        public static int[] CompileCode(string code, Dispatcher _dispatcher, ProgressBar _progressBar)
+        public static int[][] CompileCode(string code, Dispatcher _dispatcher, ProgressBar _progressBar)
         {
             dispatcher = _dispatcher;
             progressBar = _progressBar;
 
             dispatcher.Invoke(() => { progressBar.Maximum = code.Split(Consts.COMMAND_SEPARATOR).Length; });
 
-            List<int> result = new List<int>();
+            List<int[]> result = new List<int[]>();
             Compile(code, result, 0, false);
 
             return result.ToArray();
@@ -91,10 +92,11 @@ namespace AngelMacro
             return new string(code.Where(c => Consts.ANMLANG_CHARSET.Contains(c)).ToArray());
         }
 
-        static void Compile(string code, List<int> list, int layer, bool marked) // marked could mean lots of things, but in this case it means the it belongs to the else part of a "COLOR" conditional
+        static void Compile(string code, List<int[]> list, int layer, bool marked) // marked could mean lots of things, but in this case it means the it belongs to the else part of a "COLOR" conditional
         {
             while (code.Length > 0)
             {
+                List<int> result = new List<int>();
                 string token = code.Split(Consts.COMMAND_SEPARATOR)[0];
                 /*
                  * Token can look like this:
@@ -110,56 +112,56 @@ namespace AngelMacro
                     return;
                 }
 
-                list.Add(marked?-layer:layer);
+                result.Add(marked?-layer:layer);
                 switch (args[0]) //OP
                 {
                     case Consts.TEXT_COLOR_THRESHOLD_CHANGE:
-                        list.Add(1);
-                        list.Add(int.Parse(args[1]));
+                        result.Add(1);
+                        result.Add(int.Parse(args[1]));
                         break;
                     case Consts.TEXT_END:
-                        list.Add(0);
+                        result.Add(0);
                         return; // because anything in the scope under an END OP is just useless and unreachable
                     case Consts.TEXT_DELAY:
-                        list.Add(2);
-                        list.Add(int.Parse(args[1]));
+                        result.Add(2);
+                        result.Add(int.Parse(args[1]));
                         break;
                     case Consts.TEXT_KEY_DOWN:
-                        list.Add(3);
-                        list.Add((int)Enum.Parse(typeof(KeyCode), args[1]));
+                        result.Add(3);
+                        result.Add((int)Enum.Parse(typeof(KeyCode), args[1]));
                         break;
                     case Consts.TEXT_KEY_UP:
-                        list.Add(4);
-                        list.Add((int)Enum.Parse(typeof(KeyCode), args[1]));
+                        result.Add(4);
+                        result.Add((int)Enum.Parse(typeof(KeyCode), args[1]));
                         break;
                     case Consts.TEXT_LOCATION:
-                        list.Add(5);
-                        list.Add(int.Parse(args[1]));
-                        list.Add(int.Parse(args[2]));
+                        result.Add(5);
+                        result.Add(int.Parse(args[1]));
+                        result.Add(int.Parse(args[2]));
                         break;
                     case Consts.TEXT_MOUSE_DOWN:
-                        list.Add(6);
-                        list.Add((int)Enum.Parse(typeof(MouseButton), args[1]));
+                        result.Add(6);
+                        result.Add((int)Enum.Parse(typeof(MouseButton), args[1]));
                         break;
                     case Consts.TEXT_MOUSE_UP:
-                        list.Add(7);
-                        list.Add((int)Enum.Parse(typeof(MouseButton), args[1]));
+                        result.Add(7);
+                        result.Add((int)Enum.Parse(typeof(MouseButton), args[1]));
                         break;
                     case Consts.TEXT_SCROLL_WHEEL:
-                        list.Add(8);
-                        list.Add(int.Parse(args[1]));
+                        result.Add(8);
+                        result.Add(int.Parse(args[1]));
                         break;
 
                     // Hard part (I'll suffer...)
                     // TODO create function for conditionals
                     case Consts.TEXT_COLOR:
                         {
-                            list.Add(10);
-                            list.Add(int.Parse(args[1])); // X
-                            list.Add(int.Parse(args[2])); // Y
-                            list.Add(int.Parse(args[3])); // R
-                            list.Add(int.Parse(args[4])); // G
-                            list.Add(int.Parse(args[5])); // B
+                            result.Add(10);
+                            result.Add(int.Parse(args[1])); // X
+                            result.Add(int.Parse(args[2])); // Y
+                            result.Add(int.Parse(args[3])); // R
+                            result.Add(int.Parse(args[4])); // G
+                            result.Add(int.Parse(args[5])); // B
                             /*
                              * now, the program will step through the "code" character by character and count the fancy brackets -->{}. First it has 1 opening bracket,
                              * and it loops until it finds a pair (has the same amount of opening and closing brackets)
@@ -184,6 +186,7 @@ namespace AngelMacro
                                 }
                                 index++;
                             }
+                            list.Add(result.ToArray());
                             Compile(code.Substring(0, index - 1), list, layer + 1, false); // I think this will NOT include the last block closer
                             code = code.Substring(index+1);
 
@@ -209,12 +212,12 @@ namespace AngelMacro
                         break;
                     case Consts.TEXT_WHILE:
                         { // this is here so we can have variables with different names (pretty clever)
-                            list.Add(11);
-                            list.Add(int.Parse(args[1]));
-                            list.Add(int.Parse(args[2]));
-                            list.Add(int.Parse(args[3]));
-                            list.Add(int.Parse(args[4]));
-                            list.Add(int.Parse(args[5]));
+                            result.Add(11);
+                            result.Add(int.Parse(args[1]));
+                            result.Add(int.Parse(args[2]));
+                            result.Add(int.Parse(args[3]));
+                            result.Add(int.Parse(args[4]));
+                            result.Add(int.Parse(args[5]));
 
                             code = code.Substring(code.IndexOf(Consts.COMMAND_BLOCK_STARTER) + 1);
                             int blockStarterCount = 1;
@@ -233,18 +236,19 @@ namespace AngelMacro
                                 }
                                 index++;
                             }
+                            list.Add(result.ToArray());
                             Compile(code.Substring(0, index - 1), list, layer + 1, false);
                             code = code.Substring(index);
                         }
                         break;
                     case Consts.TEXT_UNTIL:
                         {
-                            list.Add(12);
-                            list.Add(int.Parse(args[1]));
-                            list.Add(int.Parse(args[2]));
-                            list.Add(int.Parse(args[3]));
-                            list.Add(int.Parse(args[4]));
-                            list.Add(int.Parse(args[5]));
+                            result.Add(12);
+                            result.Add(int.Parse(args[1]));
+                            result.Add(int.Parse(args[2]));
+                            result.Add(int.Parse(args[3]));
+                            result.Add(int.Parse(args[4]));
+                            result.Add(int.Parse(args[5]));
 
                             code = code.Substring(code.IndexOf(Consts.COMMAND_BLOCK_STARTER) + 1);
                             int blockStarterCount = 1;
@@ -263,6 +267,7 @@ namespace AngelMacro
                                 }
                                 index++;
                             }
+                            list.Add(result.ToArray());
                             Compile(code.Substring(0, index - 1), list, layer + 1, false);
                             code = code.Substring(index);
                         }
@@ -273,6 +278,7 @@ namespace AngelMacro
 
                 if (!(Consts.TEXT_COLOR+Consts.TEXT_UNTIL+Consts.TEXT_WHILE).Contains(args[0]))
                 {
+                    list.Add(result.ToArray());
                     dispatcher.Invoke(() => { progressBar.Value++; });
                     code = code.Substring(token.Length + 1); // always removes the first command from the code (if it's not a conditional)
                 }

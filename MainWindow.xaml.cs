@@ -17,7 +17,7 @@ namespace AngelMacro
         Consts.MACROSTATUS currentStatus = Consts.MACROSTATUS.IDLE;
         Thread countdownThread;
         bool codeChanged = true;
-        int[] compiledCode;
+        int[][] compiledCode;
 
         public MainWindow()
         {
