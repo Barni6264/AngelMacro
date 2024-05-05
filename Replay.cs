@@ -11,28 +11,46 @@ namespace AngelMacro
     {
         EventSimulator simulator = new EventSimulator();
         int colorThreshold = 5;
-        int[] emptyIntArray = { };
+        int[][] code;
+        int index;
 
-        void ExecuteCode(int[][] code) //TODO COMPLIER rewrite from scratch
+        void ExecuteCode(int[][] _code) //TODO COMPLIER rewrite from scratch
         {
+            code = _code;
             while (currentStatus == Consts.MACROSTATUS.RUNNING)
             {
-                Execute(code);
+                index = 0;
+                Execute(0, ignoreLayer:true);
             }
         }
-
-        void Execute(int[][] code, bool marked = false)
+        // I have absolutely no idea if the code below works or not, but "it should do its job"
+        void Execute(int callingLayer, bool marked = false, bool ignoreLayer = false)
         {
-            int index = 0;
-            int layer = Math.Abs(code[0][0]); // unmarked layer
+            int layer = code[index][0];
+            int nextLayer = layer;
+            int currentLayerAbs = Math.Abs(layer);
+            int desiredLayerAbs = ignoreLayer?0:Math.Abs(callingLayer)+1;
 
-            /* TODO
-             * another problem is if the Array.IndexOf can't find the element we're looking for (eg. we reach the end of the array) then we're screwed
-             * and we also have another problem. we might not be able to find (anywhere where we use IndexOf) the next OP in the same layer, because it is possible that we have
-             * an OP that is already a layer above, so we should use something like IndexOf(array, thisValueOrSmallerThanThis, startIndex)
-            */
+            // if marked, skip to the marked part or to the end of the condition or to the end of the array
+            if (marked)
+            {
+                int i = index;
+                index = code.Length; // skip to the end, if there's still code, revert this
+                for (; i < code.Length; i++)
+                {
+                    if (code[i][0] == desiredLayerAbs * -1)
+                    {
+                        index = i; break; // found the "else" part, continue with the "else" part
+                    }
+                    if (Math.Abs(code[i][0]) < desiredLayerAbs)
+                    {
+                        index = i; return; // "else" not found, but there is still code, so return to the layer above
+                    }
+                }
+            }
+            // we do not need to skip the potential "else" part when executing the "if true" branch, because when the sign flips to (-) it returns
 
-            while (currentStatus == Consts.MACROSTATUS.RUNNING && index < code.Length)
+            while (currentStatus == Consts.MACROSTATUS.RUNNING && index < code.Length && nextLayer == layer && desiredLayerAbs == currentLayerAbs && (marked == false?layer>=0:true))
             {
                 // 0:layer, 1:OP, 2...args
                 switch (code[index][1])
@@ -43,80 +61,77 @@ namespace AngelMacro
                         break;
                     case 1:
                         colorThreshold = code[index][2];
+                        index++;
                         break;
                     case 2:
                         Thread.Sleep(code[index][2]);
+                        index++;
                         break;
                     case 3:
                         simulator.SimulateKeyPress((KeyCode)code[index][2]);
+                        index++;
                         break;
                     case 4:
                         simulator.SimulateKeyRelease((KeyCode)code[index][2]);
+                        index++;
                         break;
                     case 5:
                         simulator.SimulateMouseMovement((short)code[index][2], (short)code[index][3]);
+                        index++;
                         break;
                     case 6:
                         simulator.SimulateMousePress((MouseButton)code[index][2]);
+                        index++;
                         break;
                     case 7:
                         simulator.SimulateMouseRelease((MouseButton)code[index][2]);
-                        index += (2 + 1);
+                        index++;
                         break;
                     case 8:
                         simulator.SimulateMouseWheel((short)code[index][2]);
+                        index++;
                         break;
                     case 10: // OP if
-                        /*
-                         * if true:
-                         * - go to the end of the "if true" part
-                         * - execute it
-                         * - go to the end of the "else" part
-                         * - skip by incrementing the index
-                         * else:
-                         * - go to the end of the "if true" part
-                         * - skip it by incrementing the index
-                         * - go to the end of the "else" part
-                         * - execute it
-                         * - skip by incrementing the index
-                         */
-
-                        /*
-                         * This abomination finds the first element of the code array whose first element is smaller or equal to the current layer, then it get's the index of the element
-                         * * it finds the index of the next OP with the same or lower layer number. If it can't find it, it returns -1
-                         * It should be noted that because this is an if-else pair, we can also have the "else" part after the "if true" OPs
-                         * * so we have to search for the -layer pair too, not just the layer above
-                         */
-                        int toTake = Array.IndexOf(code,
-                            code.Skip(index + 1)
-                            .FirstOrDefault(num => (Math.Abs(num[0]) <= layer || num[0] == -1 * (layer + 1)), emptyIntArray)
-                        );
-                        // returns 0 if it finds the end immediately, -1 if it reaches the end of the full code, 1 if there's only 1 OP inside, 2 if 2 OPs, 3, etc...
-
-                        if (IsColor(code[index][2], code[index][3], code[index][4], code[index][5], code[index][6]))
+                        index++;
+                        Execute(layer, !IsColor(code[index-1][2], code[index-1][3], code[index-1][4], code[index-1][5], code[index-1][6]));
+                        // at the end of an "Execute" call, we have to skip to the next OP that is on the same layer as we are
+                        if (SkipNested(layer, currentLayerAbs))
                         {
-                            // if toTake is -1 (couldn't find other instructions with smaller or equal layer number), then skip the ".Take" part
-                            if (toTake == -1)
-                            {
-                                Execute(code.Skip(index+1).ToArray());
-                            }
-                            else
-                            {
-                                Execute(code.Skip(index+1).Take(toTake).ToArray());
-                            }
-                        }
-                        else
-                        {
-                            
+                            return;
                         }
                         break;
                     case 11: // OP while
+                        index++;
+                        int whileIndexBackup = index;
+                        while (IsColor(code[index-1][2], code[index-1][3], code[index-1][4], code[index-1][5], code[index - 1][6]))
+                        {
+                            Execute(layer);
+                            index = whileIndexBackup;
+                        }
+                        if (SkipNested(layer, currentLayerAbs))
+                        {
+                            return;
+                        }
                         break;
                     case 12: // OP while !condition
+                        index++;
+                        int whileNotIndexBackup = index;
+                        while (!IsColor(code[index - 1][2], code[index - 1][3], code[index - 1][4], code[index - 1][5], code[index - 1][6]))
+                        {
+                            Execute(layer);
+                            index = whileNotIndexBackup;
+                        }
+                        if (SkipNested(layer, currentLayerAbs))
+                        {
+                            return;
+                        }
                         break;
                 }
 
-                index++;
+                if (index < code.Length)
+                {
+                    nextLayer = code[index][0];
+                }
             }
         }
 
@@ -126,37 +141,24 @@ namespace AngelMacro
             return (Math.Abs(color.R - r) + Math.Abs(color.G - g) + Math.Abs(color.B - b))<=colorThreshold;
         }
 
-        void RunColorCheck(string[] command)
+        bool SkipNested(int layer, int currentLayerAbs)
         {
-            Color color = Condition.GetPixel(int.Parse(command[1]), int.Parse(command[2]));
-            if ((Math.Abs(color.R - int.Parse(command[3])) + Math.Abs(color.G - int.Parse(command[4])) + Math.Abs(color.B - int.Parse(command[5]))) < colorThreshold)
+            int i = index;
+            index = code.Length; // skip to the end, if there's still code, revert this
+            for (; i < code.Length; i++)
             {
-                //ExecuteMacro(command[6], COMMAND_SEPARATOR2, ARGS_SEPARATOR2); //TODO COMPLIER rewrite
+                if (code[i][0] == layer)
+                {
+                    index = i;
+                    return false; // we're good to go, continue with the execution
+                }
+                if (Math.Abs(code[i][0]) < currentLayerAbs)
+                {
+                    index = i;
+                    return true;
+                }
             }
-            else
-            {
-                //ExecuteMacro(command[7], COMMAND_SEPARATOR2, ARGS_SEPARATOR2); //TODO COMPLIER rewrite
-            }
-        }
-
-        void RunWhileCheck(string[] command)
-        {
-            Color color = Condition.GetPixel(int.Parse(command[1]), int.Parse(command[2]));
-            while ((Math.Abs(color.R - int.Parse(command[3])) + Math.Abs(color.G - int.Parse(command[4])) + Math.Abs(color.B - int.Parse(command[5]))) < colorThreshold)
-            {
-                //ExecuteMacro(command[6], COMMAND_SEPARATOR2, ARGS_SEPARATOR2); //TODO COMPLIER rewrite
-                color = Condition.GetPixel(int.Parse(command[1]), int.Parse(command[2]));
-            }
-        }
-
-        void RunWhileNot(string[] command)
-        {
-            Color color = Condition.GetPixel(int.Parse(command[1]), int.Parse(command[2]));
-            while ((Math.Abs(color.R - int.Parse(command[3])) + Math.Abs(color.G - int.Parse(command[4])) + Math.Abs(color.B - int.Parse(command[5]))) > colorThreshold)
-            {
-                //ExecuteMacro(command[6], COMMAND_SEPARATOR2, ARGS_SEPARATOR2); //TODO COMPLIER rewrite
-                color = Condition.GetPixel(int.Parse(command[1]), int.Parse(command[2]));
-            }
+            return true;
         }
     }
 }

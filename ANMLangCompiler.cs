@@ -128,11 +128,11 @@ namespace AngelMacro
                         break;
                     case Consts.TEXT_KEY_DOWN:
                         result.Add(3);
-                        result.Add((int)Enum.Parse(typeof(KeyCode), args[1]));
+                        result.Add((int)(ushort)Enum.Parse(typeof(KeyCode), args[1]));
                         break;
                     case Consts.TEXT_KEY_UP:
                         result.Add(4);
-                        result.Add((int)Enum.Parse(typeof(KeyCode), args[1]));
+                        result.Add((int)(ushort)Enum.Parse(typeof(KeyCode), args[1]));
                         break;
                     case Consts.TEXT_LOCATION:
                         result.Add(5);
@@ -141,11 +141,11 @@ namespace AngelMacro
                         break;
                     case Consts.TEXT_MOUSE_DOWN:
                         result.Add(6);
-                        result.Add((int)Enum.Parse(typeof(MouseButton), args[1]));
+                        result.Add((int)(ushort)Enum.Parse(typeof(MouseButton), args[1]));
                         break;
                     case Consts.TEXT_MOUSE_UP:
                         result.Add(7);
-                        result.Add((int)Enum.Parse(typeof(MouseButton), args[1]));
+                        result.Add((int)(ushort)Enum.Parse(typeof(MouseButton), args[1]));
                         break;
                     case Consts.TEXT_SCROLL_WHEEL:
                         result.Add(8);

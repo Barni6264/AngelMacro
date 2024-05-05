@@ -220,17 +220,14 @@ namespace AngelMacro
                 Countdown((bool)fastStart.IsChecked ? 0 : 3, () =>
                 {
                     currentStatus = Consts.MACROSTATUS.RUNNING;
-                    while (currentStatus == Consts.MACROSTATUS.RUNNING)
+                    try
                     {
-                        try
-                        {
-                            ExecuteCode(compiledCode);
-                        }
-                        catch (Exception ex)
-                        {
-                            if (ex is not ThreadInterruptedException)
-                                MessageBox.Show(ex.Message, Consts.COMMAND_ERROR_TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
-                        }
+                        ExecuteCode(compiledCode);
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex is not ThreadInterruptedException)
+                            MessageBox.Show(ex.Message, Consts.COMMAND_ERROR_TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                     return true;
                 });
@@ -319,14 +316,14 @@ namespace AngelMacro
                     Dispatcher.Invoke(() => { this.IsEnabled = true; });
                     func();
                 }
-                catch (Exception ex)
+                    catch (Exception ex)
                 {
-                    if (ex is not ThreadInterruptedException)
-                    {
-                        MessageBox.Show(ex.Message, Consts.COMMAND_ERROR_TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
+                        if (ex is not ThreadInterruptedException)
+                {
+                    MessageBox.Show(ex.Message, Consts.COMMAND_ERROR_TITLE, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-            });
+            }
+    });
             countdownThread.Start();
         }
 

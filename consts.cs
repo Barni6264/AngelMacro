@@ -52,7 +52,7 @@ namespace AngelMacro
         public const int RUN = 0x76;
         public const int STOP = 0x77;
 
-        public static readonly string ANMLANG_CHARSET = $"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-{COMMAND_SEPARATOR}{COMMAND_BLOCK_STARTER}{COMMAND_BLOCK_CLOSER}{ARGS_SEPARATOR}";
+        public static readonly string ANMLANG_CHARSET = $"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-{COMMAND_SEPARATOR}{COMMAND_BLOCK_STARTER}{COMMAND_BLOCK_CLOSER}{ARGS_SEPARATOR}";
     }
 
     public class InvalidCommandException : Exception
