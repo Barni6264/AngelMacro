@@ -92,6 +92,7 @@ namespace AngelMacro
             return new string(code.Where(c => Consts.ANMLANG_CHARSET.Contains(c)).ToArray());
         }
 
+        // TODO exception for unknown enum
         static void Compile(string code, List<int[]> list, int layer, bool marked) // marked could mean lots of things, but in this case it means the it belongs to the else part of a "COLOR" conditional
         {
             while (code.Length > 0)
@@ -121,7 +122,7 @@ namespace AngelMacro
                         break;
                     case Consts.TEXT_END:
                         result.Add(0);
-                        return; // because anything in the scope under an END OP is just useless and unreachable
+                        break;
                     case Consts.TEXT_DELAY:
                         result.Add(2);
                         result.Add(int.Parse(args[1]));
@@ -150,6 +151,9 @@ namespace AngelMacro
                     case Consts.TEXT_SCROLL_WHEEL:
                         result.Add(8);
                         result.Add(int.Parse(args[1]));
+                        break;
+                    case Consts.TEXT_SCREENSHOT:
+                        result.Add(9);
                         break;
 
                     // Hard part (I'll suffer...)
@@ -281,6 +285,11 @@ namespace AngelMacro
                     list.Add(result.ToArray());
                     dispatcher.Invoke(() => { progressBar.Value++; });
                     code = code.Substring(token.Length + 1); // always removes the first command from the code (if it's not a conditional)
+
+                    if (result[1] == 0) // if "end" script
+                    {
+                        return;
+                    }
                 }
             }
         }

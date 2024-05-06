@@ -24,6 +24,7 @@ namespace AngelMacro
             }
         }
         // I have absolutely no idea if the code below works or not, but "it should do its job"
+        // TODO fix stackoverflow bug
         void Execute(int callingLayer, bool marked = false, bool ignoreLayer = false)
         {
             int layer = code[index][0];
@@ -89,6 +90,10 @@ namespace AngelMacro
                         break;
                     case 8:
                         simulator.SimulateMouseWheel((short)code[index][2]);
+                        index++;
+                        break;
+                    case 9:
+                        Condition.ScreenShot();
                         index++;
                         break;
                     case 10: // OP if

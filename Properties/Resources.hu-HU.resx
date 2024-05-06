@@ -126,6 +126,9 @@
   <data name="add_end" xml:space="preserve">
     <value>KÓD VÉGE</value>
   </data>
+  <data name="add_screenshot" xml:space="preserve">
+    <value>KÉPERNYŐKÉP</value>
+  </data>
   <data name="add_until" xml:space="preserve">
     <value>ISMÉTLÉS AMÍG</value>
   </data>

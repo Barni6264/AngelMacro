@@ -58,6 +58,7 @@
                 <MenuItem x:Name="AddUntilButton" Header="{x:Static rs:Resources.add_until}" Click="AddConditionButton_Click"/>
                 <MenuItem x:Name="AddEndMacroButton" Header="{x:Static rs:Resources.add_end}" Click="AddEndMacroButton_Click"/>
                 <MenuItem x:Name="AddColorThresholdChangeButton" Header="{x:Static rs:Resources.add_color_threshold_change}" Click="AddColorThresholdChangeButton_Click"/>
+                <MenuItem x:Name="AddScreenshotButton" Header="{x:Static rs:Resources.add_screenshot}" Click="AddScreenshotButton_Click"/>
             </MenuItem>
         </Menu>
 

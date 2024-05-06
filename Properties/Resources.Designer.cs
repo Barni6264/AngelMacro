@@ -88,6 +88,15 @@ namespace AngelMacro.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SCREENSHOT.
+        /// </summary>
+        public static string add_screenshot {
+            get {
+                return ResourceManager.GetString("add_screenshot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to REPEAT UNTIL.
         /// </summary>
         public static string add_until {

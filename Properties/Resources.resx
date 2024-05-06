@@ -126,6 +126,9 @@
   <data name="add_end" xml:space="preserve">
     <value>STOP SCRIPT</value>
   </data>
+  <data name="add_screenshot" xml:space="preserve">
+    <value>SCREENSHOT</value>
+  </data>
   <data name="add_until" xml:space="preserve">
     <value>REPEAT UNTIL</value>
   </data>

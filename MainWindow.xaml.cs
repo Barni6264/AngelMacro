@@ -342,5 +342,10 @@ namespace AngelMacro
             codeChanged = true;
             RunButton.Content = Consts.COMPILE_CODE_BUTTON_TEXT;
         }
+
+        private void AddScreenshotButton_Click(object sender, RoutedEventArgs e)
+        {
+            ScriptBox.AppendText($"{Consts.TEXT_SCREENSHOT}{Consts.COMMAND_SEPARATOR}\n");
+        }
     }
 }

@@ -2,16 +2,27 @@
 using System.Drawing;
 using System.Threading;
 
+
 namespace AngelMacro
 {
     public static class Condition
     {
+        static int sLeft = (int)System.Windows.SystemParameters.VirtualScreenLeft;
+        static int sWidth = (int)System.Windows.SystemParameters.VirtualScreenWidth;
+        static int sTop = (int)System.Windows.SystemParameters.VirtualScreenTop;
+        static int sHeight = (int)System.Windows.SystemParameters.VirtualScreenHeight;
+        static Bitmap bmp = new Bitmap(sWidth, sHeight);
+        static Graphics g = Graphics.FromImage(bmp);
+        static Size size = new Size(sWidth,sHeight);
+
         public static Color GetPixel(int left, int top)
         {
-            Bitmap bmp = new Bitmap(1, 1);
-            Graphics g = Graphics.FromImage(bmp);
-            g.CopyFromScreen(left, top, 0, 0, new Size(1, 1));
-            return bmp.GetPixel(0, 0);
+            return bmp.GetPixel(left-sLeft, top-sTop);
+        }
+
+        public static void ScreenShot()
+        {
+            g.CopyFromScreen(sLeft, sTop, 0, 0, size);
         }
 
         public static Tuple<Point, Color> GetCursorInfo()

@@ -25,6 +25,7 @@ namespace AngelMacro
         public const string TEXT_UNTIL = "UNTIL";
         public const string TEXT_END = "END";
         public const string TEXT_COLOR_THRESHOLD_CHANGE = "THRESHOLD";
+        public const string TEXT_SCREENSHOT = "SCREENSHOT";
 
         public static readonly string UNLOCKED_SCRIPT_WARNING = Properties.Resources.script_unlocked;
         public static readonly string OPEN_FILE_TITLE = Properties.Resources.open_macro;
