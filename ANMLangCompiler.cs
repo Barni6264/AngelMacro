@@ -74,17 +74,17 @@ namespace AngelMacro
          */
         static Dispatcher dispatcher;
         static ProgressBar progressBar;
-        public static int[][] CompileCode(string code, Dispatcher _dispatcher, ProgressBar _progressBar)
+        public static TreeNode CompileCode(string code, Dispatcher _dispatcher, ProgressBar _progressBar)
         {
             dispatcher = _dispatcher;
             progressBar = _progressBar;
 
             dispatcher.Invoke(() => { progressBar.Maximum = code.Split(Consts.COMMAND_SEPARATOR).Length; });
 
-            List<int[]> result = new List<int[]>();
-            Compile(code, result, 0, false);
+            TreeNode result = new TreeNode(true);
+            Compile(code, result, true);
 
-            return result.ToArray();
+            return result;
         }
 
         public static string CleanCode(string code)
@@ -93,7 +93,7 @@ namespace AngelMacro
         }
 
         // TODO exception for unknown enum
-        static void Compile(string code, List<int[]> list, int layer, bool marked) // marked could mean lots of things, but in this case it means the it belongs to the else part of a "COLOR" conditional
+        static void Compile(string code, TreeNode parentNode, bool binaryOption) // binaryOption could mean lots of things, but in this case it means the code belongs to the if-true part of a "COLOR" conditional
         {
             while (code.Length > 0)
             {
@@ -113,7 +113,8 @@ namespace AngelMacro
                     return;
                 }
 
-                result.Add(marked?-layer:layer);
+                TreeNode newNode = new TreeNode();
+
                 switch (args[0]) //OP
                 {
                     case Consts.TEXT_COLOR_THRESHOLD_CHANGE:
@@ -156,7 +157,6 @@ namespace AngelMacro
                         result.Add(9);
                         break;
 
-                    // Hard part (I'll suffer...)
                     // TODO create function for conditionals
                     case Consts.TEXT_COLOR:
                         {
@@ -190,8 +190,7 @@ namespace AngelMacro
                                 }
                                 index++;
                             }
-                            list.Add(result.ToArray());
-                            Compile(code.Substring(0, index - 1), list, layer + 1, false); // I think this will NOT include the last block closer
+                            Compile(code.Substring(0, index - 1), newNode, true); // I think this will NOT include the last block closer
                             code = code.Substring(index+1);
 
                             // else part
@@ -210,7 +209,7 @@ namespace AngelMacro
                                 }
                                 index++;
                             }
-                            Compile(code.Substring(0, index - 1), list, layer + 1, true);
+                            Compile(code.Substring(0, index - 1), newNode, false);
                             code = code.Substring(index);
                         }
                         break;
@@ -240,8 +239,7 @@ namespace AngelMacro
                                 }
                                 index++;
                             }
-                            list.Add(result.ToArray());
-                            Compile(code.Substring(0, index - 1), list, layer + 1, false);
+                            Compile(code.Substring(0, index - 1), newNode, true);
                             code = code.Substring(index);
                         }
                         break;
@@ -271,8 +269,7 @@ namespace AngelMacro
                                 }
                                 index++;
                             }
-                            list.Add(result.ToArray());
-                            Compile(code.Substring(0, index - 1), list, layer + 1, false);
+                            Compile(code.Substring(0, index - 1), newNode, true);
                             code = code.Substring(index);
                         }
                         break;
@@ -280,9 +277,10 @@ namespace AngelMacro
                         throw new InvalidCommandException (Consts.COMMAND_ERROR_TEXT);
                 }
 
-                if (!(Consts.TEXT_COLOR+Consts.TEXT_UNTIL+Consts.TEXT_WHILE).Contains(args[0]))
+                newNode.nodeArgs = result.ToArray();
+
+                if (!(Consts.TEXT_COLOR + Consts.TEXT_UNTIL + Consts.TEXT_WHILE).Contains(args[0]))
                 {
-                    list.Add(result.ToArray());
                     dispatcher.Invoke(() => { progressBar.Value++; });
                     code = code.Substring(token.Length + 1); // always removes the first command from the code (if it's not a conditional)
 
@@ -290,6 +288,15 @@ namespace AngelMacro
                     {
                         return;
                     }
+                }
+
+                if (binaryOption)
+                {
+                    parentNode.conditionIfTrue.Add(newNode);
+                }
+                else
+                {
+                    parentNode.conditionElseFalse.Add(newNode);
                 }
             }
         }
