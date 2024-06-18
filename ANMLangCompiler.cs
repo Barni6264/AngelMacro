@@ -284,7 +284,7 @@ namespace AngelMacro
                     dispatcher.Invoke(() => { progressBar.Value++; });
                     code = code.Substring(token.Length + 1); // always removes the first command from the code (if it's not a conditional)
 
-                    if (result[1] == 0) // if "end" script
+                    if (result[0] == 0) // if "end" script
                     {
                         return;
                     }
