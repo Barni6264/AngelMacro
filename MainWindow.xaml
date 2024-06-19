@@ -35,17 +35,20 @@
                 </Grid>
             </MenuItem>
             <MenuItem Header="{x:Static rs:Resources.keys}">
-                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" MaxHeight="200">
-                    <StackPanel x:Name="Keys"/>
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" MaxHeight="200" Margin="5">
+                    <StackPanel x:Name="Keys" >
+                        <Button x:Name="InvertAllKeysButton" Content="{x:Static rs:Resources.invert_all_keys}" Click="InvertAllKeysButton_Click" Margin="5,5,5,5"/>
+                        <Separator/>
+                    </StackPanel>
                 </ScrollViewer>
             </MenuItem>
             <MenuItem Header="{x:Static rs:Resources.mouse}">
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" MaxHeight="200">
                     <StackPanel x:Name="MouseKeys">
-                        <CheckBox x:Name="leftButtonToggle" Content="LMB" Click="ToggleLeft"/>
-                        <CheckBox x:Name="rightButtonToggle" Content="RMB" Click="ToggleRight"/>
-                        <CheckBox x:Name="mouseLocationToggle" Content="{x:Static rs:Resources.record_mouse_location}" Click="ToggleMouseLocation"/>
-                        <CheckBox x:Name="scrollWheelToggle" Content="{x:Static rs:Resources.record_scroll_wheel}" Click="ToggleScrollWheel"/>
+                        <CheckBox x:Name="leftButtonToggle" Content="LMB" Click="ToggleLeft_Click"/>
+                        <CheckBox x:Name="rightButtonToggle" Content="RMB" Click="ToggleRight_Click"/>
+                        <CheckBox x:Name="mouseLocationToggle" Content="{x:Static rs:Resources.record_mouse_location}" Click="ToggleMouseLocation_Click"/>
+                        <CheckBox x:Name="scrollWheelToggle" Content="{x:Static rs:Resources.record_scroll_wheel}" Click="ToggleScrollWheel_Click"/>
                     </StackPanel>
                 </ScrollViewer>
             </MenuItem>

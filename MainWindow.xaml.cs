@@ -3,7 +3,6 @@ using SharpHook.Native;
 using System;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -55,7 +54,7 @@ namespace AngelMacro
             };
         }
 
-        private void ToggleLeft(object o, RoutedEventArgs e)
+        private void ToggleLeft_Click(object o, RoutedEventArgs e)
         {
             if ((bool)leftButtonToggle.IsChecked)
             {
@@ -67,7 +66,7 @@ namespace AngelMacro
             }
         }
 
-        private void ToggleRight(object o, RoutedEventArgs e)
+        private void ToggleRight_Click(object o, RoutedEventArgs e)
         {
             if ((bool)rightButtonToggle.IsChecked)
             {
@@ -79,12 +78,12 @@ namespace AngelMacro
             }
         }
 
-        private void ToggleMouseLocation(object o, RoutedEventArgs e)
+        private void ToggleMouseLocation_Click(object o, RoutedEventArgs e)
         {
             recordMouseLocation = (bool)mouseLocationToggle.IsChecked;
         }
 
-        private void ToggleScrollWheel(object o, RoutedEventArgs e)
+        private void ToggleScrollWheel_Click(object o, RoutedEventArgs e)
         {
             recordScrollWheel = (bool)scrollWheelToggle.IsChecked;
         }
@@ -128,6 +127,7 @@ namespace AngelMacro
             PauseRecordButton.IsEnabled = true;
             RunButton.IsEnabled = false;
             FileMenu.IsEnabled = false;
+            toAddToMacroText = new System.Text.StringBuilder();
             if ((bool)autoMinimize.IsChecked)
             {
                 WindowState = WindowState.Minimized;
@@ -153,6 +153,8 @@ namespace AngelMacro
                 RunButton.IsEnabled = true;
                 FileMenu.IsEnabled = true;
                 currentStatus = Consts.MACROSTATUS.IDLE;
+                ScriptBox.Text += toAddToMacroText.ToString();
+                toAddToMacroText.Clear();
                 if ((bool)autoMinimize.IsChecked)
                 {
                     WindowState = WindowState.Normal;
@@ -346,6 +348,17 @@ namespace AngelMacro
         private void AddScreenshotButton_Click(object sender, RoutedEventArgs e)
         {
             ScriptBox.AppendText($"{Consts.TEXT_SCREENSHOT}{Consts.COMMAND_SEPARATOR}\n");
+        }
+
+        private void InvertAllKeysButton_Click(object sender, RoutedEventArgs e)
+        {
+            CheckBox checkBox;
+            for (int i = 2; i < Keys.Children.Count; i++) // starts at 2, because the first is the button itself, the second is the separator
+            {
+                checkBox = (CheckBox)Keys.Children[i];
+                checkBox.IsChecked = !checkBox.IsChecked; 
+                checkBox.RaiseEvent(new RoutedEventArgs(CheckBox.ClickEvent));
+            }
         }
     }
 }

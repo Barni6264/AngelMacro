@@ -159,6 +159,9 @@
   <data name="insert_code" xml:space="preserve">
     <value>Kód hozzáadása</value>
   </data>
+  <data name="invert_all_keys" xml:space="preserve">
+    <value>Megfordít</value>
+  </data>
   <data name="keys" xml:space="preserve">
     <value>Billentyűzet</value>
   </data>

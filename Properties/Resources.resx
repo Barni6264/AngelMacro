@@ -159,6 +159,9 @@
   <data name="insert_code" xml:space="preserve">
     <value>Insert code</value>
   </data>
+  <data name="invert_all_keys" xml:space="preserve">
+    <value>Invert</value>
+  </data>
   <data name="keys" xml:space="preserve">
     <value>Keys</value>
   </data>

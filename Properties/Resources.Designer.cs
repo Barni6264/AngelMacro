@@ -187,6 +187,15 @@ namespace AngelMacro.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invert.
+        /// </summary>
+        public static string invert_all_keys {
+            get {
+                return ResourceManager.GetString("invert_all_keys", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Keys.
         /// </summary>
         public static string keys {

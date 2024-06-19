@@ -2,6 +2,7 @@
 using SharpHook.Native;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -16,7 +17,7 @@ namespace AngelMacro
         List<MouseButton> mouseKeysDown = new List<MouseButton>();
         bool recordMouseLocation, recordScrollWheel, recordDelay;
         Stopwatch stopwatch = new Stopwatch();
-        // TODO string toAddToMacroText; // TODO precise recording
+        StringBuilder toAddToMacroText; // TODO precise recording
 
         #region Add/remove keys
         void AddKey(KeyCode keyCode)
@@ -60,7 +61,7 @@ namespace AngelMacro
                             if (!keysDown.Contains(e.Data.KeyCode))
                             {
                                 RecordDelay();
-                                Dispatcher.Invoke(() => { ScriptBox.AppendText($"{Consts.TEXT_KEY_DOWN}{Consts.ARGS_SEPARATOR}{e.Data.KeyCode}{Consts.COMMAND_SEPARATOR}\n"); });
+                                toAddToMacroText.AppendLine($"{Consts.TEXT_KEY_DOWN}{Consts.ARGS_SEPARATOR}{e.Data.KeyCode}{Consts.COMMAND_SEPARATOR}");
                                 keysDown.Add(e.Data.KeyCode);
                             }
                         }
@@ -75,7 +76,7 @@ namespace AngelMacro
                     if (keysDown.Contains(e.Data.KeyCode))
                     {
                         RecordDelay();
-                        Dispatcher.Invoke(() => { ScriptBox.AppendText($"{Consts.TEXT_KEY_UP}{Consts.ARGS_SEPARATOR}{e.Data.KeyCode}{Consts.COMMAND_SEPARATOR}\n"); });
+                        toAddToMacroText.AppendLine($"{Consts.TEXT_KEY_UP}{Consts.ARGS_SEPARATOR}{e.Data.KeyCode}{Consts.COMMAND_SEPARATOR}");
                         keysDown.Remove(e.Data.KeyCode);
                     }
                 }
@@ -88,7 +89,7 @@ namespace AngelMacro
                     if (!mouseKeysDown.Contains(e.Data.Button))
                     {
                         RecordDelay();
-                        Dispatcher.Invoke(() => { ScriptBox.AppendText($"{Consts.TEXT_MOUSE_DOWN}{Consts.ARGS_SEPARATOR}{e.Data.Button}{Consts.COMMAND_SEPARATOR}\n"); });
+                        toAddToMacroText.AppendLine($"{Consts.TEXT_MOUSE_DOWN}{Consts.ARGS_SEPARATOR}{e.Data.Button}{Consts.COMMAND_SEPARATOR}");
                         mouseKeysDown.Add(e.Data.Button);
                     }
                 }
@@ -101,7 +102,7 @@ namespace AngelMacro
                     if (mouseKeysDown.Contains(e.Data.Button))
                     {
                         RecordDelay();
-                        Dispatcher.Invoke(() => { ScriptBox.AppendText($"{Consts.TEXT_MOUSE_UP}{Consts.ARGS_SEPARATOR}{e.Data.Button}{Consts.COMMAND_SEPARATOR}\n"); });
+                        toAddToMacroText.AppendLine($"{Consts.TEXT_MOUSE_UP}{Consts.ARGS_SEPARATOR}{e.Data.Button}{Consts.COMMAND_SEPARATOR}");
                         mouseKeysDown.Remove(e.Data.Button);
                     }
                 }
@@ -112,7 +113,7 @@ namespace AngelMacro
                 if (recordMouseLocation && currentStatus == Consts.MACROSTATUS.RECORDING)
                 {
                     RecordDelay();
-                    Dispatcher.Invoke(() => { ScriptBox.AppendText($"{Consts.TEXT_LOCATION}{Consts.ARGS_SEPARATOR}{e.Data.X}{Consts.ARGS_SEPARATOR}{e.Data.Y}{Consts.COMMAND_SEPARATOR}\n"); });
+                    toAddToMacroText.AppendLine($"{Consts.TEXT_LOCATION}{Consts.ARGS_SEPARATOR}{e.Data.X}{Consts.ARGS_SEPARATOR}{e.Data.Y}{Consts.COMMAND_SEPARATOR}");
                 }
             };
 
@@ -121,7 +122,7 @@ namespace AngelMacro
                 if (recordScrollWheel && currentStatus == Consts.MACROSTATUS.RECORDING)
                 {
                     RecordDelay();
-                    Dispatcher.Invoke(() => { ScriptBox.AppendText($"{Consts.TEXT_SCROLL_WHEEL}{Consts.ARGS_SEPARATOR}{e.Data.Rotation}{Consts.COMMAND_SEPARATOR}\n"); });
+                    toAddToMacroText.AppendLine($"{Consts.TEXT_SCROLL_WHEEL}{Consts.ARGS_SEPARATOR}{e.Data.Rotation}{Consts.COMMAND_SEPARATOR}");
                 }
             };
 
@@ -140,7 +141,7 @@ namespace AngelMacro
         {
             if (recordDelay)
             {
-                Dispatcher.Invoke(() => { ScriptBox.AppendText($"{Consts.TEXT_DELAY}{Consts.ARGS_SEPARATOR}{(int)stopwatch.Elapsed.TotalMilliseconds - Consts.CSHARP_LAG_COMPENSATION}{Consts.COMMAND_SEPARATOR}\n"); });
+                toAddToMacroText.AppendLine($"{Consts.TEXT_DELAY}{Consts.ARGS_SEPARATOR}{(int)stopwatch.Elapsed.TotalMilliseconds - Consts.CSHARP_LAG_COMPENSATION}{Consts.COMMAND_SEPARATOR}");
                 stopwatch.Restart();
             }
         }
