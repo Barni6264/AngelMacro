@@ -97,6 +97,7 @@ namespace AngelMacro
             Countdown(5, () =>
             {
                 Tuple<System.Drawing.Point, Color> cursorInfo = Condition.GetCursorInfo();
+                Condition.ScreenShot();
                 Dispatcher.Invoke(() =>
                 {
                     switch (((MenuItem)sender).Name)
