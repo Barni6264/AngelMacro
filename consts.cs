@@ -26,6 +26,8 @@ namespace AngelMacro
         public const string TEXT_END = "END";
         public const string TEXT_COLOR_THRESHOLD_CHANGE = "THRESHOLD";
         public const string TEXT_SCREENSHOT = "SCREENSHOT";
+        public const string TEXT_BREAK = "BREAK";
+        public const string TEXT_WEBHOOK = "WEBHOOK";
 
         public static readonly string UNLOCKED_SCRIPT_WARNING = Properties.Resources.script_unlocked;
         public static readonly string OPEN_FILE_TITLE = Properties.Resources.open_macro;
@@ -48,12 +50,13 @@ namespace AngelMacro
 
         public static readonly string CONDITIONAL_MACRO_GUIDE = $"{COMMAND_BLOCK_STARTER}\n   Put your macro here\n{COMMAND_BLOCK_CLOSER}{COMMAND_BLOCK_STARTER}\n   Put your macro here if the condition fails\n{COMMAND_BLOCK_CLOSER}"; // TODO resource file
         public static readonly string WHILE_MACRO_GUIDE = $"{COMMAND_BLOCK_STARTER}   \nPut your macro here\n{COMMAND_BLOCK_CLOSER}"; // TODO resource file
+        public static readonly string WEBHOOK_GUIDE = $"{TEXT_WEBHOOK}{ARGS_SEPARATOR}Hello!{ARGS_SEPARATOR}https://example.com/api/webhooks/...{COMMAND_SEPARATOR}";
 
         public const int PAUSE_RECORD = 0x75;
         public const int RUN = 0x76;
         public const int STOP = 0x77;
 
-        public static readonly string ANMLANG_CHARSET = $"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-{COMMAND_SEPARATOR}{COMMAND_BLOCK_STARTER}{COMMAND_BLOCK_CLOSER}{ARGS_SEPARATOR}";
+        public static readonly string ANMLANG_CHARSET = $"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._~/?#[]@!$'()*+,%={COMMAND_SEPARATOR}{COMMAND_BLOCK_STARTER}{COMMAND_BLOCK_CLOSER}{ARGS_SEPARATOR}";
     }
 
     public class InvalidCommandException : Exception

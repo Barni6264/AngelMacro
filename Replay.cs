@@ -3,6 +3,9 @@ using System;
 using System.Drawing;
 using System.Threading;
 using SharpHook.Native;
+using System.Net;
+using System.Text;
+using System.Collections.Specialized;
 
 namespace AngelMacro
 {
@@ -75,6 +78,20 @@ namespace AngelMacro
                                 Execute(node.conditionIfTrue[i], true);
                             }
                             break;
+                        case 13:
+                            return;
+                        case 14:
+                            byte[] byteArgs = new byte[node.conditionIfTrue[i].nodeArgs.Length];
+                            for (int j = 0; j < byteArgs.Length; j++)
+                            {
+                                byteArgs[j] = (byte)node.conditionIfTrue[i].nodeArgs[j];
+                            }
+                            int indexOfNullCharacter = Array.IndexOf(node.conditionIfTrue[i].nodeArgs, '\0');
+                            string message = Encoding.UTF8.GetString(byteArgs, 1, indexOfNullCharacter - 1);
+                            string webhook = Encoding.UTF8.GetString(byteArgs, indexOfNullCharacter + 1, byteArgs.Length - indexOfNullCharacter - 1);
+
+                            SendWebhook(webhook, message);
+                            break;
                     }
                 }
             }
@@ -130,6 +147,20 @@ namespace AngelMacro
                                 Execute(node.conditionElseFalse[i], true);
                             }
                             break;
+                        case 13:
+                            return;
+                        case 14:
+                            byte[] byteArgs = new byte[node.conditionElseFalse[i].nodeArgs.Length];
+                            for (int j = 0; j < byteArgs.Length; j++)
+                            {
+                                byteArgs[j] = (byte)node.conditionElseFalse[i].nodeArgs[j];
+                            }
+                            int indexOfNullCharacter = Array.IndexOf(node.conditionElseFalse[i].nodeArgs, '\0');
+                            string message = Encoding.UTF8.GetString(byteArgs, 1, indexOfNullCharacter-1);
+                            string webhook = Encoding.UTF8.GetString(byteArgs, indexOfNullCharacter+1, byteArgs.Length-indexOfNullCharacter-1);
+
+                            SendWebhook(webhook, message);
+                            break;
                     }
                 }
             }
@@ -139,6 +170,15 @@ namespace AngelMacro
         {
             Color color = Condition.GetPixel(x, y);
             return (Math.Abs(color.R - r) + Math.Abs(color.G - g) + Math.Abs(color.B - b))<=colorThreshold;
+        }
+
+        void SendWebhook(string url, string message)
+        {
+            NameValueCollection nameValueCollection = new NameValueCollection
+            {
+                { "content", message }
+            };
+            new WebClient().UploadValues(url, nameValueCollection);
         }
     }
 }

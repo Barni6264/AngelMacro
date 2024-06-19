@@ -61,6 +61,15 @@ namespace AngelMacro.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BREAK CONDITION.
+        /// </summary>
+        public static string add_break {
+            get {
+                return ResourceManager.GetString("add_break", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CHANGE COLOR THRESHOLD.
         /// </summary>
         public static string add_color_threshold_change {
@@ -102,6 +111,15 @@ namespace AngelMacro.Properties {
         public static string add_until {
             get {
                 return ResourceManager.GetString("add_until", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WEBHOOK MESSAGE.
+        /// </summary>
+        public static string add_webhook {
+            get {
+                return ResourceManager.GetString("add_webhook", resourceCulture);
             }
         }
         

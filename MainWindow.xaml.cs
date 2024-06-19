@@ -361,5 +361,15 @@ namespace AngelMacro
                 checkBox.RaiseEvent(new RoutedEventArgs(CheckBox.ClickEvent));
             }
         }
+
+        private void AddBreakButton_Click(object sender, RoutedEventArgs e)
+        {
+            ScriptBox.AppendText($"{Consts.TEXT_BREAK}{Consts.COMMAND_SEPARATOR}\n");
+        }
+
+        private void AddWebhookButton_Click(object sender, RoutedEventArgs e)
+        {
+            ScriptBox.AppendText($"{Consts.WEBHOOK_GUIDE}\n");
+        }
     }
 }

@@ -56,12 +56,19 @@
             <CheckBox x:Name="fastStart" Content="{x:Static rs:Resources.fast_start}"/>
             <CheckBox x:Name="autoMinimize" Content="{x:Static rs:Resources.auto_minimize}" IsChecked="True"/>
             <MenuItem Header="{x:Static rs:Resources.insert_code}">
+                <MenuItem x:Name="AddScreenshotButton" Header="{x:Static rs:Resources.add_screenshot}" Click="AddScreenshotButton_Click"/>
                 <MenuItem x:Name="AddConditionButton" Header="{x:Static rs:Resources.add_condition}" Click="AddConditionButton_Click"/>
                 <MenuItem x:Name="AddWhileButton" Header="{x:Static rs:Resources.add_while}" Click="AddConditionButton_Click"/>
                 <MenuItem x:Name="AddUntilButton" Header="{x:Static rs:Resources.add_until}" Click="AddConditionButton_Click"/>
-                <MenuItem x:Name="AddEndMacroButton" Header="{x:Static rs:Resources.add_end}" Click="AddEndMacroButton_Click"/>
+                <Separator/>
                 <MenuItem x:Name="AddColorThresholdChangeButton" Header="{x:Static rs:Resources.add_color_threshold_change}" Click="AddColorThresholdChangeButton_Click"/>
-                <MenuItem x:Name="AddScreenshotButton" Header="{x:Static rs:Resources.add_screenshot}" Click="AddScreenshotButton_Click"/>
+                <Separator/>
+                <Separator/>
+                <MenuItem x:Name="AddEndMacroButton" Header="{x:Static rs:Resources.add_end}" Click="AddEndMacroButton_Click"/>
+                <MenuItem x:Name="AddBreakButton" Header="{x:Static rs:Resources.add_break}" Click="AddBreakButton_Click"/>
+                <Separator/>
+                <Separator/>
+                <MenuItem x:Name="AddWebhookButton" Header="{x:Static rs:Resources.add_webhook}" Click="AddWebhookButton_Click"/>
             </MenuItem>
         </Menu>
 

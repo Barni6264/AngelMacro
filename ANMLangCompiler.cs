@@ -273,6 +273,32 @@ namespace AngelMacro
                             code = code.Substring(index);
                         }
                         break;
+                    case Consts.TEXT_BREAK:
+                        result.Add(13);
+                        break;
+                    case Consts.TEXT_WEBHOOK:
+                        result.Add(14);
+
+                        StringBuilder stringBuilder = new StringBuilder();
+                        for (int i = 2; i < args.Length; i++)
+                        {
+                            stringBuilder.Append($"{args[i]}:");
+                        }
+                        stringBuilder.Remove(stringBuilder.Length-1, 1);
+                        string hook = stringBuilder.ToString();
+
+                        byte[] hookBytes = Encoding.UTF8.GetBytes(args[1]);
+                        for (int i = 0; i < hookBytes.Length; i++)
+                        {
+                            result.Add(hookBytes[i]);
+                        }
+                        result.Add('\0');
+                        hookBytes = Encoding.UTF8.GetBytes(hook);
+                        for (int i = 0; i < hookBytes.Length; i++)
+                        {
+                            result.Add(hookBytes[i]);
+                        }
+                        break;
                     default:
                         throw new InvalidCommandException (Consts.COMMAND_ERROR_TEXT);
                 }
