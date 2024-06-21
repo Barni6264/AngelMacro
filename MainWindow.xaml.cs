@@ -181,6 +181,7 @@ namespace AngelMacro
                     {
                         try
                         {
+                            rawMacro = ANMLangCompiler.ConvertStringToArgs(rawMacro);
                             rawMacro = ANMLangCompiler.CleanCode(rawMacro);
                             compiledCode = ANMLangCompiler.CompileCode(rawMacro, Dispatcher, messageBox.CompilingProgress);
 

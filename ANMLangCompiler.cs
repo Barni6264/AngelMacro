@@ -91,8 +91,30 @@ namespace AngelMacro
         {
             return new string(code.Where(c => Consts.ANMLANG_CHARSET.Contains(c)).ToArray());
         }
-
         // TODO exception for unknown enum
+
+        // after that we might have something like this
+        // OP:"12:34:56:78":23;
+        public static string ConvertStringToArgs(string code)
+        {
+            string[] parts = code.Split(Consts.STRING_SEPARATOR);
+            string[] result = new string[parts.Length];
+
+            for (int i = 0; i < parts.Length; i++)
+            {
+                if (i % 2 == 1)
+                {
+                    result[i] = string.Join(Consts.ARGS_SEPARATOR,Encoding.UTF8.GetBytes(parts[i]));
+                }
+                else
+                {
+                    result[i] = parts[i];
+                }
+            }
+
+            return string.Join(Consts.STRING_SEPARATOR, result);
+        }
+
         static void Compile(string code, TreeNode parentNode, bool binaryOption) // binaryOption could mean lots of things, but in this case it means the code belongs to the if-true part of a "COLOR" conditional
         {
             while (code.Length > 0)
@@ -278,25 +300,18 @@ namespace AngelMacro
                         break;
                     case Consts.TEXT_WEBHOOK:
                         result.Add(14);
+                        string[] strings = token.Split(Consts.STRING_SEPARATOR);
+                        string[] messageArgs = strings[1].Split(Consts.ARGS_SEPARATOR);
+                        string[] webhookArgs = strings[3].Split(Consts.ARGS_SEPARATOR);
 
-                        StringBuilder stringBuilder = new StringBuilder();
-                        for (int i = 2; i < args.Length; i++)
+                        for (int i = 0; i < messageArgs.Length; i++)
                         {
-                            stringBuilder.Append($"{args[i]}:");
-                        }
-                        stringBuilder.Remove(stringBuilder.Length-1, 1);
-                        string hook = stringBuilder.ToString();
-
-                        byte[] hookBytes = Encoding.UTF8.GetBytes(args[1]);
-                        for (int i = 0; i < hookBytes.Length; i++)
-                        {
-                            result.Add(hookBytes[i]);
+                            result.Add(int.Parse(messageArgs[i]));
                         }
                         result.Add('\0');
-                        hookBytes = Encoding.UTF8.GetBytes(hook);
-                        for (int i = 0; i < hookBytes.Length; i++)
+                        for (int i = 0; i < webhookArgs.Length; i++)
                         {
-                            result.Add(hookBytes[i]);
+                            result.Add(int.Parse(webhookArgs[i]));
                         }
                         break;
                     default:
