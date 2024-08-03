@@ -162,8 +162,23 @@
   <data name="file" xml:space="preserve">
     <value>File</value>
   </data>
+  <data name="file_error_title" xml:space="preserve">
+    <value>File error</value>
+  </data>
+  <data name="file_not_found_text" xml:space="preserve">
+    <value>File doesn't exist</value>
+  </data>
+  <data name="guide_your_macro_fail" xml:space="preserve">
+    <value>Write or paste your macro here which should get executed if the condition is not met</value>
+  </data>
+  <data name="guide_your_macro_success" xml:space="preserve">
+    <value>Write or paste your macro here</value>
+  </data>
   <data name="insert_code" xml:space="preserve">
     <value>Insert code</value>
+  </data>
+  <data name="invalid_operation_text" xml:space="preserve">
+    <value>Invalid operation</value>
   </data>
   <data name="invert_all_keys" xml:space="preserve">
     <value>Invert</value>
@@ -218,6 +233,9 @@
   </data>
   <data name="stop_macro" xml:space="preserve">
     <value>Stop macro (F8)</value>
+  </data>
+  <data name="syntax_error_text" xml:space="preserve">
+    <value>Syntax error</value>
   </data>
   <data name="toggle_topmost" xml:space="preserve">
     <value>Toggle topmost</value>

@@ -37,11 +37,14 @@ namespace AngelMacro
         public static readonly string COMMAND_ERROR_TEXT = Properties.Resources.command_error_text;
         public static readonly string COMMAND_ERROR_TITLE = Properties.Resources.command_error_title;
 
+        public static readonly string FILE_ERROR_TEXT = Properties.Resources.file_not_found_text;
+        public static readonly string FILE_ERROR_TITLE = Properties.Resources.file_error_title;
+
         public static readonly string COMPILE_CODE_BUTTON_TEXT = Properties.Resources.compile_code;
         public static readonly string RUN_MACRO_BUTTON_TEXT = Properties.Resources.run_macro;
 
-        public const string ERROR_SYNTAX_ERROR = "Invalid syntax"; // TODO resource file
-        public const string ERROR_INVALID_OPERATION = "Invalid operation"; // TODO resource file
+        public static readonly string ERROR_SYNTAX_ERROR = Properties.Resources.syntax_error_text;
+        public static readonly string ERROR_INVALID_OPERATION = Properties.Resources.invalid_operation_text;
 
         public const char COMMAND_SEPARATOR = ';';
         public const char ARGS_SEPARATOR = ':';
@@ -49,8 +52,8 @@ namespace AngelMacro
         public const char COMMAND_BLOCK_CLOSER = '}';
         public const char STRING_SEPARATOR = '"';
 
-        public static readonly string CONDITIONAL_MACRO_GUIDE = $"{COMMAND_BLOCK_STARTER}\n   Put your macro here\n{COMMAND_BLOCK_CLOSER}{COMMAND_BLOCK_STARTER}\n   Put your macro here if the condition fails\n{COMMAND_BLOCK_CLOSER}"; // TODO resource file
-        public static readonly string WHILE_MACRO_GUIDE = $"{COMMAND_BLOCK_STARTER}   \nPut your macro here\n{COMMAND_BLOCK_CLOSER}"; // TODO resource file
+        public static readonly string CONDITIONAL_MACRO_GUIDE = $"{COMMAND_BLOCK_STARTER}\n   {Properties.Resources.guide_your_macro_success}\n{COMMAND_BLOCK_CLOSER}{COMMAND_BLOCK_STARTER}\n   {Properties.Resources.guide_your_macro_fail}\n{COMMAND_BLOCK_CLOSER}";
+        public static readonly string WHILE_MACRO_GUIDE = $"{COMMAND_BLOCK_STARTER}   \n{Properties.Resources.guide_your_macro_success}\n{COMMAND_BLOCK_CLOSER}";
         public static readonly string WEBHOOK_GUIDE = $"{TEXT_WEBHOOK}{ARGS_SEPARATOR}{STRING_SEPARATOR}Hello!{STRING_SEPARATOR}{ARGS_SEPARATOR}{STRING_SEPARATOR}https://example.com/api/webhooks/...{STRING_SEPARATOR}{COMMAND_SEPARATOR}";
 
         public const int PAUSE_RECORD = 0x75;

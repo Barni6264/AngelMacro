@@ -196,11 +196,56 @@ namespace AngelMacro.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File error.
+        /// </summary>
+        public static string file_error_title {
+            get {
+                return ResourceManager.GetString("file_error_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File doesn&apos;t exist.
+        /// </summary>
+        public static string file_not_found_text {
+            get {
+                return ResourceManager.GetString("file_not_found_text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Write or paste your macro here which should get executed if the condition is not met.
+        /// </summary>
+        public static string guide_your_macro_fail {
+            get {
+                return ResourceManager.GetString("guide_your_macro_fail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Write or paste your macro here.
+        /// </summary>
+        public static string guide_your_macro_success {
+            get {
+                return ResourceManager.GetString("guide_your_macro_success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Insert code.
         /// </summary>
         public static string insert_code {
             get {
                 return ResourceManager.GetString("insert_code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid operation.
+        /// </summary>
+        public static string invalid_operation_text {
+            get {
+                return ResourceManager.GetString("invalid_operation_text", resourceCulture);
             }
         }
         
@@ -363,6 +408,15 @@ namespace AngelMacro.Properties {
         public static string stop_macro {
             get {
                 return ResourceManager.GetString("stop_macro", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Syntax error.
+        /// </summary>
+        public static string syntax_error_text {
+            get {
+                return ResourceManager.GetString("syntax_error_text", resourceCulture);
             }
         }
         

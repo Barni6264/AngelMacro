@@ -162,8 +162,23 @@
   <data name="file" xml:space="preserve">
     <value>Fájl</value>
   </data>
+  <data name="file_error_title" xml:space="preserve">
+    <value>Fájlhiba</value>
+  </data>
+  <data name="file_not_found_text" xml:space="preserve">
+    <value>A fájl nem létezik</value>
+  </data>
+  <data name="guide_your_macro_fail" xml:space="preserve">
+    <value>Írd vagy másold be ide a futtatandó parancsot, ami akkor fut le, ha nem teljesül a feltétel</value>
+  </data>
+  <data name="guide_your_macro_success" xml:space="preserve">
+    <value>Írd vagy másold be ide a futtatandó parancsokat</value>
+  </data>
   <data name="insert_code" xml:space="preserve">
     <value>Kód hozzáadása</value>
+  </data>
+  <data name="invalid_operation_text" xml:space="preserve">
+    <value>Hibás utasítás</value>
   </data>
   <data name="invert_all_keys" xml:space="preserve">
     <value>Megfordít</value>
@@ -218,6 +233,9 @@
   </data>
   <data name="stop_macro" xml:space="preserve">
     <value>Kód leállítása (F8)</value>
+  </data>
+  <data name="syntax_error_text" xml:space="preserve">
+    <value>Szintaxis hiba</value>
   </data>
   <data name="toggle_topmost" xml:space="preserve">
     <value>Ablak mindig legyen legfelül</value>

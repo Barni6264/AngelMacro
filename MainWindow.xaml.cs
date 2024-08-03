@@ -15,8 +15,8 @@ namespace AngelMacro
 
         Consts.MACROSTATUS currentStatus = Consts.MACROSTATUS.IDLE;
         Thread countdownThread;
-        bool codeChanged = true;
-        TreeNode compiledCode;
+        public bool codeChanged = true;
+        public TreeNode compiledCode;
 
         public MainWindow()
         {
@@ -90,7 +90,7 @@ namespace AngelMacro
 
         private void AddConditionButton_Click(object sender, RoutedEventArgs e)
         {
-            if ((bool)autoMinimize.IsChecked)
+            if ((bool)AutoMinimize.IsChecked)
             {
                 WindowState = WindowState.Minimized;
             }
@@ -112,7 +112,7 @@ namespace AngelMacro
                             ScriptBox.AppendText($"{Consts.TEXT_UNTIL}{Consts.ARGS_SEPARATOR}{cursorInfo.Item1.X}{Consts.ARGS_SEPARATOR}{cursorInfo.Item1.Y}{Consts.ARGS_SEPARATOR}{cursorInfo.Item2.R}{Consts.ARGS_SEPARATOR}{cursorInfo.Item2.G}{Consts.ARGS_SEPARATOR}{cursorInfo.Item2.B}{Consts.ARGS_SEPARATOR}\n{Consts.WHILE_MACRO_GUIDE}\n");
                             break;
                     }
-                    if ((bool)autoMinimize.IsChecked)
+                    if ((bool)AutoMinimize.IsChecked)
                     {
                         WindowState = WindowState.Normal;
                         Activate();
@@ -129,12 +129,12 @@ namespace AngelMacro
             RunButton.IsEnabled = false;
             FileMenu.IsEnabled = false;
             toAddToMacroText = new System.Text.StringBuilder();
-            if ((bool)autoMinimize.IsChecked)
+            if ((bool)AutoMinimize.IsChecked)
             {
                 WindowState = WindowState.Minimized;
             }
-            recordDelay = (bool)delayToggle.IsChecked;
-            Countdown((bool)fastStart.IsChecked ? 0 : 3, () =>
+            recordDelay = (bool)DelayToggle.IsChecked;
+            Countdown((bool)FastStart.IsChecked ? 0 : 3, () =>
             {
                 currentStatus = Consts.MACROSTATUS.RECORDING;
                 if (recordDelay)
@@ -156,7 +156,7 @@ namespace AngelMacro
                 currentStatus = Consts.MACROSTATUS.IDLE;
                 ScriptBox.Text += toAddToMacroText.ToString();
                 toAddToMacroText.Clear();
-                if ((bool)autoMinimize.IsChecked)
+                if ((bool)AutoMinimize.IsChecked)
                 {
                     WindowState = WindowState.Normal;
                     Activate();
@@ -214,14 +214,14 @@ namespace AngelMacro
                 StopButton.IsEnabled = true;
                 RecordButton.IsEnabled = false;
                 FileMenu.IsEnabled = false;
-                if ((bool)autoMinimize.IsChecked)
+                if ((bool)AutoMinimize.IsChecked)
                 {
                     WindowState = WindowState.Minimized;
                 }
 
                 int.TryParse(ColorThresholdBox.Text, out colorThreshold);
 
-                Countdown((bool)fastStart.IsChecked ? 0 : 3, () =>
+                Countdown((bool)FastStart.IsChecked ? 0 : 3, () =>
                 {
                     currentStatus = Consts.MACROSTATUS.RUNNING;
                     try
@@ -248,7 +248,7 @@ namespace AngelMacro
                 FileMenu.IsEnabled = true;
                 currentStatus = Consts.MACROSTATUS.IDLE;
                 countdownThread.Interrupt();
-                if ((bool)autoMinimize.IsChecked)
+                if ((bool)AutoMinimize.IsChecked)
                 {
                     WindowState = WindowState.Normal;
                     Activate();
@@ -279,8 +279,6 @@ namespace AngelMacro
 
         private void LoadButton_Click(object sender, RoutedEventArgs e)
         {
-            RunButton.IsEnabled = true;
-
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.DefaultExt = Consts.FILE_EXTENSION;
             openFileDialog.Filter = Consts.FILE_FILTER;

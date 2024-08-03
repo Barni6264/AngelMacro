@@ -52,9 +52,9 @@
                     </StackPanel>
                 </ScrollViewer>
             </MenuItem>
-            <CheckBox x:Name="delayToggle" Content="{x:Static rs:Resources.record_delays}"/>
-            <CheckBox x:Name="fastStart" Content="{x:Static rs:Resources.fast_start}"/>
-            <CheckBox x:Name="autoMinimize" Content="{x:Static rs:Resources.auto_minimize}" IsChecked="True"/>
+            <CheckBox x:Name="DelayToggle" Content="{x:Static rs:Resources.record_delays}"/>
+            <CheckBox x:Name="FastStart" Content="{x:Static rs:Resources.fast_start}" x:FieldModifier="public"/>
+            <CheckBox x:Name="AutoMinimize" Content="{x:Static rs:Resources.auto_minimize}" IsChecked="True"/>
             <MenuItem Header="{x:Static rs:Resources.insert_code}">
                 <MenuItem x:Name="AddScreenshotButton" Header="{x:Static rs:Resources.add_screenshot}" Click="AddScreenshotButton_Click"/>
                 <MenuItem x:Name="AddConditionButton" Header="{x:Static rs:Resources.add_condition}" Click="AddConditionButton_Click"/>
@@ -73,7 +73,7 @@
         </Menu>
 
         <ScrollViewer Grid.Row="2" Margin="16,2,16,2" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <TextBox x:Name="ScriptBox" AcceptsReturn="True" IsEnabled="False" TextChanged="ScriptBox_TextChanged"/>
+            <TextBox x:Name="ScriptBox" AcceptsReturn="True" IsEnabled="False" TextChanged="ScriptBox_TextChanged" x:FieldModifier="public"/>
         </ScrollViewer>
 
         <Button x:Name="UnlockTextButton" Content="{x:Static rs:Resources.unlock_script}" Click="UnlockTextButton_Click" Grid.Row="1" Margin="16,16,16,0" FontSize="14"/>
@@ -104,7 +104,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
 
-                <Button x:Name="RunButton" Content="{x:Static rs:Resources.run_macro}" Click="RunButton_Click" Margin="2" FontSize="14" IsEnabled="False"/>
+                <Button x:Name="RunButton" Content="{x:Static rs:Resources.run_macro}" Click="RunButton_Click" Margin="2" FontSize="14" x:FieldModifier="public"/>
                 <Button x:Name="StopButton" Content="{x:Static rs:Resources.stop_macro}" Click="StopButton_Click" Grid.Column="1" Margin="2" FontSize="14" IsEnabled="False"/>
             </Grid>
         </GroupBox>
